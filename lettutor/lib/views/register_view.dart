@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+class RegisterView extends StatefulWidget {
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,15 +23,15 @@ class _LoginViewState extends State<LoginView> {
           PopupMenuButton(
               icon: const Icon(Icons.translate, color: Colors.blue),
               itemBuilder: (context) => const [
-                    PopupMenuItem<Language>(
-                      value: Language.english,
-                      child: Text('English'),
-                    ),
-                    PopupMenuItem<Language>(
-                      value: Language.vietnamese,
-                      child: Text('Vietnamese'),
-                    ),
-                  ])
+                PopupMenuItem<Language>(
+                  value: Language.english,
+                  child: Text('English'),
+                ),
+                PopupMenuItem<Language>(
+                  value: Language.vietnamese,
+                  child: Text('Vietnamese'),
+                ),
+              ])
         ],
       ),
       body: SingleChildScrollView(
@@ -47,7 +47,7 @@ class _LoginViewState extends State<LoginView> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  'Say hello to your English tutors',
+                  'Start learning with LetTutor',
                   style: Theme.of(context).textTheme.headline2,
                   textAlign: TextAlign.center,
                 ),
@@ -56,7 +56,7 @@ class _LoginViewState extends State<LoginView> {
                 padding: const EdgeInsets.all(8),
                 child: Text(
                   'Become fluent faster through one on one video chat lessons '
-                  'tailored to your goals.',
+                      'tailored to your goals.',
                   style: Theme.of(context).textTheme.bodyText1,
                   textAlign: TextAlign.center,
                 ),
@@ -73,37 +73,30 @@ class _LoginViewState extends State<LoginView> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('Forgot Password?'),
-              ),
-              TextButton(
-                onPressed: () {},
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                child: const Text('LOG IN',
+                child: const Text('SIGN UP',
                     style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
               const Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(12.0),
                 child: Text('Or continue with', textAlign: TextAlign.center),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.facebook)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.g_mobiledata)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.phone_android)),
-                  ],
-                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not a member yet?'),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.facebook)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.g_mobiledata)),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.phone_android)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {},
-                    child: const Text('Sign Up'),
+                    child: const Text('Log In'),
                   ),
                 ],
               )
