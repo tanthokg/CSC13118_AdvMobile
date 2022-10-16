@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
+import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/widgets/teacher_card.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -9,20 +11,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  final filters = [
-    'All',
-    'English for kids',
-    'English for Business',
-    'Conversational',
-    'STARTERS',
-    'MOVERS',
-    'FLYERS',
-    'KET',
-    'PET',
-    'IELTS',
-    'TOEFL',
-    'TOEIC'
-  ];
+
   int chosenFilter = 0;
 
   @override
@@ -140,6 +129,14 @@ class _MainViewState extends State<MainView> {
                 child: const Text('Reset Filters'),
               ),
             ),
+            const Divider(
+              thickness: 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+              child: Text('Recommended Tutors', style: Theme.of(context).textTheme.headline3),
+            ),
+            TeacherCard(teacher: teachers[0])
           ],
         ),
       ),
