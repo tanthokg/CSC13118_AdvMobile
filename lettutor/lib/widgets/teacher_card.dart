@@ -18,12 +18,9 @@ class TeacherCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                SizedBox(
-                  width: 90,
-                  height: 90,
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(teacher.avatarUrl),
-                  ),
+                CircleAvatar(
+                  radius: 45,
+                  backgroundImage: AssetImage(teacher.avatarUrl),
                 ),
                 Expanded(
                   child: Padding(
