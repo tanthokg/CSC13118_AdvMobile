@@ -14,7 +14,15 @@ class LetTutor extends StatelessWidget {
     return MaterialApp(
       title: 'LetTutor',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        textTheme: const TextTheme(
+          headline1: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.blue),
+          headline2: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.blue),
+          bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+
+          // headline2: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          // bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
       ),
       home: const LoginView(),
     );
