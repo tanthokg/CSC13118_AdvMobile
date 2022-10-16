@@ -24,15 +24,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           PopupMenuButton(
               icon: const Icon(Icons.translate, color: Colors.blue),
               itemBuilder: (context) => const [
-                PopupMenuItem<Language>(
-                  value: Language.english,
-                  child: Text('English'),
-                ),
-                PopupMenuItem<Language>(
-                  value: Language.vietnamese,
-                  child: Text('Vietnamese'),
-                ),
-              ])
+                    PopupMenuItem<Language>(
+                      value: Language.english,
+                      child: Text('English'),
+                    ),
+                    PopupMenuItem<Language>(
+                      value: Language.vietnamese,
+                      child: Text('Vietnamese'),
+                    ),
+                  ])
         ],
       ),
       body: SingleChildScrollView(
@@ -42,7 +42,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 60),
+                padding: const EdgeInsets.only(top: 48),
                 child: Text(
                   'Reset Password',
                   style: Theme.of(context).textTheme.headline2,
@@ -50,7 +50,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 24),
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
                 child: Text(
                   'Please enter your email address to search for your account.',
                   style: Theme.of(context).textTheme.bodyText1,
@@ -58,27 +58,36 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 12),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text('Email', style: TextStyle(fontSize: 16, color: Colors.grey)),
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: TextField(),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextButton(
                   onPressed: () {},
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                  child: const Text('SEND RESET LINK',
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
+                  child: const Text(
+                    'SEND RESET LINK',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
               ),
-              TextButton(onPressed: () {}, child: const Text('Back to Log In'))
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text('Back to Log In'),
+                ),
+              )
             ],
           ),
         ),
       ),
-    );  }
+    );
+  }
 }

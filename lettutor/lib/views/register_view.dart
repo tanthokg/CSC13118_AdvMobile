@@ -23,15 +23,15 @@ class _RegisterViewState extends State<RegisterView> {
           PopupMenuButton(
               icon: const Icon(Icons.translate, color: Colors.blue),
               itemBuilder: (context) => const [
-                PopupMenuItem<Language>(
-                  value: Language.english,
-                  child: Text('English'),
-                ),
-                PopupMenuItem<Language>(
-                  value: Language.vietnamese,
-                  child: Text('Vietnamese'),
-                ),
-              ])
+                    PopupMenuItem<Language>(
+                      value: Language.english,
+                      child: Text('English'),
+                    ),
+                    PopupMenuItem<Language>(
+                      value: Language.vietnamese,
+                      child: Text('Vietnamese'),
+                    ),
+                  ])
         ],
       ),
       body: SingleChildScrollView(
@@ -56,7 +56,7 @@ class _RegisterViewState extends State<RegisterView> {
                 padding: const EdgeInsets.all(8),
                 child: Text(
                   'Become fluent faster through one on one video chat lessons '
-                      'tailored to your goals.',
+                  'tailored to your goals.',
                   style: Theme.of(context).textTheme.bodyText1,
                   textAlign: TextAlign.center,
                 ),
@@ -75,8 +75,10 @@ class _RegisterViewState extends State<RegisterView> {
                 onPressed: () {},
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                child: const Text('SIGN UP',
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                child: const Text(
+                  'SIGN UP',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.all(12.0),
@@ -85,9 +87,18 @@ class _RegisterViewState extends State<RegisterView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.facebook)),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.g_mobiledata)),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.phone_android)),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.facebook),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.g_mobiledata),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.phone_android),
+                  ),
                 ],
               ),
               Row(

@@ -79,21 +79,35 @@ class _LoginViewState extends State<LoginView> {
                 onPressed: () {},
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                child: const Text('LOG IN',
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                child: const Text(
+                  'LOG IN',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text('Or continue with', textAlign: TextAlign.center),
+                child: Text(
+                  'Or continue with',
+                  textAlign: TextAlign.center,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.facebook)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.g_mobiledata)),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.phone_android)),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.facebook),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.g_mobiledata),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.phone_android),
+                    ),
                   ],
                 ),
               ),
