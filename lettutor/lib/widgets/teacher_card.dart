@@ -8,42 +8,76 @@ class TeacherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Row(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 5.0,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                child: Image.asset(teacher.avatarUrl),
-              ),
-              Column(
+              Row(
                 children: [
-                  Text(teacher.name),
-                  Text(teacher.nationality),
-                  Text(teacher.reviewScore.toString()),
+                  SizedBox(
+                    width: 90,
+                    height: 90,
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage(teacher.avatarUrl),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(teacher.name,
+                              style: Theme.of(context).textTheme.headline3),
+                          Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
+                          Row(
+                            children: List<Widget>.generate(
+                              teacher.reviewScore,
+                              (index) => const Icon(Icons.star, color: Colors.amber),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite_border),
+                  )
                 ],
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.favorite_border),
+              Wrap(
+                children: List<Widget>.generate(
+                  teacher.specialties.length,
+                  (index) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Chip(
+                      backgroundColor: Colors.lightBlue[100],
+                      label: Text(
+                        teacher.specialties[index],
+                        style: const TextStyle(fontSize: 14, color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Text(teacher.description),
+              Align(
+                alignment: Alignment.centerRight,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.calendar_month),
+                  label: const Text('Book'),
+                ),
               )
             ],
           ),
-          Wrap(
-            children: List<Widget>.generate(
-              teacher.specialties.length,
-              (index) => Chip(
-                label: Text(teacher.specialties[index]),
-              ),
-            ),
-          ),
-          Text(teacher.description),
-          OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.calendar_month),
-            label: const Text('Book'),
-          )
-        ],
+        ),
       ),
     );
   }

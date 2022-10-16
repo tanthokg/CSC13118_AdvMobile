@@ -43,7 +43,7 @@ class LetTutor extends StatelessWidget {
             bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
           ),
         ),
-        home: const MainView(),
+        home: const LoginView(),
         routes: {
           Routes.login: (context) => const LoginView(),
           Routes.register: (context) => const RegisterView(),

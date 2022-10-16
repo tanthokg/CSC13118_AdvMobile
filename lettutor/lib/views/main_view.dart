@@ -11,7 +11,6 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-
   int chosenFilter = 0;
 
   @override
@@ -105,8 +104,14 @@ class _MainViewState extends State<MainView> {
                   (index) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                     child: ChoiceChip(
-                      label: Text(filters[index]),
-                      selectedColor: Colors.blue,
+                      label: Text(
+                        filters[index],
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: chosenFilter == index ? Colors.blue : Colors.black54,
+                        ),
+                      ),
+                      selectedColor: Colors.lightBlue[100],
                       selected: chosenFilter == index,
                       onSelected: (bool selected) {
                         setState(() {
@@ -129,12 +134,18 @@ class _MainViewState extends State<MainView> {
                 child: const Text('Reset Filters'),
               ),
             ),
-            const Divider(
-              thickness: 2,
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Divider(
+                thickness: 2,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
-              child: Text('Recommended Tutors', style: Theme.of(context).textTheme.headline3),
+              child: Text(
+                'Recommended Tutors',
+                style: Theme.of(context).textTheme.headline3,
+              ),
             ),
             TeacherCard(teacher: teachers[0])
           ],

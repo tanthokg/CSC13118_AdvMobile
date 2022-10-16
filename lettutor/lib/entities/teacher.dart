@@ -2,7 +2,7 @@ class Teacher {
   final String name;
   final String avatarUrl;
   final String nationality;
-  final double reviewScore;
+  final int reviewScore;
   final String description;
   final List<String> specialties;
 
