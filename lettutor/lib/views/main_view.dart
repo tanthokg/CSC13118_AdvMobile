@@ -99,26 +99,25 @@ class _MainViewState extends State<MainView> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Wrap(
+                spacing: 4,
+                runSpacing: -6,
                 children: List<Widget>.generate(
                   filters.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    child: ChoiceChip(
-                      label: Text(
-                        filters[index],
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: chosenFilter == index ? Colors.blue : Colors.black54,
-                        ),
+                  (index) => ChoiceChip(
+                    label: Text(
+                      filters[index],
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: chosenFilter == index ? Colors.blue : Colors.black54,
                       ),
-                      selectedColor: Colors.lightBlue[100],
-                      selected: chosenFilter == index,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          chosenFilter = index;
-                        });
-                      },
                     ),
+                    selectedColor: Colors.lightBlue[50],
+                    selected: chosenFilter == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        chosenFilter = index;
+                      });
+                    },
                   ),
                 ),
               ),

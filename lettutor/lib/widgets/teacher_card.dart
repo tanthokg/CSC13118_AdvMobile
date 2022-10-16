@@ -8,75 +8,72 @@ class TeacherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        elevation: 5.0,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 90,
-                    height: 90,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(teacher.avatarUrl),
-                    ),
+    return Card(
+      elevation: 4.0,
+      margin: const EdgeInsets.all(16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 90,
+                  height: 90,
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(teacher.avatarUrl),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(teacher.name,
-                              style: Theme.of(context).textTheme.headline3),
-                          Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
-                          Row(
-                            children: List<Widget>.generate(
-                              teacher.reviewScore,
-                              (index) => const Icon(Icons.star, color: Colors.amber),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_border),
-                  )
-                ],
-              ),
-              Wrap(
-                children: List<Widget>.generate(
-                  teacher.specialties.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Chip(
-                      backgroundColor: Colors.lightBlue[100],
-                      label: Text(
-                        teacher.specialties[index],
-                        style: const TextStyle(fontSize: 14, color: Colors.blue),
-                      ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(teacher.name,
+                            style: Theme.of(context).textTheme.headline3),
+                        Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
+                        Row(
+                          children: List<Widget>.generate(
+                            teacher.reviewScore,
+                            (index) => const Icon(Icons.star, color: Colors.amber),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
-              ),
-              Text(teacher.description),
-              Align(
-                alignment: Alignment.centerRight,
-                child: OutlinedButton.icon(
+                IconButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.calendar_month),
-                  label: const Text('Book'),
+                  icon: const Icon(Icons.favorite_border),
+                )
+              ],
+            ),
+            Wrap(
+              spacing: 4,
+              runSpacing: -6,
+              children: List<Widget>.generate(
+                teacher.specialties.length,
+                (index) => Chip(
+                  backgroundColor: Colors.lightBlue[50],
+                  label: Text(
+                    teacher.specialties[index],
+                    style: const TextStyle(fontSize: 14, color: Colors.blue),
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Text(teacher.description),
+            Align(
+              alignment: Alignment.centerRight,
+              child: OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.calendar_month),
+                label: const Text('Book'),
+              ),
+            )
+          ],
         ),
       ),
     );
