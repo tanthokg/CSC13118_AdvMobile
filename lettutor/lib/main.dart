@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/forgot_password_view.dart';
+import 'package:lettutor/constants/routes.dart';
+import 'package:lettutor/views/forgot_password_view.dart';
 import 'package:lettutor/views/login_view.dart';
+import 'package:lettutor/views/main_view.dart';
 import 'package:lettutor/views/register_view.dart';
 
 void main() {
@@ -14,16 +16,23 @@ class LetTutor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LetTutor',
-      theme: ThemeData(
-        primaryColor: Colors.white,
-        textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue),
-          headline2: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.blue),
-          bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+        title: 'LetTutor',
+        theme: ThemeData(
+          primaryColor: Colors.white,
+          textTheme: const TextTheme(
+            headline1:
+                TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue),
+            headline2:
+                TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.blue),
+            bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+          ),
         ),
-      ),
-      home: const LoginView(),
-    );
+        home: const LoginView(),
+        routes: {
+          Routes.login: (context) => const LoginView(),
+          Routes.register: (context) => const RegisterView(),
+          Routes.forgotPassword: (context) => const ForgotPasswordView(),
+          Routes.main: (context) => const MainView(),
+        });
   }
 }

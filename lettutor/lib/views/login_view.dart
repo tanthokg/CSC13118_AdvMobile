@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -72,11 +73,19 @@ class _LoginViewState extends State<LoginView> {
                 child: TextField(),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.forgotPassword);
+                },
                 child: const Text('Forgot Password?'),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.main,
+                    (route) => false,
+                  );
+                },
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Text(
@@ -116,7 +125,9 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   const Text('Not a member yet?'),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.register);
+                    },
                     child: const Text('Sign Up'),
                   ),
                 ],

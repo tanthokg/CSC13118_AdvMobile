@@ -1,5 +1,6 @@
 class Routes {
-  static const loginView = '/login/';
-  static const registerView = '/register/';
-  static const forgotPasswordView = '/forgot_password/';
+  static const login = '/login/';
+  static const register = '/register/';
+  static const forgotPassword = '/forgot_password/';
+  static const main = '/main/';
 }

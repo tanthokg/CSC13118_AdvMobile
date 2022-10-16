@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'constants/datatype.dart';
+import 'package:lettutor/constants/datatype.dart';
+import 'package:lettutor/constants/routes.dart';
+
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
@@ -80,7 +82,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Text('Back to Log In'),
                 ),
               )

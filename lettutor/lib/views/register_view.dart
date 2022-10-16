@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -106,7 +107,9 @@ class _RegisterViewState extends State<RegisterView> {
                 children: [
                   const Text('Already have an account?'),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text('Log In'),
                   ),
                 ],
