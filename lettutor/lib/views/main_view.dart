@@ -147,7 +147,7 @@ class _MainViewState extends State<MainView> {
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
-            TeacherCard(teacher: teachers[0])
+            ...teachers.map((e) => TeacherCard(teacher: e)),
           ],
         ),
       ),

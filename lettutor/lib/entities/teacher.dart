@@ -3,6 +3,7 @@ class Teacher {
   final String avatarUrl;
   final String nationality;
   final int reviewScore;
+  final int reviewCount;
   final String description;
   final List<String> specialties;
 
@@ -11,6 +12,7 @@ class Teacher {
     this.avatarUrl,
     this.nationality,
     this.reviewScore,
+    this.reviewCount,
     this.description,
     this.specialties,
   );
