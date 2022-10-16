@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/forgot_password_view.dart';
 import 'package:lettutor/views/login_view.dart';
 import 'package:lettutor/views/register_view.dart';
 
@@ -17,12 +18,12 @@ class LetTutor extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
         textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.blue),
+          headline1: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blue),
           headline2: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.blue),
           bodyText1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
         ),
       ),
-      home: const RegisterView(),
+      home: const ForgotPasswordView(),
     );
   }
 }
