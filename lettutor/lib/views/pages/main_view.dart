@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/views/pages/home_page.dart';
 import 'package:lettutor/views/pages/settings_page.dart';
+import 'package:lettutor/views/pages/tutors_page.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -12,9 +13,10 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   List<Widget> pages = [
     const HomePage(),
+    const TutorsPage(),
     const SettingsPage(),
   ];
-  List<String> pagesTitle = ['Home', 'Settings'];
+  List<String> pagesTitle = ['Home', 'Tutors', 'Settings'];
   int chosenPageIndex = 0;
 
   @override
@@ -37,6 +39,7 @@ class _MainViewState extends State<MainView> {
         currentIndex: chosenPageIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Tutors'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
         ],
       ),
