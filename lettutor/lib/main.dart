@@ -23,7 +23,7 @@ class LetTutor extends StatelessWidget {
           primaryColor: Colors.white,
           textTheme: const TextTheme(
             headline1: TextStyle(
-              fontSize: 36,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
               color: Colors.blue,
               letterSpacing: 1.0

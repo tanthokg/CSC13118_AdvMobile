@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -9,98 +10,144 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+
+  String chosenLanguage = Language.english;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Image.asset('assets/logo.png'),
-        title: Text(
-          'LetTutor',
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        backgroundColor: Colors.white,
-      ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 16, 8),
-                child: Image.asset('assets/login-banner.png'),
+        padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: DropdownButton<String>(
+                value: chosenLanguage,
+                items: const [
+                  DropdownMenuItem<String>(
+                    value: Language.english,
+                    child: Text(Language.english),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: Language.vietnamese,
+                    child: Text(Language.vietnamese),
+                  ),
+                ],
+                onChanged: (String? language) {
+                  setState(() {
+                    chosenLanguage = language!;
+                    // print(chosenLanguage);
+                  });
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  'Start learning with LetTutor',
-                  style: Theme.of(context).textTheme.headline2,
-                  textAlign: TextAlign.center,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 36),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  Text(
+                    ' LetTutor ',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: Text('EMAIL', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextField(
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "abc@example.com",
+                  prefixIcon: const Icon(Icons.mail, size: 26),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  'Become fluent faster through one on one video chat lessons '
-                  'tailored to your goals.',
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.center,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextField(
+                obscureText: true,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "******",
+                  prefixIcon: const Icon(Icons.lock, size: 26),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
-              const Text('EMAIL', style: TextStyle(fontSize: 16, color: Colors.grey)),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: TextField(),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('CONFIRM PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextField(
+                obscureText: true,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "******",
+                  prefixIcon: const Icon(Icons.lock, size: 26),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
               ),
-              const Text('PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: TextField(),
-              ),
-              TextButton(
-                onPressed: () {},
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.main,
+                        (route) => false,
+                  );
+                },
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Text(
-                  'SIGN UP',
+                  'REGISTER',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text('Or continue with', textAlign: TextAlign.center),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.facebook),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.g_mobiledata),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.phone_android),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Already have an account?'),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Log In'),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Already have an account?'),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Log In'),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

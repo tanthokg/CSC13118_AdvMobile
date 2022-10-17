@@ -49,8 +49,8 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   Image.asset(
                     'assets/logo.png',
-                    width: 80,
-                    height: 80,
+                    width: 100,
+                    height: 100,
                   ),
                   Text(
                     ' LetTutor ',
@@ -71,7 +71,7 @@ class _LoginViewState extends State<LoginView> {
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   hintText: "abc@example.com",
-                  prefixIcon: const Icon(Icons.alternate_email),
+                  prefixIcon: const Icon(Icons.mail, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -90,36 +90,42 @@ class _LoginViewState extends State<LoginView> {
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   hintText: "******",
-                  prefixIcon: const Icon(Icons.key),
+                  prefixIcon: const Icon(Icons.lock, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Routes.forgotPassword);
-              },
-              child: const Text('Forgot Password?'),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.main,
+                    (route) => false,
+                  );
+                },
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                child: const Text(
+                  'LOG IN',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  Routes.main,
-                  (route) => false,
-                );
-              },
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-              child: const Text(
-                'LOG IN',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.forgotPassword);
+                },
+                child: const Text('Forgot Password?'),
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 24),
+              padding: EdgeInsets.only(top: 16),
               child: Text(
                 'Or continue with',
                 textAlign: TextAlign.center,
@@ -153,7 +159,7 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.register);
                   },
-                  child: const Text('Sign Up'),
+                  child: const Text('Register'),
                 ),
               ],
             )
