@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
+import 'package:lettutor/widgets/app_end_drawer.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 
 class MainView extends StatefulWidget {
@@ -24,19 +26,6 @@ class _MainViewState extends State<MainView> {
         ),
         backgroundColor: Colors.white,
         actions: [
-          PopupMenuButton(
-            icon: const Icon(Icons.translate, color: Colors.blue),
-            itemBuilder: (context) => const [
-              PopupMenuItem<Language>(
-                value: Language.english,
-                child: Text('English'),
-              ),
-              PopupMenuItem<Language>(
-                value: Language.vietnamese,
-                child: Text('Vietnamese'),
-              ),
-            ],
-          ),
           Builder(builder: (context) {
             return IconButton(
               icon: const Icon(Icons.list, color: Colors.blue),
@@ -49,46 +38,59 @@ class _MainViewState extends State<MainView> {
       ),
       endDrawer: Drawer(
         child: ListView(
-          children: const [
+          children: [
             ListTile(
-              leading: Icon(Icons.person, color: Colors.blue),
-              title: Text('htho379'),
+              leading: const Icon(Icons.person, color: Colors.blue),
+              title: const Text('htho379'),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.login);
+                // Navigator.pop(context);
+              },
             ),
             ListTile(
-              leading: Icon(Icons.add_card, color: Colors.blue),
-              title: Text('Buy Lessons'),
+              leading: const Icon(Icons.add_card, color: Colors.blue),
+              title: const Text('Buy Lessons'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.key, color: Colors.blue),
-              title: Text('Change Password'),
+              leading: const Icon(Icons.key, color: Colors.blue),
+              title: const Text('Change Password'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.personal_video, color: Colors.blue),
-              title: Text('Tutor'),
+              leading: const Icon(Icons.personal_video, color: Colors.blue),
+              title: const Text('Tutor'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.calendar_today, color: Colors.blue),
-              title: Text('Schedule'),
+              leading: const Icon(Icons.calendar_today, color: Colors.blue),
+              title: const Text('Schedule'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.history, color: Colors.blue),
-              title: Text('History'),
+              leading: const Icon(Icons.history, color: Colors.blue),
+              title: const Text('History'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.book, color: Colors.blue),
-              title: Text('Courses'),
+              leading: const Icon(Icons.book, color: Colors.blue),
+              title: const Text('Courses'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.menu_book, color: Colors.blue),
-              title: Text('My Course'),
+              leading: const Icon(Icons.menu_book, color: Colors.blue),
+              title: const Text('My Course'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.laptop, color: Colors.blue),
-              title: Text('Become A Tutor'),
+              leading: const Icon(Icons.laptop, color: Colors.blue),
+              title: const Text('Become A Tutor'),
+              onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.blue),
-              title: Text('Log Out'),
+              leading: const Icon(Icons.logout, color: Colors.blue),
+              title: const Text('Log Out'),
+              onTap: () {},
             ),
           ],
         ),

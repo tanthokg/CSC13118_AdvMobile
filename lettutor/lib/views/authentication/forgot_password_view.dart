@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:lettutor/constants/datatype.dart';
-import 'package:lettutor/constants/routes.dart';
-
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
@@ -22,20 +19,6 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           style: Theme.of(context).textTheme.headline1,
         ),
         backgroundColor: Colors.white,
-        actions: [
-          PopupMenuButton(
-              icon: const Icon(Icons.translate, color: Colors.blue),
-              itemBuilder: (context) => const [
-                    PopupMenuItem<Language>(
-                      value: Language.english,
-                      child: Text('English'),
-                    ),
-                    PopupMenuItem<Language>(
-                      value: Language.vietnamese,
-                      child: Text('Vietnamese'),
-                    ),
-                  ])
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

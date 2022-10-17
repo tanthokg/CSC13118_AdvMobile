@@ -1,1 +1,4 @@
-enum Language { english, vietnamese }
+class Language {
+  static const english = 'English';
+  static const vietnamese = 'Vietnamese';
+}
