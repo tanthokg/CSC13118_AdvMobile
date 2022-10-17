@@ -9,70 +9,103 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
+  String chosenLanguage = Language.english;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Image.asset('assets/logo.png'),
-        title: Text(
-          'LetTutor',
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        backgroundColor: Colors.white,
-      ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 48),
-                child: Text(
-                  'Reset Password',
-                  style: Theme.of(context).textTheme.headline2,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-                child: Text(
-                  'Please enter your email address to search for your account.',
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text('Email', style: TextStyle(fontSize: 16, color: Colors.grey)),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-                child: TextField(),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextButton(
-                  onPressed: () {},
-                  style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                  child: const Text(
-                    'SEND RESET LINK',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+        padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: DropdownButton<String>(
+                value: chosenLanguage,
+                items: const [
+                  DropdownMenuItem<String>(
+                    value: Language.english,
+                    child: Text(Language.english),
                   ),
+                  DropdownMenuItem<String>(
+                    value: Language.vietnamese,
+                    child: Text(Language.vietnamese),
+                  ),
+                ],
+                onChanged: (String? language) {
+                  setState(() {
+                    chosenLanguage = language!;
+                    // print(chosenLanguage);
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 36),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  Text(
+                    ' LetTutor ',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                'Please enter your email address to search for your account.',
+                style: Theme.of(context).textTheme.bodyText1,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('EMAIL', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextField(
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "abc@example.com",
+                  prefixIcon: const Icon(Icons.mail, size: 26),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Back to Log In'),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: TextButton(
+                onPressed: () {},
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                child: const Text(
+                  'SEND RECOVERY EMAIL',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back To Log In'),
+              ),
+            ),
+          ],
         ),
       ),
     );

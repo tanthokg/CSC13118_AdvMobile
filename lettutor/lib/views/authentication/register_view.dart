@@ -120,13 +120,7 @@ class _RegisterViewState extends State<RegisterView> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.main,
-                        (route) => false,
-                  );
-                },
+                onPressed: () {},
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Text(
