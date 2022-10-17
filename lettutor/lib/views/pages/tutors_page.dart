@@ -105,7 +105,11 @@ class _TutorsPageState extends State<TutorsPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            padding: const EdgeInsets.only(top: 16),
+            child: Text('Specialties', style: Theme.of(context).textTheme.headline4),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Wrap(
               spacing: 4,
               runSpacing: -6,
@@ -130,16 +134,35 @@ class _TutorsPageState extends State<TutorsPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-            child: OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  chosenFilter = 0;
-                });
-              },
-              child: const Text('Reset Filters', style: TextStyle(fontSize: 14)),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    chosenFilter = 0;
+                  });
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  child: Text('Reset Filters', style: TextStyle(fontSize: 16)),
+                ),
+              ),
+              const SizedBox(width: 10),
+              TextButton(
+                onPressed: () {},
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    'SEARCH',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
