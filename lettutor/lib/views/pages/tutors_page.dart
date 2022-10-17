@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/widgets/select_date.dart';
 
 class TutorsPage extends StatefulWidget {
   const TutorsPage({Key? key}) : super(key: key);
@@ -50,23 +51,9 @@ class _TutorsPageState extends State<TutorsPage> {
             child: Text('Select available tutoring time:',
                 style: Theme.of(context).textTheme.headline4),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SizedBox(
-              width: 160,
-              child: TextField(
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "select a day",
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
-            ),
-          ),
+          SelectDate(setDate: (date) {
+            setState(() {});
+          }),
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Row(
