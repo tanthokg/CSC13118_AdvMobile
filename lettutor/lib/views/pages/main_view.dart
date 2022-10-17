@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/views/pages/home_page.dart';
 import 'package:lettutor/views/pages/settings_page.dart';
 import 'package:lettutor/views/pages/tutors_page.dart';
@@ -23,7 +24,25 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(pagesTitle[chosenPageIndex]),
+        title: Text(
+          pagesTitle[chosenPageIndex],
+          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+        actions: chosenPageIndex == 0
+            ? [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.userProfile);
+                    },
+                    child: const CircleAvatar(
+                      backgroundImage: AssetImage('assets/user-avatar-01.png'),
+                    ),
+                  ),
+                )
+              ]
+            : [],
       ),
       body: pages[chosenPageIndex],
       bottomNavigationBar: BottomNavigationBar(

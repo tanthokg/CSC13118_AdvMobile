@@ -157,7 +157,7 @@ class _TutorsPageState extends State<TutorsPage> {
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
-                    'SEARCH',
+                    'Search',
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
