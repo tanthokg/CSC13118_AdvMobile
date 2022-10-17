@@ -96,10 +96,10 @@ class _TutorsPageState extends State<TutorsPage> {
             child: Text('Specialties', style: Theme.of(context).textTheme.headline4),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.only(top: 4, bottom: 12),
             child: Wrap(
-              spacing: 4,
-              runSpacing: -6,
+              spacing: 8,
+              runSpacing: -4,
               children: List<Widget>.generate(
                 filters.length,
                 (index) => ChoiceChip(
@@ -107,10 +107,11 @@ class _TutorsPageState extends State<TutorsPage> {
                     filters[index],
                     style: TextStyle(
                       fontSize: 14,
-                      color: chosenFilter == index ? Colors.blue : Colors.black54,
+                      color: chosenFilter == index ? Colors.blue[700] : Colors.black54,
                     ),
                   ),
-                  selectedColor: Colors.lightBlue[50],
+                  backgroundColor: Colors.grey[100],
+                  selectedColor: Colors.lightBlue[100],
                   selected: chosenFilter == index,
                   onSelected: (bool selected) {
                     setState(() {

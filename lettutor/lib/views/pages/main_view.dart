@@ -26,7 +26,7 @@ class _MainViewState extends State<MainView> {
       appBar: AppBar(
         title: Text(
           pagesTitle[chosenPageIndex],
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headline2,
         ),
         actions: chosenPageIndex == 0
             ? [
