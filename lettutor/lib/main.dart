@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/routes.dart';
-import 'package:lettutor/views/app_view/main_view.dart';
 import 'package:lettutor/views/authentication/forgot_password_view.dart';
 import 'package:lettutor/views/authentication/login_view.dart';
 import 'package:lettutor/views/authentication/register_view.dart';
+import 'package:lettutor/views/pages/main_view.dart';
 import 'package:lettutor/views/user_profile_view.dart';
 
 void main() {

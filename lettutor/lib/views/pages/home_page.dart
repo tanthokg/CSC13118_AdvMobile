@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 
-class HomePageView extends StatefulWidget {
-  const HomePageView({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePageView> createState() => _HomePageViewState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageViewState extends State<HomePageView> {
+class _HomePageState extends State<HomePage> {
   int chosenFilter = 0;
 
   @override
