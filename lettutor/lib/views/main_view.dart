@@ -36,8 +36,62 @@ class _MainViewState extends State<MainView> {
                 child: Text('Vietnamese'),
               ),
             ],
-          )
+          ),
+          Builder(builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.list, color: Colors.blue),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            );
+          }),
         ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          children: const [
+            ListTile(
+              leading: Icon(Icons.person, color: Colors.blue),
+              title: Text('htho379'),
+            ),
+            ListTile(
+              leading: Icon(Icons.add_card, color: Colors.blue),
+              title: Text('Buy Lessons'),
+            ),
+            ListTile(
+              leading: Icon(Icons.key, color: Colors.blue),
+              title: Text('Change Password'),
+            ),
+            ListTile(
+              leading: Icon(Icons.personal_video, color: Colors.blue),
+              title: Text('Tutor'),
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_today, color: Colors.blue),
+              title: Text('Schedule'),
+            ),
+            ListTile(
+              leading: Icon(Icons.history, color: Colors.blue),
+              title: Text('History'),
+            ),
+            ListTile(
+              leading: Icon(Icons.book, color: Colors.blue),
+              title: Text('Courses'),
+            ),
+            ListTile(
+              leading: Icon(Icons.menu_book, color: Colors.blue),
+              title: Text('My Course'),
+            ),
+            ListTile(
+              leading: Icon(Icons.laptop, color: Colors.blue),
+              title: Text('Become A Tutor'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.blue),
+              title: Text('Log Out'),
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
