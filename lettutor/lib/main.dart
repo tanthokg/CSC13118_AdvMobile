@@ -34,12 +34,12 @@ class LetTutor extends StatelessWidget {
               color: Colors.blue,
             ),
             headline3: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
             headline4: TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

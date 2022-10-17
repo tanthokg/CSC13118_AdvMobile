@@ -14,34 +14,93 @@ class _TutorsPageState extends State<TutorsPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('Find a tutor', style: Theme.of(context).textTheme.headline3),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
-            child: Text('Find a tutor', style: Theme.of(context).textTheme.headline3),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-            child: Row(
-              children: const [
-                SizedBox(width: 170, child: TextField()),
-                SizedBox(width: 20),
-                SizedBox(width: 170, child: TextField()),
-              ],
+            padding: const EdgeInsets.only(top: 8),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintText: "enter tutor name",
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+            padding: const EdgeInsets.only(top: 8),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintText: "select nationality",
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
             child: Text('Select available tutoring time:',
                 style: Theme.of(context).textTheme.headline4),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              width: 160,
+              child: TextField(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "select a day",
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
             child: Row(
-              children: const [
-                SizedBox(width: 140, child: TextField()),
-                SizedBox(width: 20),
-                SizedBox(width: 200, child: TextField()),
+              children: [
+                SizedBox(
+                  width: 120,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      hintText: "start time",
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 2),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                SizedBox(
+                  width: 120,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      hintText: "end time",
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 2),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -52,7 +111,7 @@ class _TutorsPageState extends State<TutorsPage> {
               runSpacing: -6,
               children: List<Widget>.generate(
                 filters.length,
-                    (index) => ChoiceChip(
+                (index) => ChoiceChip(
                   label: Text(
                     filters[index],
                     style: TextStyle(
@@ -79,13 +138,7 @@ class _TutorsPageState extends State<TutorsPage> {
                   chosenFilter = 0;
                 });
               },
-              child: const Text('Reset Filters'),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Divider(
-              thickness: 2,
+              child: const Text('Reset Filters', style: TextStyle(fontSize: 14)),
             ),
           ),
         ],
