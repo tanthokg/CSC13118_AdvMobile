@@ -14,9 +14,12 @@ class _UserProfileViewState extends State<UserProfileView> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
+        leading: const BackButton(
+          color: Colors.blue,
+        ),
+        title: Text(
           'Profile',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headline2,
         ),
       ),
       body: SingleChildScrollView(
