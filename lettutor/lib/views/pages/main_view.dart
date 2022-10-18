@@ -21,7 +21,7 @@ class _MainViewState extends State<MainView> {
     const CoursesPage(),
     const SettingsPage(),
   ];
-  List<String> pagesTitle = ['Home', 'Tutors', 'Schedule', 'Course', 'Settings'];
+  List<String> pagesTitle = ['Home', 'Tutors', 'Schedule', 'Courses', 'Settings'];
   int chosenPageIndex = 0;
 
   @override

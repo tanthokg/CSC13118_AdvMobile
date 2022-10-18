@@ -10,10 +10,39 @@ class CoursesPage extends StatefulWidget {
 class _CoursesPageState extends State<CoursesPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Courses Page', style: Theme.of(context).textTheme.headline3,),
-      ),
-    );
+    return DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            TabBar(tabs: [
+              Tab(
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.school_outlined,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 8),
+                    Text('All Courses', style: TextStyle(color: Colors.blue),)
+                  ],
+                ),
+              ),
+              Tab(
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.menu,
+                      color: Colors.blue,
+                    ),
+                    SizedBox(width: 8),
+                    Text('E-Books', style: TextStyle(color: Colors.blue),)
+                  ],
+                ),
+              ),
+            ])
+          ],
+        ));
   }
 }
