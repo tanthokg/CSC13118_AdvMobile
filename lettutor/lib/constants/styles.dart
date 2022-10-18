@@ -8,11 +8,12 @@ final appTheme =  ThemeData(
         fontSize: 40,
         fontWeight: FontWeight.bold,
         color: Colors.blue,
-        letterSpacing: 1.0
+        letterSpacing: 1.1
     ),
     headline2: TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.w700,
+      letterSpacing: 1.0,
       color: Colors.blue,
     ),
     headline3: TextStyle(

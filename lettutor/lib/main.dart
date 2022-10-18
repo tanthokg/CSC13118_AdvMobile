@@ -20,7 +20,7 @@ class LetTutor extends StatelessWidget {
     return MaterialApp(
         title: 'LetTutor',
         theme: appTheme,
-        home: const LoginView(),
+        home: const MainView(),
         routes: {
           Routes.login: (context) => const LoginView(),
           Routes.register: (context) => const RegisterView(),

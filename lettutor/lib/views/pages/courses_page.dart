@@ -10,6 +10,10 @@ class Courses extends StatefulWidget {
 class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Text('Courses Page', style: Theme.of(context).textTheme.headline3,),
+      ),
+    );
   }
 }
