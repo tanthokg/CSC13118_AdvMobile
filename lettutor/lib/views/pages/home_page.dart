@@ -40,7 +40,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
             child: Text(

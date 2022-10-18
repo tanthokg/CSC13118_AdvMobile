@@ -48,12 +48,33 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: const [
                   Icon(
                     Icons.history,
-                    size: 32,
+                    size: 30,
                   ),
                   SizedBox(width: 12),
                   Text(
                     'History',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Card(
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.assignment,
+                    size: 30,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'Become A Tutor',
+                    style: TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -69,12 +90,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: const [
                   Icon(
                     Icons.manage_accounts,
-                    size: 32,
+                    size: 30,
                   ),
                   SizedBox(width: 12),
                   Text(
                     'Account',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -90,12 +111,96 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: const [
                   Icon(
                     Icons.language,
-                    size: 32,
+                    size: 30,
                   ),
                   SizedBox(width: 12),
                   Text(
                     'Language',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Card(
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.privacy_tip_outlined,
+                    size: 30,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'Privacy Policy',
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Card(
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.newspaper_outlined,
+                    size: 30,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'Terms & Conditions',
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Card(
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.contact_mail_outlined,
+                    size: 30,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'Contact',
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Card(
+            surfaceTintColor: Colors.white,
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.contact_support_outlined,
+                    size: 30,
+                  ),
+                  SizedBox(width: 12),
+                  Text(
+                    'Guide',
+                    style: TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -111,7 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
             style: TextButton.styleFrom(
-              minimumSize: const Size.fromHeight(48),
+              minimumSize: const Size.fromHeight(44),
               backgroundColor: const Color.fromRGBO(255, 0, 0, 0.2),
             ),
             child: Row(
@@ -125,7 +230,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text(
                   'Log Out',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 18,
                     color: Colors.red,
                   ),
                 ),
