@@ -51,9 +51,10 @@ class _TutorsPageState extends State<TutorsPage> {
             child: Text('Select available tutoring time:',
                 style: Theme.of(context).textTheme.headline4),
           ),
-          SelectDate(setDate: (date) {
-            setState(() {});
-          }),
+          const SizedBox(
+            height: 8,
+          ),
+          const SelectDate(),
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Row(

@@ -1,46 +1,50 @@
 import 'package:flutter/material.dart';
 
 class SelectDate extends StatefulWidget {
-  const SelectDate({
-    Key? key,
-    required this.setDate,
-    this.date,
-  }) : super(key: key);
-
-  final Function(DateTime? date) setDate;
-  final DateTime? date;
+  const SelectDate({Key? key}) : super(key: key);
 
   @override
   State<SelectDate> createState() => _SelectDateState();
 }
 
 class _SelectDateState extends State<SelectDate> {
+  DateTime? date;
+
   void _selectDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
       context: context,
-      initialDate: widget.date ?? DateTime.now(),
-      firstDate: DateTime(1900),
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2050),
     );
-    if (selectedDate != null && selectedDate != widget.date) {
-      widget.setDate(selectedDate);
-    }
+    setState(() {
+      date = selectedDate;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: SizedBox(
+    return InkWell(
+      onTap: () {
+        _selectDate(context);
+      },
+      child: Container(
         width: 160,
-        child: TextField(
+        height: 48,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: Colors.grey[400]!,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Text(
+          date == null ? 'dd/MM/yyyy' : date.toString().substring(0, 11),
           textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 0),
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            hintText: "select a day",
-            border: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey, width: 2),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.grey[400],
           ),
         ),
       ),
