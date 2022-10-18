@@ -43,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -85,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -127,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -169,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -190,7 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
             surfaceTintColor: Colors.white,
             elevation: 2,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: const [
                   Icon(
@@ -236,7 +236,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-          )
+          ),
+          const SizedBox(height: 48),
         ],
       ),
     );

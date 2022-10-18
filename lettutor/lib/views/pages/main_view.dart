@@ -17,8 +17,8 @@ class _MainViewState extends State<MainView> {
   List<Widget> pages = [
     const HomePage(),
     const TutorsPage(),
-    const Schedule(),
-    const Courses(),
+    const SchedulePage(),
+    const CoursesPage(),
     const SettingsPage(),
   ];
   List<String> pagesTitle = ['Home', 'Tutors', 'Schedule', 'Course', 'Settings'];
