@@ -70,7 +70,7 @@ class _LoginViewState extends State<LoginView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "abc@example.com",
+                  hintText: 'abc@example.com',
                   prefixIcon: const Icon(Icons.mail, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
@@ -89,7 +89,7 @@ class _LoginViewState extends State<LoginView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "******",
+                  hintText: '******',
                   prefixIcon: const Icon(Icons.lock, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),

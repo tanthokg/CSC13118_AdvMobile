@@ -24,7 +24,10 @@ class _CoursesPageState extends State<CoursesPage> {
                       color: Colors.blue,
                     ),
                     SizedBox(width: 8),
-                    Text('All Courses', style: TextStyle(color: Colors.blue),)
+                    Text(
+                      'All Courses',
+                      style: TextStyle(color: Colors.blue),
+                    )
                   ],
                 ),
               ),
@@ -37,11 +40,54 @@ class _CoursesPageState extends State<CoursesPage> {
                       color: Colors.blue,
                     ),
                     SizedBox(width: 8),
-                    Text('E-Books', style: TextStyle(color: Colors.blue),)
+                    Text(
+                      'E-Books',
+                      style: TextStyle(color: Colors.blue),
+                    )
                   ],
                 ),
               ),
-            ])
+            ]),
+            Expanded(
+              child: TabBarView(children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 56,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.grey[400]),
+                            hintText: 'search courses',
+                            prefixIcon: const Icon(Icons.search),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 2),
+                                borderRadius: BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    height: 56,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(color: Colors.grey[400]),
+                        hintText: 'search e-books',
+                        prefixIcon: const Icon(Icons.search),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 2),
+                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+            )
           ],
         ));
   }
