@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/entities/teacher.dart';
 
 class TeacherCard extends StatelessWidget {
@@ -19,9 +20,12 @@ class TeacherCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 45,
-                  backgroundImage: AssetImage(teacher.avatarUrl),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundImage: AssetImage(teacher.avatarUrl),
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -29,8 +33,11 @@ class TeacherCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(teacher.name,
-                            style: Theme.of(context).textTheme.headline3),
+                        InkWell(
+                          onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
+                          child: Text(teacher.name,
+                              style: Theme.of(context).textTheme.headline3),
+                        ),
                         Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
                         Row(
                           children: List<Widget>.generate(
@@ -66,7 +73,7 @@ class TeacherCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, Routes.teacherDetail),
                 icon: const Icon(Icons.edit_calendar),
                 label: const Text('Book'),
               ),

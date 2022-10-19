@@ -6,6 +6,7 @@ import 'package:lettutor/views/authentication/register_view.dart';
 import 'package:lettutor/views/become_tutor_view.dart';
 import 'package:lettutor/views/course_detail_view.dart';
 import 'package:lettutor/views/pages/main_view.dart';
+import 'package:lettutor/views/teacher_detail_view.dart';
 import 'package:lettutor/views/user_profile_view.dart';
 
 void main() {
@@ -58,6 +59,7 @@ class LetTutor extends StatelessWidget {
           Routes.userProfile: (context) => const UserProfileView(),
           Routes.courseDetail: (context) => const CourseDetailView(),
           Routes.becomeTutor: (context) => const BecomeTutorView(),
+          Routes.teacherDetail: (context) => const TeacherDetailView(),
         });
   }
 }
