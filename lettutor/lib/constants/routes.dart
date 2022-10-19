@@ -9,4 +9,5 @@ class Routes {
   static const main = '/main/';
   static const userProfile = '/user_profile/';
   static const courseDetail = '/course_detail/';
+  static const becomeTutor = '/become_tutor';
 }
