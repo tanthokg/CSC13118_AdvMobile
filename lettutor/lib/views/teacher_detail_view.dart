@@ -190,6 +190,18 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               padding: EdgeInsets.only(left: 10, right: 8),
               child: Text('I have more than 10 years of teaching english experience'),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24, bottom: 12),
+              child: OutlinedButton(
+                style: TextButton.styleFrom(
+                  minimumSize: const Size.fromHeight(0),
+                  padding: const EdgeInsets.all(8),
+                  side: const BorderSide(color: Colors.blue, width: 1.5)
+                ),
+                onPressed: () {},
+                child: const Text('Book This Tutor', style: TextStyle(fontSize: 18, color: Colors.blue)),
+              ),
+            )
           ],
         ),
       ),

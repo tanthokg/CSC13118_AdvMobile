@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/routes.dart';
-import 'package:lettutor/views/pages/courses_page.dart';
-import 'package:lettutor/views/pages/home_page.dart';
-import 'package:lettutor/views/pages/schedule_page.dart';
-import 'package:lettutor/views/pages/settings_page.dart';
-import 'package:lettutor/views/pages/tutors_page.dart';
+import 'package:lettutor/pages/courses_page.dart';
+import 'package:lettutor/pages/home_page.dart';
+import 'package:lettutor/pages/schedule_page.dart';
+import 'package:lettutor/pages/settings_page.dart';
+import 'package:lettutor/pages/tutors_page.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
