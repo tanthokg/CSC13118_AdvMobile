@@ -60,30 +60,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           const SizedBox(height: 4),
-          InkWell(
-            onTap: () => Navigator.pushNamed(context, Routes.becomeTutor),
-            child: Card(
-              surfaceTintColor: Colors.white,
-              elevation: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.assignment,
-                      size: 30,
-                    ),
-                    SizedBox(width: 12),
-                    Text(
-                      'Become A Tutor',
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
           Card(
             surfaceTintColor: Colors.white,
             elevation: 2,
@@ -122,6 +98,30 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: TextStyle(fontSize: 16),
                   )
                 ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, Routes.becomeTutor),
+            child: Card(
+              surfaceTintColor: Colors.white,
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.assignment,
+                      size: 30,
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      'Become A Tutor',
+                      style: TextStyle(fontSize: 16),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
