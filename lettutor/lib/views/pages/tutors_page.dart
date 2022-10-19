@@ -19,7 +19,7 @@ class _TutorsPageState extends State<TutorsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Find a tutor', style: Theme.of(context).textTheme.headline3),
+          Text('Find a tutor', style: Theme.of(context).textTheme.headline4),
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: TextField(
@@ -48,7 +48,7 @@ class _TutorsPageState extends State<TutorsPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16),
-            child: Text('Select available tutoring time:',
+            child: Text('Select available tutoring time',
                 style: Theme.of(context).textTheme.headline4),
           ),
           const SizedBox(

@@ -151,6 +151,18 @@ const courses = [
   ),
 ];
 
+const courseTopics = [
+  'The Internet',
+  'Artificial Intelligence (AI)',
+  'Social Media',
+  'Internet Privacy',
+  'Live Streaming',
+  'Coding',
+  'Technology Transforming Healthcare',
+  'Smart Home Technology',
+  'Remote Work - A Dream Job?',
+];
+
 const countryList = {
   "AF": "Afghanistan",
   "AL": "Albania",

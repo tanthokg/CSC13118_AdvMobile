@@ -14,8 +14,8 @@ class _UserProfileViewState extends State<UserProfileView> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: const BackButton(
-          color: Colors.blue,
+        leading: BackButton(
+          color: Colors.blue[600],
         ),
         title: Text(
           'Profile',
