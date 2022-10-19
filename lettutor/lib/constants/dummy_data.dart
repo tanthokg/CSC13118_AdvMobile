@@ -1,3 +1,4 @@
+import 'package:lettutor/entities/course.dart';
 import 'package:lettutor/entities/teacher.dart';
 
 const filters = [
@@ -103,6 +104,51 @@ const teachers = [
         'TOEFL',
         'TOEIC'
       ]),
+];
+
+const courses = [
+  Course(
+    'Life in the Internet Age',
+    'assets/course-01.png',
+    "Let's discuss how technology is changing the way we live",
+    'Intermediate',
+    9,
+  ),
+  Course(
+    'Caring for Our Planet',
+    'assets/course-02.png',
+    "Let's discuss our relationship as humans with our planet, Earth",
+    'Intermediate',
+    7,
+  ),
+  Course(
+    'Healthy Mind, Healthy Body',
+    'assets/course-03.png',
+    "Let's discuss the many aspects of living a long, happy life",
+    'Intermediate',
+    6,
+  ),
+  Course(
+    'Movies and Television',
+    'assets/course-04.png',
+    "Let's discuss our preferences and habits surrounding movies and television shows",
+    'Beginner',
+    10,
+  ),
+  Course(
+    'Raising Children',
+    'assets/course-05.png',
+    "Let's discuss raising children and practice using English for common parenting situations",
+    'Intermediate',
+    11,
+  ),
+  Course(
+    'The Olympics',
+    'assets/course-06.png',
+    "Let’s practice talking about the Olympics, the biggest sports festival on earth!",
+    'Advanced',
+    8,
+  ),
 ];
 
 const countryList = {

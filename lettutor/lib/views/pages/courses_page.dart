@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/widgets/course_card.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({Key? key}) : super(key: key);
@@ -51,7 +53,7 @@ class _CoursesPageState extends State<CoursesPage> {
             Expanded(
               child: TabBarView(children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
                     children: [
                       TextField(
@@ -65,9 +67,14 @@ class _CoursesPageState extends State<CoursesPage> {
                               borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
                       ),
-                      const Center(
-                        child: Text('Discover Courses'),
-                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: courses.length,
+                          itemBuilder: (context, index) =>
+                              CourseCard(course: courses[index]),
+                        ),
+                      )
                     ],
                   ),
                 ),
