@@ -50,40 +50,52 @@ class _CoursesPageState extends State<CoursesPage> {
             ]),
             Expanded(
               child: TabBarView(children: [
-                SingleChildScrollView(
+                Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 56,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.grey[400]),
-                            hintText: 'search courses',
-                            prefixIcon: const Icon(Icons.search),
-                            border: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey, width: 2),
-                                borderRadius: BorderRadius.all(Radius.circular(10))),
-                          ),
+                      TextField(
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(right: 24),
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          hintText: 'search courses',
+                          prefixIcon: const Icon(Icons.search),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey, width: 2),
+                              borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
+                      ),
+                      const Center(
+                        child: Text('Discover Courses'),
                       ),
                     ],
                   ),
                 ),
-                SingleChildScrollView(
+                Padding(
                   padding: const EdgeInsets.all(16),
-                  child: SizedBox(
-                    height: 56,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        hintText: 'search e-books',
-                        prefixIcon: const Icon(Icons.search),
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 2),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Column(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(right: 24),
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          hintText: 'search e-books',
+                          prefixIcon: const Icon(Icons.search),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey, width: 2),
+                              borderRadius: BorderRadius.all(Radius.circular(10))),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Discover E-Books\nTo be implemented',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ]),
