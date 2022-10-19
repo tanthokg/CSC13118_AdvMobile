@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class TeacherDetailView extends StatefulWidget {
   const TeacherDetailView({Key? key}) : super(key: key);
@@ -198,7 +199,7 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                   padding: const EdgeInsets.all(8),
                   side: const BorderSide(color: Colors.blue, width: 1.5)
                 ),
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, Routes.booking),
                 child: const Text('Book This Tutor', style: TextStyle(fontSize: 18, color: Colors.blue)),
               ),
             )

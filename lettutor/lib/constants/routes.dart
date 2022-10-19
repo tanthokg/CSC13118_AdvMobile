@@ -7,8 +7,9 @@ class Routes {
 
   // Views
   static const main = '/main/';
+  static const becomeTutor = '/become_tutor';
   static const userProfile = '/user_profile/';
   static const courseDetail = '/course_detail/';
-  static const becomeTutor = '/become_tutor';
   static const teacherDetail = '/teacher_detail';
+  static const booking = '/booking/';
 }
