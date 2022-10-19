@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/widgets/course_card.dart';
 
 class CoursesPage extends StatefulWidget {
@@ -69,10 +70,17 @@ class _CoursesPageState extends State<CoursesPage> {
                       ),
                       const SizedBox(height: 8),
                       Expanded(
-                        child: ListView.builder(
+                        child: ListView.separated(
                           itemCount: courses.length,
-                          itemBuilder: (context, index) =>
-                              CourseCard(course: courses[index]),
+                          itemBuilder: (context, index) => CourseCard(
+                            course: courses[index],
+                            onTap: ((value) => Navigator.pushNamed(
+                                  context,
+                                  Routes.courseDetail,
+                                )),
+                          ),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const SizedBox(height: 8),
                         ),
                       )
                     ],
