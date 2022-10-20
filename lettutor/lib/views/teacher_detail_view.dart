@@ -77,7 +77,9 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.review);
+                    },
                     child: Column(
                       children: const [
                         Icon(Icons.reviews_outlined, color: Colors.blue),

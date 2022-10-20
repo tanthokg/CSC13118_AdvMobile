@@ -1,4 +1,5 @@
 import 'package:lettutor/entities/course.dart';
+import 'package:lettutor/entities/review.dart';
 import 'package:lettutor/entities/teacher.dart';
 
 const filters = [
@@ -202,6 +203,18 @@ const courseHours = [
   '17:30 - 17:55',
   '18:00 - 18:25',
   '18:30 - 18:55'
+];
+
+const reviews = [
+  Review('thanhnga266', 'This tutor is great', 5),
+  Review('bichthuy', 'He is very kind', 4),
+  Review('ngocnhu', 'This tutor always come late', 2),
+  Review('sontungnguyen151', 'He does not know how to teach apparently', 1),
+  Review('vunguyen', 'I am out of idea for review', 3),
+  Review('htho379', 'No idea what to say either', 4),
+  Review('ngocnhi', 'Neither do I', 4),
+  Review('QueenMarika', 'The Great Elden Ring was shattered', 4),
+  Review('Radagon', 'I am of the Golden Order', 4),
 ];
 
 const countryList = {
