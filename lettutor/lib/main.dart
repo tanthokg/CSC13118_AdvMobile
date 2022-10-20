@@ -53,7 +53,7 @@ class LetTutor extends StatelessWidget {
             bodyText2: TextStyle(fontSize: 15.0, color: Colors.grey[700]),
           ),
         ),
-        home: const MainView(),
+        home: const LoginView(),
         routes: {
           Routes.login: (context) => const LoginView(),
           Routes.register: (context) => const RegisterView(),

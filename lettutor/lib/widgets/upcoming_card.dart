@@ -19,15 +19,27 @@ class UpcomingCard extends StatelessWidget {
                   radius: 32,
                 ),
                 const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Keegan',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    const Text('2022-10-20    10:00 - 10:55')
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Keegan',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const Text('2022-10-20    10:00 - 10:55')
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    final dialogResult = await showEditRequestDialog(context);
+                  },
+                  icon: Icon(
+                    Icons.edit_note_outlined,
+                    size: 32,
+                    color: Colors.blue[700],
+                  ),
                 )
               ],
             ),
@@ -38,9 +50,7 @@ class UpcomingCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.red
-                    ),
+                    style: TextButton.styleFrom(foregroundColor: Colors.red),
                     onPressed: () {},
                     child: const Text(
                       'Cancel',
@@ -48,7 +58,7 @@ class UpcomingCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
                     onPressed: () {},
@@ -65,4 +75,42 @@ class UpcomingCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showEditRequestDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Requests For Lesson'),
+        content: TextField(
+          minLines: 2,
+          maxLines: 4,
+          decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(12),
+              border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10))),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontSize: 18),
+              )),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(fontSize: 18),
+              )),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }
