@@ -115,10 +115,7 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Languages',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+            Text('Languages', style: Theme.of(context).textTheme.headline3),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Wrap(children: [
@@ -132,10 +129,7 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               ]),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Specialties',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+            Text('Specialties', style: Theme.of(context).textTheme.headline3),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Wrap(
@@ -154,10 +148,7 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              'Suggested Courses',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+            Text('Suggested Courses', style: Theme.of(context).textTheme.headline3),
             ...courses.map((course) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
@@ -172,20 +163,14 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                   ),
                 )),
             const SizedBox(height: 12),
-            Text(
-              'Interests',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+            Text('Interests', style: Theme.of(context).textTheme.headline3),
             const Padding(
               padding: EdgeInsets.only(left: 10, right: 8),
               child: Text('I loved the weather, the scenery and the '
                   'laid-back lifestyle of the locals.'),
             ),
             const SizedBox(height: 12),
-            Text(
-              'Teaching Experiences',
-              style: Theme.of(context).textTheme.headline3,
-            ),
+            Text('Teaching Experiences', style: Theme.of(context).textTheme.headline3),
             const Padding(
               padding: EdgeInsets.only(left: 10, right: 8),
               child: Text('I have more than 10 years of teaching english experience'),
@@ -199,6 +184,8 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                     side: const BorderSide(color: Colors.blue, width: 1.5)),
                 onPressed: () async {
                   final selectedDate = await bookLearningDate(context);
+                  print(selectedDate);
+                  await bookLearningHour(context, selectedDate!);
                   // Navigator.pushNamed(context, Routes.booking);
                 },
                 child: const Text(
@@ -216,15 +203,51 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
 
 Future<DateTime?> bookLearningDate(BuildContext context) async {
   DateTime? selectedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2050),
-      );
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now(),
+    lastDate: DateTime(2050),
+  );
   return selectedDate ?? DateTime.now();
 }
 
-Future<String> bookLearningHour(BuildContext context) async {
-
-  return "12:00";
+Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async {
+  await showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    elevation: 5,
+    clipBehavior: Clip.hardEdge,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(16),
+      ),
+    ),
+    builder: (context) {
+      return SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: GridView.count(
+            padding: const EdgeInsets.all(24),
+            crossAxisCount: 2,
+            mainAxisSpacing: 24,
+            crossAxisSpacing: 32,
+            childAspectRatio: 3,
+            children: List<Widget>.generate(
+              courseHours.length,
+              (index) => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                onPressed: () {},
+                child: Text(
+                  courseHours[index],
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
