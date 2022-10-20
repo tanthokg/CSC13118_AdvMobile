@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
-import 'package:lettutor/constants/routes.dart';
 
 class TeacherDetailView extends StatefulWidget {
   const TeacherDetailView({Key? key}) : super(key: key);
@@ -179,8 +178,8 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
             ),
             const Padding(
               padding: EdgeInsets.only(left: 10, right: 8),
-              child: Text(
-                  'I loved the weather, the scenery and the laid-back lifestyle of the locals.'),
+              child: Text('I loved the weather, the scenery and the '
+                  'laid-back lifestyle of the locals.'),
             ),
             const SizedBox(height: 12),
             Text(
@@ -195,12 +194,17 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               padding: const EdgeInsets.only(top: 24, bottom: 12),
               child: OutlinedButton(
                 style: TextButton.styleFrom(
-                  minimumSize: const Size.fromHeight(0),
-                  padding: const EdgeInsets.all(8),
-                  side: const BorderSide(color: Colors.blue, width: 1.5)
+                    minimumSize: const Size.fromHeight(0),
+                    padding: const EdgeInsets.all(8),
+                    side: const BorderSide(color: Colors.blue, width: 1.5)),
+                onPressed: () async {
+                  final selectedDate = await bookLearningDate(context);
+                  // Navigator.pushNamed(context, Routes.booking);
+                },
+                child: const Text(
+                  'Book This Tutor',
+                  style: TextStyle(fontSize: 18, color: Colors.blue),
                 ),
-                onPressed: () => Navigator.pushNamed(context, Routes.booking),
-                child: const Text('Book This Tutor', style: TextStyle(fontSize: 18, color: Colors.blue)),
               ),
             )
           ],
@@ -208,4 +212,19 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
       ),
     );
   }
+}
+
+Future<DateTime?> bookLearningDate(BuildContext context) async {
+  DateTime? selectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2050),
+      );
+  return selectedDate ?? DateTime.now();
+}
+
+Future<String> bookLearningHour(BuildContext context) async {
+
+  return "12:00";
 }
