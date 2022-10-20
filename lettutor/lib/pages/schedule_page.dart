@@ -57,6 +57,7 @@ class _SchedulePageState extends State<SchedulePage> {
             Expanded(
               child: TabBarView(
                 children: [
+                  // Here goes the first tab
                   SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Column(
@@ -66,6 +67,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       ),
                     ),
                   ),
+                  // Here goes the second tab
                   const Center(
                     child: Text('History'),
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class UpcomingCard extends StatelessWidget {
   const UpcomingCard({Key? key}) : super(key: key);
@@ -14,18 +15,28 @@ class UpcomingCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  backgroundImage: AssetImage('assets/keegan-avatar.png'),
-                  radius: 32,
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.teacherDetail);
+                  },
+                  child: const CircleAvatar(
+                    backgroundImage: AssetImage('assets/keegan-avatar.png'),
+                    radius: 32,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Keegan',
-                        style: Theme.of(context).textTheme.headline4,
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.teacherDetail);
+                        },
+                        child: Text(
+                          'Keegan',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
                       ),
                       const Text('2022-10-20    10:00 - 10:55')
                     ],

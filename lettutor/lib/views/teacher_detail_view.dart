@@ -232,37 +232,50 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
       return SafeArea(
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.75,
-          child: GridView.count(
-            padding: const EdgeInsets.all(24),
-            crossAxisCount: 2,
-            mainAxisSpacing: 24,
-            crossAxisSpacing: 32,
-            childAspectRatio: 3,
-            children: List<Widget>.generate(
-              courseHours.length,
-              (index) => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
-                onPressed: () async {
-                  final dialogResult = await showBookingConfirmDialog(context);
-                  if (dialogResult) {
-                    Navigator.of(context).pushNamed(
-                      Routes.bookingDetail,
-                      arguments: {
-                        'selectedDate': selectedDate,
-                        'selectedHour': courseHours[index],
-                        'weekday': selectedDate.weekday
-                      },
-                    );
-                  }
-                },
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  courseHours[index],
-                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                  'Choose Your Time',
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
-            ),
+              Expanded(
+                child: GridView.count(
+                  padding: const EdgeInsets.all(24),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 32,
+                  childAspectRatio: 3,
+                  children: List<Widget>.generate(
+                    courseHours.length,
+                    (index) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      onPressed: () async {
+                        final dialogResult = await showBookingConfirmDialog(context);
+                        if (dialogResult) {
+                          Navigator.of(context).pushNamed(
+                            Routes.bookingDetail,
+                            arguments: {
+                              'selectedDate': selectedDate,
+                              'selectedHour': courseHours[index],
+                              'weekday': selectedDate.weekday
+                            },
+                          );
+                        }
+                      },
+                      child: Text(
+                        courseHours[index],
+                        style: const TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );

@@ -53,6 +53,7 @@ class _CoursesPageState extends State<CoursesPage> {
             ]),
             Expanded(
               child: TabBarView(children: [
+                // Here goes the first tab
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: Column(
@@ -86,6 +87,7 @@ class _CoursesPageState extends State<CoursesPage> {
                     ],
                   ),
                 ),
+                // Here goes the second tab
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
