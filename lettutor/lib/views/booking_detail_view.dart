@@ -114,11 +114,15 @@ class BookingDetailView extends StatelessWidget {
                   minimumSize: const Size.fromHeight(40),
                   backgroundColor: Colors.blue,
                 ),
-                onPressed: () {
-                  //Navigator.popUntil(context,
-                  // (route) => ModalRoute.withName(Routes.teacherDetail) as bool,
+                onPressed: () async {
+                  // Navigator.popUntil(
+                  //   context,
+                  //   (route) => ModalRoute.withName(Routes.teacherDetail) as bool,
                   // );
-                  Navigator.pop(context);
+                  final dialogResult = await showBookingResultDialog(context);
+                  if (dialogResult) {
+                    Navigator.pop(context);
+                  }
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -143,4 +147,23 @@ class BookingDetailView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showBookingResultDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Booking Success'),
+        content: const Text('You can now study with this tutor at booked time.'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('OK')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

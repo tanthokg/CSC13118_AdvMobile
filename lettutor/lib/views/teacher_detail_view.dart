@@ -88,7 +88,9 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                 ),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await showReportDialog(context);
+                    },
                     child: Column(
                       children: const [
                         Icon(Icons.report_outlined, color: Colors.blue),
@@ -241,7 +243,7 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
                   backgroundColor: Colors.blue,
                 ),
                 onPressed: () async {
-                  final dialogResult = await showConfirmDialog(context);
+                  final dialogResult = await showBookingConfirmDialog(context);
                   if (dialogResult) {
                     Navigator.of(context).pushNamed(
                       Routes.bookingDetail,
@@ -266,13 +268,37 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
   );
 }
 
-Future<bool> showConfirmDialog(BuildContext context) async {
+Future<bool> showBookingConfirmDialog(BuildContext context) async {
   return await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         title: const Text('Book Tutor'),
         content: const Text('Are you sure to book this tutor at this time?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('CANCEL')),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('YES')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
+}
+
+Future<bool> showReportDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Report'),
+        content: const Text('Are you sure to report this tutor?'),
         actions: [
           TextButton(
               onPressed: () {
