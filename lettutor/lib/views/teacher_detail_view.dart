@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class TeacherDetailView extends StatefulWidget {
   const TeacherDetailView({Key? key}) : super(key: key);
@@ -238,7 +239,18 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final dialogResult = await showConfirmDialog(context);
+                  if (dialogResult) {
+                    Navigator.of(context).pushNamed(
+                      Routes.bookingDetail,
+                      arguments: {
+                        'selectedDate': selectedDate,
+                        'selectedHour': courseHours[index]
+                      },
+                    );
+                  }
+                },
                 child: Text(
                   courseHours[index],
                   style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -250,4 +262,28 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
       );
     },
   );
+}
+
+Future<bool> showConfirmDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Book Tutor'),
+        content: const Text('Are you sure to book this tutor at this time?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('CANCEL')),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('YES')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

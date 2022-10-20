@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BookingView extends StatefulWidget {
-  const BookingView({Key? key}) : super(key: key);
+class BookingDetailView extends StatelessWidget {
+  const BookingDetailView({Key? key}) : super(key: key);
 
-  @override
-  State<BookingView> createState() => _BookingViewState();
-}
-
-class _BookingViewState extends State<BookingView> {
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -18,9 +14,12 @@ class _BookingViewState extends State<BookingView> {
           color: Colors.blue[600],
         ),
         title: Text(
-          'Booking',
+          'Booking Details',
           style: Theme.of(context).textTheme.headline2,
         ),
+      ),
+      body: Center(
+        child: Text('${data['selectedDate']} ${data['selectedHour']}'),
       ),
     );
   }

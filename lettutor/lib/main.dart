@@ -5,7 +5,7 @@ import 'package:lettutor/views/authentication/forgot_password_view.dart';
 import 'package:lettutor/views/authentication/login_view.dart';
 import 'package:lettutor/views/authentication/register_view.dart';
 import 'package:lettutor/views/become_tutor_view.dart';
-import 'package:lettutor/views/booking_view.dart';
+import 'package:lettutor/views/booking_detail_view.dart';
 import 'package:lettutor/views/course_detail_view.dart';
 import 'package:lettutor/views/teacher_detail_view.dart';
 import 'package:lettutor/views/user_profile_view.dart';
@@ -61,7 +61,7 @@ class LetTutor extends StatelessWidget {
           Routes.userProfile: (context) => const UserProfileView(),
           Routes.courseDetail: (context) => const CourseDetailView(),
           Routes.teacherDetail: (context) => const TeacherDetailView(),
-          Routes.booking: (context) => const BookingView(),
+          Routes.bookingDetail: (context) => const BookingDetailView(),
         });
   }
 }
