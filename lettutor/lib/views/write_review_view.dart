@@ -78,7 +78,21 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                 style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
                     backgroundColor: Colors.blue),
-                onPressed: () {},
+                onPressed: () async {
+                  final dialogResult = await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Review'),
+                      content: const Text("You've successfully reviewed this tutor"),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('OK'))
+                      ],
+                    ),
+                  );
+                  if (dialogResult && mounted) Navigator.pop(context);
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,7 +103,8 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     SizedBox(width: 12),
-                    Icon(Icons.send, color: Colors.white, size: 24),
+                    Icon(Icons.send, color: Colors.white, size: 24,
+                    ),
                   ],
                 ),
               ),
