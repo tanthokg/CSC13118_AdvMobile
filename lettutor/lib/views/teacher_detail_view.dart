@@ -185,8 +185,9 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                     side: const BorderSide(color: Colors.blue, width: 1.5)),
                 onPressed: () async {
                   final selectedDate = await bookLearningDate(context);
-                  print(selectedDate);
-                  await bookLearningHour(context, selectedDate!);
+                  if (mounted) {
+                    await bookLearningHour(context, selectedDate!);
+                  }
                   // Navigator.pushNamed(context, Routes.booking);
                 },
                 child: const Text(
@@ -246,7 +247,8 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
                       Routes.bookingDetail,
                       arguments: {
                         'selectedDate': selectedDate,
-                        'selectedHour': courseHours[index]
+                        'selectedHour': courseHours[index],
+                        'weekday': selectedDate.weekday
                       },
                     );
                   }
