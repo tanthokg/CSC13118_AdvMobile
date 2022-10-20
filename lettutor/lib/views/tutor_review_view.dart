@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/widgets/review_card.dart';
 
 class TutorReviewView extends StatefulWidget {
@@ -31,7 +32,9 @@ class _TutorReviewViewState extends State<TutorReviewView> {
             Center(
               child: TextButton(
                 style: TextButton.styleFrom(padding: const EdgeInsets.all(12)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.writeReview);
+                },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,

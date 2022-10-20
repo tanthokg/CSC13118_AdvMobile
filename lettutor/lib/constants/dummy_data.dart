@@ -212,9 +212,9 @@ const reviews = [
   Review('sontungnguyen151', 'He does not know how to teach apparently', 1),
   Review('vunguyen', 'I am out of idea for review', 3),
   Review('htho379', 'No idea what to say either', 4),
-  Review('ngocnhi', 'Neither do I', 4),
-  Review('QueenMarika', 'The Great Elden Ring was shattered', 4),
-  Review('Radagon', 'I am of the Golden Order', 4),
+  Review('ngocnhi', 'Neither do I', 2),
+  Review('QueenMarika', 'The Great Elden Ring was shattered', 5),
+  Review('Radagon', 'I am of the Golden Order', 2),
 ];
 
 const countryList = {
