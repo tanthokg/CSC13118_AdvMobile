@@ -39,7 +39,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(
-                      Icons.menu,
+                      Icons.book_online_outlined,
                       color: Colors.blue,
                     ),
                     SizedBox(width: 8),
