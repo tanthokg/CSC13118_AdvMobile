@@ -79,11 +79,11 @@ class _HistoryCardState extends State<HistoryCard> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
-                    onPressed: () async {
-                      await showFeedbackDialog(context);
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.writeReview);
                     },
                     child: const Text(
-                      'Feedback',
+                      'Add A Review',
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

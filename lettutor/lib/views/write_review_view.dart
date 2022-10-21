@@ -20,7 +20,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
           color: Colors.blue[600],
         ),
         title: Text(
-          'Write Review',
+          'Review',
           style: Theme.of(context).textTheme.headline2,
         ),
       ),
@@ -30,7 +30,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Rate This Tutor',
+              'Rating',
               style: Theme.of(context).textTheme.headline3,
             ),
             const SizedBox(
@@ -58,7 +58,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Write Your Review',
+              'Description',
               style: Theme.of(context).textTheme.headline3,
             ),
             const SizedBox(height: 8),
@@ -82,8 +82,8 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                   final dialogResult = await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Review'),
-                      content: const Text("You've successfully reviewed this tutor"),
+                      title: const Text('Success'),
+                      content: const Text('Review Sent'),
                       actions: [
                         TextButton(
                             onPressed: () => Navigator.pop(context, true),
