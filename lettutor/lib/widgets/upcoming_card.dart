@@ -106,21 +106,23 @@ Future<bool> showEditRequestDialog(BuildContext context) async {
         ),
         actions: [
           TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontSize: 18),
-              )),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
           TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(fontSize: 18),
-              )),
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
         ],
       );
     },

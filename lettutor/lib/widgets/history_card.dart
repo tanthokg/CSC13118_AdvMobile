@@ -67,7 +67,9 @@ class _HistoryCardState extends State<HistoryCard> {
                 Expanded(
                   child: TextButton(
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await showReportDialog(context);
+                    },
                     child: const Text(
                       'Report',
                       style: TextStyle(fontSize: 16, color: Colors.red),
@@ -77,7 +79,9 @@ class _HistoryCardState extends State<HistoryCard> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await showFeedbackDialog(context);
+                    },
                     child: const Text(
                       'Feedback',
                       style: TextStyle(fontSize: 16),
@@ -91,4 +95,87 @@ class _HistoryCardState extends State<HistoryCard> {
       ),
     );
   }
+}
+
+Future<void> showReportDialog(BuildContext context) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Report Lesson'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const CircleAvatar(
+                  backgroundImage: AssetImage('assets/keegan-avatar.png'),
+                  radius: 32,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Keegan',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text('2022-10-20    10:00 - 10:55')
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Please tell us what went wrong',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10))),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              minLines: 3,
+              maxLines: 4,
+              decoration: InputDecoration(
+                  hintText: 'Additional Notes',
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10))),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }

@@ -312,7 +312,7 @@ Future<bool> showReportDialog(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Report'),
+        title: const Text('Report Tutor'),
         content: const Text('Are you sure to report this tutor?'),
         actions: [
           TextButton(
