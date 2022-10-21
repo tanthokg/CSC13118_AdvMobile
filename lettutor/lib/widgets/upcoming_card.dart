@@ -38,6 +38,7 @@ class UpcomingCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline4,
                         ),
                       ),
+                      const SizedBox(height: 4),
                       const Text('2022-10-20    10:00 - 10:55')
                     ],
                   ),

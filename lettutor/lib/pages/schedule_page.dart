@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/history_card.dart';
 import 'package:lettutor/widgets/upcoming_card.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -68,8 +69,14 @@ class _SchedulePageState extends State<SchedulePage> {
                     ),
                   ),
                   // Here goes the second tab
-                  const Center(
-                    child: Text('History'),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: Column(
+                      children: List<Widget>.generate(
+                        count,
+                        (index) => const HistoryCard(),
+                      ),
+                    ),
                   ),
                 ],
               ),
