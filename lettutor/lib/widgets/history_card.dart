@@ -103,57 +103,59 @@ Future<void> showReportDialog(BuildContext context) async {
     builder: (context) {
       return AlertDialog(
         title: const Text('Report Lesson'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  backgroundImage: AssetImage('assets/keegan-avatar.png'),
-                  radius: 32,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Keegan',
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      const SizedBox(height: 4),
-                      const Text('2022-10-20    10:00 - 10:55')
-                    ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundImage: AssetImage('assets/keegan-avatar.png'),
+                    radius: 32,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'Please tell us what went wrong',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(12),
-                  border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10))),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              minLines: 3,
-              maxLines: 4,
-              decoration: InputDecoration(
-                  hintText: 'Additional Notes',
-                  contentPadding: const EdgeInsets.all(12),
-                  border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10))),
-            ),
-          ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Keegan',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        const SizedBox(height: 4),
+                        const Text('2022-10-20    10:00 - 10:55')
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Please tell us what went wrong',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                minLines: 3,
+                maxLines: 4,
+                decoration: InputDecoration(
+                    hintText: 'Additional Notes',
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10))),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(

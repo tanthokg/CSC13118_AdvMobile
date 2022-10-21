@@ -73,7 +73,9 @@ class UpcomingCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.videoCall);
+                    },
                     child: const Text(
                       'Go to meeting',
                       style: TextStyle(fontSize: 16),
