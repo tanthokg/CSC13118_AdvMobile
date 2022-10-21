@@ -20,21 +20,37 @@ class _HomePageState extends State<HomePage> {
             color: Colors.blue[700],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 12),
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: Text(
-                    'You have no upcoming lesson.',
+                    'Upcoming Lesson',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 26, color: Colors.white),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      '2022-10-21  18:30-18:55',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    const SizedBox(width: 16),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          backgroundColor: Colors.white
+                        ),onPressed: () {}, child: const Text('Join', style: TextStyle(fontSize: 16)))
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 12, bottom: 24),
                   child: Text(
-                    'Welcome to LetTutor!',
+                    'Total Lesson Time: 4 hours 30 minutes',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
               ],
