@@ -163,7 +163,9 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       const SizedBox(width: 16),
-                      TextButton(onPressed: () {}, child: const Text('View'))
+                      TextButton(onPressed: () {
+                        Navigator.pushNamed(context, Routes.courseDetail);
+                      }, child: const Text('View'))
                     ],
                   ),
                 )),

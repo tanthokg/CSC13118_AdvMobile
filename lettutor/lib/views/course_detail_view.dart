@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 
 class CourseDetailView extends StatefulWidget {
   const CourseDetailView({
@@ -184,7 +185,9 @@ class _CourseDetailState extends State<CourseDetailView> {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(width: 16),
-                  TextButton(onPressed: () {}, child: const Text('More Info'))
+                  TextButton(onPressed: () {
+                    Navigator.pushNamed(context, Routes.teacherDetail);
+                  }, child: const Text('More Info'))
                 ],
               ),
             ),
