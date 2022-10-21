@@ -38,27 +38,6 @@ class _SettingsPageState extends State<SettingsPage> {
             child: const Text('Edit Profile'),
           ),
           // Functions Starts Here
-          const SizedBox(height: 16),
-          Card(
-            surfaceTintColor: Colors.white,
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.history,
-                    size: 30,
-                  ),
-                  SizedBox(width: 12),
-                  Text(
-                    'History',
-                    style: TextStyle(fontSize: 16),
-                  )
-                ],
-              ),
-            ),
-          ),
           const SizedBox(height: 4),
           Card(
             surfaceTintColor: Colors.white,

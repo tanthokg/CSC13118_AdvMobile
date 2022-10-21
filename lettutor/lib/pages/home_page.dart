@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/widgets/teacher_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,9 +41,12 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(width: 16),
                     TextButton(
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 32),
-                          backgroundColor: Colors.white
-                        ),onPressed: () {}, child: const Text('Join', style: TextStyle(fontSize: 16)))
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            backgroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.videoCall);
+                        },
+                        child: const Text('Join', style: TextStyle(fontSize: 16)))
                   ],
                 ),
                 const Padding(
