@@ -12,7 +12,7 @@ class TeacherCard extends StatelessWidget {
 
   final Teacher teacher;
   final bool isFavorite;
-  final Function onFavoriteClicked;
+  final Function() onFavoriteClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,7 @@ class TeacherCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    onFavoriteClicked;
-                  },
+                  onPressed: onFavoriteClicked,
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
                     color: isFavorite ? Colors.red : Colors.blue,

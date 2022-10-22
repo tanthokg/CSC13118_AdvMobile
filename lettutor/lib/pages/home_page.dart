@@ -75,7 +75,10 @@ class _HomePageState extends State<HomePage> {
               teacher: teachers[index],
               isFavorite: isFavorite[index],
               onFavoriteClicked: () {
-                print('favorite button clicked');
+                // print('favorite button clicked');
+                setState(() {
+                  isFavorite[index] = !isFavorite[index];
+                });
               },
             ),
           ),
