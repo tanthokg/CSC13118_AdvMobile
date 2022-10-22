@@ -91,8 +91,8 @@ class UpcomingCard extends StatelessWidget {
   }
 }
 
-Future<bool> showEditRequestDialog(BuildContext context) async {
-  return await showDialog(
+Future<bool> showEditRequestDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(

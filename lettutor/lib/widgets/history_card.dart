@@ -68,7 +68,7 @@ class _HistoryCardState extends State<HistoryCard> {
                   child: TextButton(
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
                     onPressed: () async {
-                      await showReportDialog(context);
+                      final dialogResult = await showReportDialog(context);
                     },
                     child: const Text(
                       'Report',
@@ -97,8 +97,8 @@ class _HistoryCardState extends State<HistoryCard> {
   }
 }
 
-Future<void> showReportDialog(BuildContext context) async {
-  await showDialog(
+Future<bool> showReportDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -179,5 +179,5 @@ Future<void> showReportDialog(BuildContext context) async {
         ],
       );
     },
-  );
+  ).then((value) => value ?? false);
 }

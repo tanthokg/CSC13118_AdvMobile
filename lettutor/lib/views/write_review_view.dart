@@ -79,7 +79,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
                     backgroundColor: Colors.blue),
                 onPressed: () async {
-                  final dialogResult = await showDialog(
+                  final dialogResult = await showDialog<bool>(
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Success'),
@@ -90,7 +90,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                             child: const Text('OK'))
                       ],
                     ),
-                  );
+                  ).then((value) => value ?? false);
                   if (dialogResult && mounted) Navigator.pop(context);
                 },
                 child: Row(

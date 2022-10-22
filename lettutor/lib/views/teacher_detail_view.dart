@@ -300,8 +300,8 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
   );
 }
 
-Future<bool> showBookingConfirmDialog(BuildContext context) async {
-  return await showDialog(
+Future<bool> showBookingConfirmDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -324,8 +324,8 @@ Future<bool> showBookingConfirmDialog(BuildContext context) async {
   ).then((value) => value ?? false);
 }
 
-Future<bool> showReportDialog(BuildContext context) async {
-  return await showDialog(
+Future<bool> showReportDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(

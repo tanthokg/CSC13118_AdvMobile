@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<bool> isFavorite = [false, false, false, false];
+  List<bool> isFavorite = [false, true, true, false];
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +76,6 @@ class _HomePageState extends State<HomePage> {
               isFavorite: isFavorite[index],
               onFavoriteClicked: () {
                 print('favorite button clicked');
-                setState(() {
-                  isFavorite[index] = !isFavorite[index];
-                });
               },
             ),
           ),
