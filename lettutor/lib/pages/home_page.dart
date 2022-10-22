@@ -11,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<bool> isFavorite = [false, false, false, false];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -67,7 +69,19 @@ class _HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          ...teachers.map((e) => TeacherCard(teacher: e)),
+          ...List<Widget>.generate(
+            teachers.length,
+            (index) => TeacherCard(
+              teacher: teachers[index],
+              isFavorite: isFavorite[index],
+              onFavoriteClicked: () {
+                print('favorite button clicked');
+                setState(() {
+                  isFavorite[index] = !isFavorite[index];
+                });
+              },
+            ),
+          ),
         ],
       ),
     );

@@ -3,9 +3,16 @@ import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/entities/teacher.dart';
 
 class TeacherCard extends StatelessWidget {
-  const TeacherCard({Key? key, required this.teacher}) : super(key: key);
+  const TeacherCard({
+    Key? key,
+    required this.teacher,
+    required this.isFavorite,
+    required this.onFavoriteClicked,
+  }) : super(key: key);
 
   final Teacher teacher;
+  final bool isFavorite;
+  final Function onFavoriteClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +57,13 @@ class TeacherCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
+                  onPressed: () {
+                    onFavoriteClicked;
+                  },
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : Colors.blue,
+                  ),
                 )
               ],
             ),

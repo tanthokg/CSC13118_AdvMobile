@@ -11,6 +11,7 @@ class TeacherDetailView extends StatefulWidget {
 
 class _TeacherDetailViewState extends State<TeacherDetailView> {
   final teacher = teachers[0];
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +67,23 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                    },
                     child: Column(
-                      children: const [
-                        Icon(Icons.favorite_border, color: Colors.blue),
-                        Text('Favorite', style: TextStyle(color: Colors.blue))
+                      children: [
+                        Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.blue,
+                        ),
+                        Text(
+                          'Favorite',
+                          style: TextStyle(
+                            color: isFavorite ? Colors.red : Colors.blue,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -163,9 +176,11 @@ class _TeacherDetailViewState extends State<TeacherDetailView> {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       const SizedBox(width: 16),
-                      TextButton(onPressed: () {
-                        Navigator.pushNamed(context, Routes.courseDetail);
-                      }, child: const Text('View'))
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.courseDetail);
+                          },
+                          child: const Text('View'))
                     ],
                   ),
                 )),
