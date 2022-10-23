@@ -1,4 +1,5 @@
 import 'package:lettutor/entities/course.dart';
+import 'package:lettutor/entities/ebook.dart';
 import 'package:lettutor/entities/review.dart';
 import 'package:lettutor/entities/teacher.dart';
 
@@ -195,6 +196,44 @@ const courseTopics = [
   'Technology Transforming Healthcare',
   'Smart Home Technology',
   'Remote Work - A Dream Job?',
+];
+
+const ebooks = [
+  EBook(
+      'Family and Friends 1',
+      "For kids who can read pretty well, get ready for compound sentences and...",
+      'Upper-Beginner',
+      'assets/family-and-friends.jpg'),
+  EBook(
+      'Family and Friends 2',
+      "For kids who can read pretty well, get ready for compound sentences and...",
+      'Upper-Beginner',
+      'assets/family-and-friends.jpg'),
+  EBook(
+      'Family and Friends 3',
+      "For kids who can read pretty well, get ready for compound sentences and...",
+      'Upper-Beginner',
+      'assets/family-and-friends.jpg'),
+  EBook(
+      'Everybody Up',
+      "For: kids who want to learn English through pictures, pick up simple...",
+      'Beginner',
+      'assets/everybody-up.jpg'),
+  EBook(
+      'Cambridge Storyfun For Starter',
+      "For kids who can handle single words and simple sentences with assistance.",
+      'Beginner',
+      'assets/storyfun.jpg'),
+  EBook(
+      'New Headway Elementary',
+      "For teenagers who want to form a grammatical background as well as...",
+      'Beginner',
+      'assets/new-headway.jpg'),
+  EBook(
+      'English World ',
+      "For kids who are able to pick up simple sounds, letters, words and learn new...",
+      'Beginner',
+      'assets/english-world.jpg'),
 ];
 
 const courseHours = [

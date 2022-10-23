@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
 import 'package:lettutor/constants/routes.dart';
 import 'package:lettutor/widgets/course_card.dart';
+import 'package:lettutor/widgets/ebook_card.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({Key? key}) : super(key: key);
@@ -104,12 +105,13 @@ class _CoursesPageState extends State<CoursesPage> {
                         ),
                       ),
                       Expanded(
-                        child: Center(
-                          child: Text(
-                            'Discover E-Books\nTo be implemented',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline4,
+                        child: ListView.separated(
+                          itemCount: ebooks.length,
+                          itemBuilder: (context, index) => EbookCard(
+                            ebook: ebooks[index],
                           ),
+                          separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(height: 8),
                         ),
                       ),
                     ],
