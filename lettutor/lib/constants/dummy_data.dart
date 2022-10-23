@@ -2,6 +2,12 @@ import 'package:lettutor/entities/course.dart';
 import 'package:lettutor/entities/review.dart';
 import 'package:lettutor/entities/teacher.dart';
 
+const nationalities = [
+  'Foreign Tutor',
+  'Native English Tutor',
+  'Vietnamese Tutor',
+];
+
 const filters = [
   'All',
   'English for kids',

@@ -32,15 +32,21 @@ class _TutorsPageState extends State<TutorsPage> {
             ),
           ),
           const SizedBox(height: 8),
-          TextField(
+          DropdownButtonFormField(
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              hintText: 'select nationality',
               hintStyle: TextStyle(color: Colors.grey[400]),
-              hintText: "select nationality",
               border: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey, width: 2),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
+            items: nationalities
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .toList(),
+            onChanged: (value) {
+              setState(() {});
+            },
           ),
           const SizedBox(height: 16),
           Text('Select available tutoring time',

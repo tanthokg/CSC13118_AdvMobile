@@ -6,14 +6,14 @@ import 'package:lettutor/pages/schedule_page.dart';
 import 'package:lettutor/pages/settings_page.dart';
 import 'package:lettutor/pages/tutors_page.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+class NavigationPage extends StatefulWidget {
+  const NavigationPage({Key? key}) : super(key: key);
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _MainViewState extends State<MainView> {
+class _NavigationPageState extends State<NavigationPage> {
   List<Widget> pages = [
     const HomePage(),
     const TutorsPage(),
@@ -28,6 +28,8 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         title: Text(
           pagesTitle[chosenPageIndex],
           style: Theme.of(context).textTheme.headline2,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/routes.dart';
-import 'package:lettutor/pages/main_view.dart';
+import 'package:lettutor/pages/navigation_page.dart';
 import 'package:lettutor/views/authentication/forgot_password_view.dart';
 import 'package:lettutor/views/authentication/login_view.dart';
 import 'package:lettutor/views/authentication/register_view.dart';
@@ -28,6 +28,7 @@ class LetTutor extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           primaryColor: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
           textTheme: TextTheme(
             headline1: TextStyle(
                 fontSize: 40,
@@ -59,7 +60,7 @@ class LetTutor extends StatelessWidget {
           Routes.login: (context) => const LoginView(),
           Routes.register: (context) => const RegisterView(),
           Routes.forgotPassword: (context) => const ForgotPasswordView(),
-          Routes.main: (context) => const MainView(),
+          Routes.main: (context) => const NavigationPage(),
           Routes.becomeTutor: (context) => const BecomeTutorView(),
           Routes.userProfile: (context) => const UserProfileView(),
           Routes.courseDetail: (context) => const CourseDetailView(),
