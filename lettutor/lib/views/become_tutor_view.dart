@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/select_date.dart';
 
 class BecomeTutorView extends StatefulWidget {
   const BecomeTutorView({Key? key}) : super(key: key);
@@ -25,15 +26,25 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Basic Info'),
+            Text(
+              'Basic Info',
+              style: Theme.of(context).textTheme.headline3,
+            ),
             Row(
               children: [
                 Column(
                   children: [
-                    Image.asset('assets/user-avatar-01.png', width: 100, height: 100,),
-                    TextButton(onPressed: () {}, child: const Text('Upload')),
+                    Image.asset(
+                      'assets/user-avatar-01.png',
+                      width: 100,
+                      height: 100,
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text('Upload'),
+                    ),
                   ],
                 ),
                 const SizedBox(width: 16),
@@ -41,43 +52,251 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Tutoring Name'),
-                      const TextField(),
-                      const Text('I am from'),
-                      const TextField(),
-                      const Text('Date of Birth'),
-                      const TextField(),
+                      Text(
+                        'Tutoring Name',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(height: 2),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 8,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 2),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'I am from',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(height: 2),
+                      const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 8,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 2),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Date of Birth',
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(height: 2),
+                      const SelectDate(),
                     ],
                   ),
                 )
               ],
             ),
-            const Text('CV'),
-            const Text('Interests'),
-            const TextField(),
-            const Text('Education'),
-            const TextField(),
-            const Text('Experience'),
-            const TextField(),
-            const Text('Current or Previous Profession'),
-            const TextField(),
-            const Text('Certificate'),
-            TextButton(onPressed: () {}, child: const Text('Add New Certificate')),
-            const Text('Languages I speak'),
-            const Text('Languages'),
-            const TextField(),
-            const Text('Who I teach'),
-            const Text('Introduction'),
-            const TextField(),
-            const Text('I am best at teaching students who are'),
-            const TextField(),
-            const Text('My specialties are'),
-            const TextField(),
-            const Text('Introduction Video'),
-            TextButton(onPressed: () {}, child: const Text('Choose Video')),
-            TextButton(onPressed: () {}, child: const Text('Done')),
+            const SizedBox(height: 16),
+            Text(
+              'CV',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Interests',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Education',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Experience',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Current or Previous Profession',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Certificate',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text('Add New Certificate'),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Languages I speak',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Languages',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Who I teach',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Introduction',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'I am best at teaching students who are',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'My specialties are',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            const SizedBox(height: 2),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Introduction Video',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: TextButton(
+                onPressed: () {},
+                child: const Text('Choose Video'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24, bottom: 12),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    backgroundColor: Colors.blue),
+                onPressed: () {},
+                child: const Text(
+                  'Done',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
-      ),
+        ),
       ),
     );
   }

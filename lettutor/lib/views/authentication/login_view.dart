@@ -107,8 +107,8 @@ class _LoginViewState extends State<LoginView> {
                     (route) => false,
                   );
                 },
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue),
                 child: const Text(
                   'LOG IN',
                   style: TextStyle(fontSize: 18, color: Colors.white),

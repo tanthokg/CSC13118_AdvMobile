@@ -63,19 +63,17 @@ class _UserProfileViewState extends State<UserProfileView> {
                 color: Colors.grey[900],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 4),
-              child: TextField(
-                autocorrect: false,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 8,
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
+            const SizedBox(height: 4),
+            const TextField(
+              autocorrect: false,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
             ),
@@ -241,8 +239,8 @@ class _UserProfileViewState extends State<UserProfileView> {
             const SizedBox(height: 24),
             TextButton(
               onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
               ),
               child: const Text(
                 'SAVE',
