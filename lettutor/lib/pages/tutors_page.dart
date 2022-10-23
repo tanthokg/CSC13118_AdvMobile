@@ -45,9 +45,7 @@ class _TutorsPageState extends State<TutorsPage> {
             items: nationalities
                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),
-            onChanged: (value) {
-              setState(() {});
-            },
+            onChanged: (value) {},
           ),
           const SizedBox(height: 16),
           Text('Select available tutoring time',
