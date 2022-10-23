@@ -8,7 +8,7 @@ class SelectDate extends StatefulWidget {
 }
 
 class _SelectDateState extends State<SelectDate> {
-  DateTime? date;
+  String date = 'dd/MM/yyyy';
 
   void _selectDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
@@ -17,9 +17,12 @@ class _SelectDateState extends State<SelectDate> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2050),
     );
-    setState(() {
-      date = selectedDate;
-    });
+    if (selectedDate != null) {
+      setState(() {
+        date = selectedDate.toString().substring(0, 11);
+      });
+    }
+
   }
 
   @override
@@ -35,16 +38,18 @@ class _SelectDateState extends State<SelectDate> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: Colors.grey[400]!,
+            color: date == 'dd/MM/yyyy' ? Colors.grey[400]! : Colors.black54,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(
-          date == null ? 'dd/MM/yyyy' : date.toString().substring(0, 11),
+          date,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 18,
-            color: Colors.grey[400],
+            fontWeight: date == 'dd/MM/yyyy' ? FontWeight.normal : FontWeight.w500,
+            letterSpacing: 1.0,
+            color: date == 'dd/MM/yyyy' ? Colors.grey[400] : Colors.black54,
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
 import 'package:lettutor/widgets/select_date.dart';
+import 'package:lettutor/widgets/select_time.dart';
 
 class TutorsPage extends StatefulWidget {
   const TutorsPage({Key? key}) : super(key: key);
@@ -55,37 +56,10 @@ class _TutorsPageState extends State<TutorsPage> {
           const SelectDate(),
           const SizedBox(height: 8),
           Row(
-            children: [
-              SizedBox(
-                width: 120,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    hintText: "start time",
-                    border: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey, width: 2),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20),
-              SizedBox(
-                width: 120,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    hintText: "end time",
-                    border: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey, width: 2),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                  ),
-                ),
-              ),
+            children: const [
+              SelectTime(),
+              SizedBox(width: 20),
+              SelectTime(),
             ],
           ),
           const SizedBox(height: 16),
