@@ -10,6 +10,10 @@ class UpcomingPage extends StatefulWidget {
 class _UpcomingPageState extends State<UpcomingPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Upcoming'),
+      ),
+    );
   }
 }
