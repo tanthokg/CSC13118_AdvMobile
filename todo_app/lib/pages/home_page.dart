@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/routes.dart';
 import 'package:todo_app/entities/sections.dart';
-import 'package:todo_app/pages/all_tasks_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +18,12 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(titles[currentSection] ?? 'No Title'),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search, size: 26),
+            ),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -58,6 +63,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: pages[currentSection],
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, Routes.add);
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

@@ -4,6 +4,14 @@ class Task {
   final DateTime dueTime;
   final String status;
   final bool isTrashed;
+  final DateTime trashedTime;
 
-  Task(this.name, this.description, this.dueTime, this.status, this.isTrashed);
+  Task(
+    this.name,
+    this.description,
+    this.dueTime,
+    this.status,
+    this.isTrashed,
+    this.trashedTime,
+  );
 }

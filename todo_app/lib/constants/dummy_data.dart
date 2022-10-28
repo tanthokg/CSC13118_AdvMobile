@@ -7,6 +7,7 @@ var allTasks = [
     DateTime(2022, 10, 31, 20, 00),
     'Not Done',
     false,
+    DateTime(2022, 10, 31, 20, 00),
   ),
   Task(
     'Do homework',
@@ -14,6 +15,7 @@ var allTasks = [
     DateTime(2022, 11, 01, 22, 30),
     'Overdue',
     false,
+    DateTime(2022, 10, 31, 20, 00),
   ),
   Task(
     'Go to groceries store',
@@ -21,6 +23,7 @@ var allTasks = [
     DateTime(2022, 10, 29, 12, 30),
     'Not Done',
     false,
+    DateTime(2022, 10, 31, 20, 00),
   ),
   Task(
     'Clean up the storage room',
@@ -28,5 +31,6 @@ var allTasks = [
     DateTime(2022, 10, 25, 13, 45),
     'Done',
     false,
+    DateTime(2022, 10, 31, 20, 00),
   ),
 ];

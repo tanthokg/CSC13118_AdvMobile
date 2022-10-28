@@ -18,18 +18,21 @@ class _AllTasksPageState extends State<AllTasksPage> {
   @override
   Widget build(BuildContext context) {
     var tasks = _fetchAllTasks();
+    
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: tasks
-            .map((task) => TaskCard(
-                  task: task,
-                  onCompleteChecked: (value) {
-                    setState(() {
-                      tasks.remove(task);
-                    });
-                  },
-                ))
+            .map(
+              (task) => TaskCard(
+                task: task,
+                onCompleteChecked: (value) {
+                  setState(() {
+                    tasks.remove(task);
+                  });
+                },
+              ),
+            )
             .toList(),
       ),
     );
