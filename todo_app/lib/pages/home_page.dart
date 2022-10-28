@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/routes.dart';
+import 'package:todo_app/entities/sections.dart';
+import 'package:todo_app/pages/all_tasks_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,12 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var currentSection = Sections.allTasks;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('All Tasks'),
+          title: Text(titles[currentSection] ?? 'No Title'),
         ),
         drawer: Drawer(
           child: ListView(
@@ -23,24 +27,37 @@ class _HomePageState extends State<HomePage> {
               ListTile(
                 title: const Text('All Tasks'),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, Routes.all);
+                  setState(() {
+                    currentSection = Sections.allTasks;
+                  });
+                  Navigator.pop(context);
+                  // Navigator.pushReplacementNamed(context, Routes.all);
                 },
               ),
               ListTile(
                 title: const Text('Today'),
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.today);
+                  setState(() {
+                    currentSection = Sections.today;
+                  });
+                  Navigator.pop(context);
+                  // Navigator.pushNamed(context, Routes.today);
                 },
               ),
               ListTile(
                 title: const Text('Upcoming'),
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.upcoming);
+                  setState(() {
+                    currentSection = Sections.upcoming;
+                  });
+                  Navigator.pop(context);
+                  // Navigator.pushNamed(context, Routes.upcoming);
                 },
               ),
             ],
           ),
         ),
+        body: pages[currentSection],
       ),
     );
   }

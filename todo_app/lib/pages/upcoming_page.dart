@@ -11,8 +11,8 @@ class _UpcomingPageState extends State<UpcomingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upcoming'),
+      body: Center(
+        child: Text('Upcoming'),
       ),
     );
   }

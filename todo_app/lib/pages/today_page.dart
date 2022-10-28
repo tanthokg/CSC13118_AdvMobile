@@ -11,8 +11,8 @@ class _TodayPageState extends State<TodayPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Today'),
+      body: Center(
+        child: Text('Today'),
       ),
     );
   }
