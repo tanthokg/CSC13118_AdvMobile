@@ -18,12 +18,22 @@ class Task {
   );
 
   Map<String, Object?> toJson() => {
-    'ID': id,
-    'NAME': name,
-    'DESCRIPTION': description,
-    'DUETIME': dueTime.toIso8601String(),
-    'STATUS': status,
-    'IS_TRASHED': isTrashed ? 1 : 0,
-    'TRASHED_TIME': trashedTime.toIso8601String()
-  };
+        'ID': id,
+        'NAME': name,
+        'DESCRIPTION': description,
+        'DUETIME': dueTime.toIso8601String(),
+        'STATUS': status,
+        '': isTrashed ? 1 : 0,
+        'TRASHED_TIME': trashedTime.toIso8601String()
+      };
+
+  static Task fromJson(Map<String, Object?> json) => Task(
+        json['ID'] as int,
+        json['NAME'] as String,
+        json['DESCRIPTION'] as String,
+        json['DUETIME'] as DateTime,
+        json['STATUS'] as String,
+        json['IS_TRASHED'] == 1,
+        json['TRASHED_TIME'] as DateTime,
+      );
 }
