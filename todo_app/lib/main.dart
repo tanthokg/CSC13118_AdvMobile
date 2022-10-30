@@ -7,6 +7,7 @@ import 'package:todo_app/pages/upcoming_page.dart';
 import 'package:todo_app/views/add_task_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
