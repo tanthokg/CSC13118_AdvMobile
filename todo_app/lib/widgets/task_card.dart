@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/entities/task.dart';
 
 class TaskCard extends StatelessWidget {
@@ -23,9 +24,11 @@ class TaskCard extends StatelessWidget {
             onChanged: onCompleteChecked,
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(task.id.toString()),
               Text(task.name),
-              Text(task.dueTime.toString()),
+              Text(task.dueTime != null ? DateFormat.yMMMd().format(task.dueTime!) : ''),
             ],
           ),
         ],

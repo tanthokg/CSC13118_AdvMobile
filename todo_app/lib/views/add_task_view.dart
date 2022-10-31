@@ -13,6 +13,7 @@ class AddTaskView extends StatefulWidget {
 
 class _AddTaskViewState extends State<AddTaskView> {
   var _setNoti = false;
+  DateTime? _dueDate;
   final _nameController = TextEditingController();
   final _desController = TextEditingController();
   final errorText = 'This field is required!';
@@ -30,7 +31,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                 final task = Task(
                   name: _nameController.text,
                   description: _desController.text,
-                  dueTime: DateTime.now(),
+                  dueTime: _dueDate,
                   notification: _setNoti,
                   status: 'Not Done',
                   isTrashed: false,
@@ -88,6 +89,9 @@ class _AddTaskViewState extends State<AddTaskView> {
               children: [
                 Expanded(flex: 2, child: DatePicker(
                   onDateSelected: (value) {
+                   setState(() {
+                     _dueDate = value;
+                   });
                   },
                 )),
                 const SizedBox(width: 16),

@@ -2,7 +2,7 @@ class Task {
   final int? id;
   final String name;
   final String description;
-  final DateTime dueTime;
+  final DateTime? dueTime;
   final bool notification;
   final String status;
   final bool isTrashed;
@@ -11,7 +11,7 @@ class Task {
     this.id,
     required this.name,
     required this.description,
-    required this.dueTime,
+    this.dueTime,
     required this.notification,
     required this.status,
     required this.isTrashed,
@@ -41,7 +41,7 @@ class Task {
         'ID': id,
         'NAME': name,
         'DESCRIPTION': description,
-        'DUETIME': dueTime.toIso8601String(),
+        'DUETIME': dueTime?.toIso8601String(),
         'STATUS': status,
         'IS_TRASHED': isTrashed ? 1 : 0,
       };
@@ -50,7 +50,7 @@ class Task {
         id: json['ID'] as int,
         name: json['NAME'] as String,
         description: json['DESCRIPTION'] as String,
-        dueTime: DateTime.parse(json['DUETIME'] as String),
+        dueTime: json['DUETIME'] != null ? DateTime.parse(json['DUETIME'] as String) : null,
         notification: json['NOTIFICATION'] == 1,
         status: json['STATUS'] as String,
         isTrashed: json['IS_TRASHED'] == 1,
