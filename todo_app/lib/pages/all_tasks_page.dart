@@ -40,20 +40,51 @@ class _AllTasksPageState extends State<AllTasksPage> {
           )
         : SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              children: tasks
-                  .map(
-                    (task) => TaskCard(
-                      task: task,
-                      onCompleteChecked: (value) {
-                        setState(() {
-                          tasks.remove(task);
-                        });
-                      },
-                    ),
+            child: tasks.isNotEmpty
+                ? Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _fetchAllTasks();
+                            });
+                          },
+                          child: const Text('Refresh'),
+                        ),
+                      ),
+                      ...tasks
+                          .map(
+                            (task) => TaskCard(
+                              task: task,
+                              onCompleteChecked: (value) async {
+                                await TaskDAO.instance.deleteTaskById(task.id!);
+                                setState(() {
+                                  _fetchAllTasks();
+                                });
+                              },
+                            ),
+                          )
+                          .toList()
+                    ],
                   )
-                  .toList(),
-            ),
+                : Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _fetchAllTasks();
+                            });
+                          },
+                          child: const Text('Refresh'),
+                        ),
+                      ),
+                      const Text('You have no unfinished todo')
+                    ],
+                  ),
           );
   }
 }

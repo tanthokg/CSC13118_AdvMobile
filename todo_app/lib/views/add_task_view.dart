@@ -37,6 +37,9 @@ class _AddTaskViewState extends State<AddTaskView> {
                   isTrashed: false,
                 );
                 await TaskDAO.instance.createTask(task);
+                if (mounted) {
+                  Navigator.pop(context);
+                }
                 // print('${_nameController.text} ${_desController.text} ${DateTime.now()}');
               },
               child: const Text(

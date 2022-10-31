@@ -34,7 +34,7 @@ class TaskDAO {
       DUETIME text,
       NOTIFICATION text,
       STATUS text,
-      IS_TRASHED boolean,
+      IS_TRASHED boolean
     )
     ''');
   }
