@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/entities/task.dart';
+import 'package:todo_app/services/task_dao.dart';
 import 'package:todo_app/widgets/date_picker.dart';
 import 'package:todo_app/widgets/time_picker.dart';
 
@@ -10,7 +12,10 @@ class AddTaskView extends StatefulWidget {
 }
 
 class _AddTaskViewState extends State<AddTaskView> {
-  var _setReminder = false;
+  var _setNoti = false;
+  final _nameController = TextEditingController();
+  final _desController = TextEditingController();
+  final errorText = 'This field is required!';
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,18 @@ class _AddTaskViewState extends State<AddTaskView> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final task = Task(
+                  name: _nameController.text,
+                  description: _desController.text,
+                  dueTime: DateTime.now(),
+                  notification: _setNoti,
+                  status: 'Not Done',
+                  isTrashed: false,
+                );
+                await TaskDAO.instance.createTask(task);
+                // print('${_nameController.text} ${_desController.text} ${DateTime.now()}');
+              },
               child: const Text(
                 'CREATE',
                 style: TextStyle(fontSize: 16),
@@ -35,10 +51,13 @@ class _AddTaskViewState extends State<AddTaskView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
+            TextField(
               minLines: 1,
               maxLines: 3,
-              decoration: InputDecoration(
+              controller: _nameController,
+              onChanged: (value) {
+              },
+              decoration: const InputDecoration(
                 label: Text('Name'),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(),
@@ -46,10 +65,13 @@ class _AddTaskViewState extends State<AddTaskView> {
               ),
             ),
             const SizedBox(height: 16),
-            const TextField(
+            TextField(
               minLines: 2,
               maxLines: 5,
-              decoration: InputDecoration(
+              controller: _desController,
+              onChanged: (value) {
+              },
+              decoration: const InputDecoration(
                 label: Text('Description (optional)'),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(),
@@ -63,20 +85,23 @@ class _AddTaskViewState extends State<AddTaskView> {
             ),
             const SizedBox(height: 8),
             Row(
-              children: const [
-                Expanded(flex: 2, child: DatePicker()),
-                SizedBox(width: 16),
-                Expanded(flex: 1, child: TimePicker()),
+              children: [
+                Expanded(flex: 2, child: DatePicker(
+                  onDateSelected: (value) {
+                  },
+                )),
+                const SizedBox(width: 16),
+                const Expanded(flex: 1, child: TimePicker()),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               children: [
                 Checkbox(
-                  value: _setReminder,
+                  value: _setNoti,
                   onChanged: (value) {
                     setState(() {
-                      _setReminder = !_setReminder;
+                      _setNoti = !_setNoti;
                     });
                   },
                 ),

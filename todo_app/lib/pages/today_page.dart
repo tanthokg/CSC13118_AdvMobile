@@ -12,7 +12,7 @@ class TodayPage extends StatefulWidget {
 
 class _TodayPageState extends State<TodayPage> {
   List<Task> _fetchTodayTasks() {
-    return allTasks;
+    return [];
   }
 
   @override

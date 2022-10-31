@@ -32,16 +32,17 @@ class TaskDAO {
       NAME text not null,
       DESCRIPTION text,
       DUETIME text,
+      NOTIFICATION text,
       STATUS text,
       IS_TRASHED boolean,
-      TRASHED_TIME text
     )
     ''');
   }
 
-  Future<void> createTask(Task task) async {
+  Future<Task> createTask(Task task) async {
     final db = await instance.database;
-    await db.insert('TASK', task.toJson());
+    final id = await db.insert('TASK', task.toJson());
+    return task.clone(id: id);
   }
 
   Future<Task> readTaskById(int id) async {
@@ -53,9 +54,9 @@ class TaskDAO {
         'NAME',
         'DESCRIPTION',
         'DUETIME',
+        'NOTIFICATION',
         'STATUS',
         'IS_TRASHED',
-        'TRASHED_TIME',
       ],
       where: 'ID = ?',
       whereArgs: [id],
@@ -75,9 +76,9 @@ class TaskDAO {
           'NAME',
           'DESCRIPTION',
           'DUETIME',
+          'NOTIFICATION',
           'STATUS',
           'IS_TRASHED',
-          'TRASHED_TIME',
         ],
         orderBy: 'DUETIME ASC');
     return results.map((result) => Task.fromJson(result)).toList();

@@ -12,7 +12,7 @@ class UpcomingPage extends StatefulWidget {
 
 class _UpcomingPageState extends State<UpcomingPage> {
   List<Task> _fetchUpcomingTasks() {
-    return allTasks;
+    return [];
   }
 
   @override
