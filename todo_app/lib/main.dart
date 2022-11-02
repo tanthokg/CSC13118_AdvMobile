@@ -5,6 +5,7 @@ import 'package:todo_app/pages/home_page.dart';
 import 'package:todo_app/pages/today_page.dart';
 import 'package:todo_app/pages/upcoming_page.dart';
 import 'package:todo_app/views/add_task_view.dart';
+import 'package:todo_app/views/search_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         Routes.today: (context) => const TodayPage(),
         Routes.upcoming: (context) => const UpcomingPage(),
         Routes.add: (context) => const AddTaskView(),
+        Routes.search: (context) => const SearchView(),
       },
     );
   }

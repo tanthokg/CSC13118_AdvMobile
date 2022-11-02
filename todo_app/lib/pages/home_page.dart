@@ -20,7 +20,9 @@ class _HomePageState extends State<HomePage> {
           title: Text(titles[currentSection] ?? 'No Title'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.search);
+              },
               icon: const Icon(Icons.search, size: 26),
             ),
           ],
