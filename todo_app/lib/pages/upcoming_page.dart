@@ -24,6 +24,9 @@ class _UpcomingPageState extends State<UpcomingPage> {
 
     upcomingTasks.clear();
     for (var task in allTasks) {
+      if (task.dueTime == null) {
+        continue;
+      }
       if (task.dueTime?.year != today.year ||
           task.dueTime?.month != today.month ||
           task.dueTime?.day != today.day) {
