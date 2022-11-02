@@ -17,21 +17,30 @@ class TaskCard extends StatelessWidget {
     return Card(
       elevation: 0.5,
       margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Checkbox(
-            value: false,
-            onChanged: onCompleteChecked,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(task.id.toString()),
-              Text(task.name),
-              Text(task.dueTime != null ? DateFormat.yMMMd().format(task.dueTime!) : ''),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
+        child: Row(
+          children: [
+            Checkbox(
+              value: false,
+              onChanged: onCompleteChecked,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  task.name,
+                  style: Theme.of(context).textTheme.headline2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                task.dueTime != null
+                    ? Text(DateFormat.yMMMd().format(task.dueTime!))
+                    : const SizedBox.shrink(),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
