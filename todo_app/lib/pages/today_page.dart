@@ -37,6 +37,12 @@ class _TodayPageState extends State<TodayPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchTodayTasks();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(

@@ -37,6 +37,12 @@ class _UpcomingPageState extends State<UpcomingPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchUpcomingTasks();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(
