@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entities/task.dart';
+import 'package:todo_app/services/notification_service.dart';
 import 'package:todo_app/services/task_dao.dart';
 import 'package:todo_app/widgets/date_picker.dart';
 import 'package:todo_app/widgets/time_picker.dart';
@@ -19,6 +20,12 @@ class _AddTaskViewState extends State<AddTaskView> {
   final errorText = 'This field is required!';
 
   @override
+  void initState() {
+    super.initState();
+    NotificationService.init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,18 +35,28 @@ class _AddTaskViewState extends State<AddTaskView> {
             padding: const EdgeInsets.only(right: 8),
             child: TextButton(
               onPressed: () async {
-                final task = Task(
-                  name: _nameController.text,
-                  description: _desController.text,
-                  dueTime: _dueDate,
-                  notification: _setNoti,
-                  status: 'Not Done',
-                  isTrashed: false,
+                // NotificationService.showScheduleNotification(
+                //     title: 'Schedule Title',
+                //     body: 'Schedule Body',
+                //     payload: 'Payload',
+                // );
+                NotificationService.showNotification(
+                  title: 'Instant Title',
+                  body: 'Instant Body',
+                  payload: 'Payload',
                 );
-                await TaskDAO.instance.createTask(task);
-                if (mounted) {
-                  Navigator.pop(context);
-                }
+                // final task = Task(
+                //   name: _nameController.text,
+                //   description: _desController.text,
+                //   dueTime: _dueDate,
+                //   notification: _setNoti,
+                //   status: 'Not Done',
+                //   isTrashed: false,
+                // );
+                // await TaskDAO.instance.createTask(task);
+                // if (mounted) {
+                //   Navigator.pop(context);
+                // }
                 // print('${_nameController.text} ${_desController.text} ${DateTime.now()}');
               },
               child: const Text(
@@ -59,8 +76,7 @@ class _AddTaskViewState extends State<AddTaskView> {
               minLines: 1,
               maxLines: 3,
               controller: _nameController,
-              onChanged: (value) {
-              },
+              onChanged: (value) {},
               decoration: const InputDecoration(
                 label: Text('Name'),
                 border: OutlineInputBorder(
@@ -73,8 +89,7 @@ class _AddTaskViewState extends State<AddTaskView> {
               minLines: 2,
               maxLines: 5,
               controller: _desController,
-              onChanged: (value) {
-              },
+              onChanged: (value) {},
               decoration: const InputDecoration(
                 label: Text('Description (optional)'),
                 border: OutlineInputBorder(
@@ -90,13 +105,15 @@ class _AddTaskViewState extends State<AddTaskView> {
             const SizedBox(height: 8),
             Row(
               children: [
-                Expanded(flex: 2, child: DatePicker(
-                  onDateSelected: (value) {
-                   setState(() {
-                     _dueDate = value;
-                   });
-                  },
-                )),
+                Expanded(
+                    flex: 2,
+                    child: DatePicker(
+                      onDateSelected: (value) {
+                        setState(() {
+                          _dueDate = value;
+                        });
+                      },
+                    )),
                 const SizedBox(width: 16),
                 const Expanded(flex: 1, child: TimePicker()),
               ],
