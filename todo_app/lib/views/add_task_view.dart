@@ -15,14 +15,25 @@ class AddTaskView extends StatefulWidget {
 class _AddTaskViewState extends State<AddTaskView> {
   var _setNoti = false;
   DateTime? _dueDate;
+  TimeOfDay? _dueTime;
   final _nameController = TextEditingController();
   final _desController = TextEditingController();
   final errorText = 'This field is required!';
 
+  DateTime _mergeDateAndTime(DateTime date, TimeOfDay time) {
+    final hour = time.hour;
+    final minute = time.minute;
+
+    final result = date
+        .add(Duration(hours: hour, minutes: minute))
+        .subtract(const Duration(minutes: 10));
+    return result;
+  }
+
   @override
   void initState() {
     super.initState();
-    NotificationService.init();
+    NotificationService.init(initScheduled: true);
   }
 
   @override
@@ -35,28 +46,31 @@ class _AddTaskViewState extends State<AddTaskView> {
             padding: const EdgeInsets.only(right: 8),
             child: TextButton(
               onPressed: () async {
-                // NotificationService.showScheduleNotification(
-                //     title: 'Schedule Title',
-                //     body: 'Schedule Body',
-                //     payload: 'Payload',
+                if (_setNoti && _dueDate != null && _dueTime != null) {
+                  NotificationService.showScheduleNotification(
+                    title: 'Schedule Title',
+                    body: 'Schedule Body',
+                    payload: 'Payload',
+                    scheduledTime: _mergeDateAndTime(_dueDate!, _dueTime!),
+                  );
+                }
+                // NotificationService.showNotification(
+                //   title: 'Instant Title',
+                //   body: 'Instant Body',
+                //   payload: 'Payload',
                 // );
-                NotificationService.showNotification(
-                  title: 'Instant Title',
-                  body: 'Instant Body',
-                  payload: 'Payload',
+                final task = Task(
+                  name: _nameController.text,
+                  description: _desController.text,
+                  dueTime: _dueDate,
+                  notification: _setNoti,
+                  status: 'Not Done',
+                  isTrashed: false,
                 );
-                // final task = Task(
-                //   name: _nameController.text,
-                //   description: _desController.text,
-                //   dueTime: _dueDate,
-                //   notification: _setNoti,
-                //   status: 'Not Done',
-                //   isTrashed: false,
-                // );
-                // await TaskDAO.instance.createTask(task);
-                // if (mounted) {
-                //   Navigator.pop(context);
-                // }
+                await TaskDAO.instance.createTask(task);
+                if (mounted) {
+                  Navigator.pop(context);
+                }
                 // print('${_nameController.text} ${_desController.text} ${DateTime.now()}');
               },
               child: const Text(
@@ -106,16 +120,26 @@ class _AddTaskViewState extends State<AddTaskView> {
             Row(
               children: [
                 Expanded(
-                    flex: 2,
-                    child: DatePicker(
-                      onDateSelected: (value) {
-                        setState(() {
-                          _dueDate = value;
-                        });
-                      },
-                    )),
+                  flex: 2,
+                  child: DatePicker(
+                    onDateSelected: (value) {
+                      setState(() {
+                        _dueDate = value;
+                      });
+                    },
+                  ),
+                ),
                 const SizedBox(width: 16),
-                const Expanded(flex: 1, child: TimePicker()),
+                Expanded(
+                  flex: 1,
+                  child: TimePicker(
+                    onTimeSelected: (value) {
+                      setState(() {
+                        _dueTime = value;
+                      });
+                    },
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -123,11 +147,13 @@ class _AddTaskViewState extends State<AddTaskView> {
               children: [
                 Checkbox(
                   value: _setNoti,
-                  onChanged: (value) {
-                    setState(() {
-                      _setNoti = !_setNoti;
-                    });
-                  },
+                  onChanged: _dueDate == null || _dueTime == null
+                      ? null
+                      : (value) {
+                          setState(() {
+                            _setNoti = !_setNoti;
+                          });
+                        },
                 ),
                 Text(
                   'Receive Notification (10 minutes early)',

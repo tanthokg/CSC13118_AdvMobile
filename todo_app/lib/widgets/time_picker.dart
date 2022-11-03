@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TimePicker extends StatefulWidget {
-  const TimePicker({Key? key}) : super(key: key);
+  const TimePicker({
+    Key? key,
+    required this.onTimeSelected,
+  }) : super(key: key);
+
+  final Function(TimeOfDay value) onTimeSelected;
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -24,6 +29,7 @@ class _TimePickerState extends State<TimePicker> {
       final minute = pickedTime.minute.toString().padLeft(2, '0');
       setState(() {
         time = '$hour:$minute';
+        widget.onTimeSelected(pickedTime);
       });
     }
   }

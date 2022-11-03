@@ -20,7 +20,10 @@ class NotificationService {
   static Future init({bool initScheduled = false}) async {
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     const settings = InitializationSettings(android: androidSettings);
-    tz.initializeTimeZones();
+
+    if (initScheduled) {
+      tz.initializeTimeZones();
+    }
     await _notification.initialize(
       settings,
     );
@@ -45,12 +48,13 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
+    required DateTime scheduledTime,
   }) async =>
       _notification.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(DateTime.now().add(const Duration(seconds: 3)), tz.local),
+        tz.TZDateTime.from(scheduledTime, tz.local),
         _notificationDetails,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
