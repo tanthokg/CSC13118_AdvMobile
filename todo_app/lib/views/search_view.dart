@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/entities/task.dart';
+import 'package:todo_app/services/task_dao.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -24,6 +25,11 @@ class _SearchViewState extends State<SearchView> {
           children: [
             TextField(
               controller: _searchController,
+              onEditingComplete: () async {
+                final data = await TaskDAO.instance.readAllTasks();
+                result = data.where((task) => task.name.contains(_searchController.text)).toList();
+                print(result);
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(
