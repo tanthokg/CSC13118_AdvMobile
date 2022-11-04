@@ -61,7 +61,11 @@ class NotificationService {
             UILocalNotificationDateInterpretation.absoluteTime,
       );
 
-  static Future<void> stopNotifications() async {
+  static Future<void> stopAllNotifications() async {
     await _notification.cancelAll();
+  }
+
+  static Future<void> stopNotifications(int id) async {
+    await _notification.cancel(id);
   }
 }

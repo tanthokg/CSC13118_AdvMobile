@@ -13,13 +13,13 @@ class AddTaskView extends StatefulWidget {
 }
 
 class _AddTaskViewState extends State<AddTaskView> {
-  var _setNoti = false;
   DateTime? _dueDate;
   TimeOfDay? _dueTime;
-  final _nameController = TextEditingController();
-  final _desController = TextEditingController();
   bool _validateTaskName = false;
   bool _isDateTimeSelected = false;
+  bool _setNoti = false;
+  final _nameController = TextEditingController();
+  final _desController = TextEditingController();
   final _errorTaskNameEmpty = 'This field is required!';
 
   DateTime _mergeDateAndTime(DateTime date, TimeOfDay time) {
@@ -48,14 +48,6 @@ class _AddTaskViewState extends State<AddTaskView> {
             padding: const EdgeInsets.only(right: 8),
             child: TextButton(
               onPressed: () async {
-                if (_setNoti && _dueDate != null && _dueTime != null) {
-                  NotificationService.showScheduleNotification(
-                    title: 'Schedule Title',
-                    body: 'Schedule Body',
-                    payload: 'Payload',
-                    scheduledTime: _mergeDateAndTime(_dueDate!, _dueTime!),
-                  );
-                }
                 // NotificationService.showNotification(
                 //   title: 'Instant Title',
                 //   body: 'Instant Body',
@@ -70,7 +62,16 @@ class _AddTaskViewState extends State<AddTaskView> {
                     status: 'Not Done',
                     isTrashed: false,
                   );
-                  await TaskDAO.instance.createTask(task);
+                  final result = await TaskDAO.instance.createTask(task);
+                  if (_setNoti && _dueDate != null && _dueTime != null) {
+                    NotificationService.showScheduleNotification(
+                      id: result.id!,
+                      title: 'Schedule Title',
+                      body: 'Schedule Body',
+                      payload: 'Payload',
+                      scheduledTime: _mergeDateAndTime(_dueDate!, _dueTime!),
+                    );
+                  }
                   if (mounted) {
                     Navigator.pop(context);
                   }
