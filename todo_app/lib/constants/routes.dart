@@ -7,4 +7,5 @@ class Routes {
   // Views
   static const search = '/search/';
   static const add = '/add/';
+  static const detail = '/task_detail/';
 }

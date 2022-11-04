@@ -184,13 +184,15 @@ class _AddTaskViewState extends State<AddTaskView> {
                 )
               ],
             ),
-            _isDateTimeSelected ? SizedBox.shrink() : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'You must first select a date and time',
-                style: TextStyle(fontSize: 14, color: Colors.red),
-              ),
-            ),
+            _isDateTimeSelected
+                ? const SizedBox.shrink()
+                : const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'You must first select a date and time',
+                      style: TextStyle(fontSize: 14, color: Colors.red),
+                    ),
+                  ),
           ],
         ),
       ),
