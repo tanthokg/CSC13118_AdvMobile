@@ -66,8 +66,8 @@ class _AddTaskViewState extends State<AddTaskView> {
                   if (_setNoti && _dueDate != null && _dueTime != null) {
                     NotificationService.showScheduleNotification(
                       id: result.id!,
-                      title: 'Schedule Title',
-                      body: 'Schedule Body',
+                      title: task.name,
+                      body: 'You have 10 minutes left',
                       payload: 'Payload',
                       scheduledTime: _mergeDateAndTime(_dueDate!, _dueTime!),
                     );

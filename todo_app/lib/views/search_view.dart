@@ -45,7 +45,10 @@ class _SearchViewState extends State<SearchView> {
               ),
             ),
             result.isEmpty && _searchController.text != ''
-                ? const Text('No item match')
+                ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text('No item match'),
+                )
                 : const SizedBox.shrink(),
             _searchController.text == ''
                 ? const SizedBox.shrink()
