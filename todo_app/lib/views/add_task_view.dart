@@ -18,7 +18,9 @@ class _AddTaskViewState extends State<AddTaskView> {
   TimeOfDay? _dueTime;
   final _nameController = TextEditingController();
   final _desController = TextEditingController();
-  final errorText = 'This field is required!';
+  bool _validateTaskName = false;
+  bool _isDateTimeSelected = false;
+  final _errorTaskNameEmpty = 'This field is required!';
 
   DateTime _mergeDateAndTime(DateTime date, TimeOfDay time) {
     final hour = time.hour;
@@ -59,17 +61,19 @@ class _AddTaskViewState extends State<AddTaskView> {
                 //   body: 'Instant Body',
                 //   payload: 'Payload',
                 // );
-                final task = Task(
-                  name: _nameController.text,
-                  description: _desController.text,
-                  dueTime: _dueDate,
-                  notification: _setNoti,
-                  status: 'Not Done',
-                  isTrashed: false,
-                );
-                await TaskDAO.instance.createTask(task);
-                if (mounted) {
-                  Navigator.pop(context);
+                if (_validateTaskName) {
+                  final task = Task(
+                    name: _nameController.text,
+                    description: _desController.text,
+                    dueTime: _dueDate,
+                    notification: _setNoti,
+                    status: 'Not Done',
+                    isTrashed: false,
+                  );
+                  await TaskDAO.instance.createTask(task);
+                  if (mounted) {
+                    Navigator.pop(context);
+                  }
                 }
                 // print('${_nameController.text} ${_desController.text} ${DateTime.now()}');
               },
@@ -90,10 +94,22 @@ class _AddTaskViewState extends State<AddTaskView> {
               minLines: 1,
               maxLines: 3,
               controller: _nameController,
-              onChanged: (value) {},
-              decoration: const InputDecoration(
-                label: Text('Name'),
-                border: OutlineInputBorder(
+              onChanged: (value) {
+                if (value == '') {
+                  setState(() {
+                    _validateTaskName = false;
+                  });
+                } else {
+                  setState(() {
+                    _validateTaskName = true;
+                  });
+                }
+              },
+              decoration: InputDecoration(
+                label: const Text('Name'),
+                errorText: _validateTaskName ? null : _errorTaskNameEmpty,
+                errorStyle: const TextStyle(fontSize: 14),
+                border: const OutlineInputBorder(
                   borderSide: BorderSide(),
                 ),
               ),
@@ -125,6 +141,9 @@ class _AddTaskViewState extends State<AddTaskView> {
                     onDateSelected: (value) {
                       setState(() {
                         _dueDate = value;
+                        if (_dueTime != null) {
+                          _isDateTimeSelected = true;
+                        }
                       });
                     },
                   ),
@@ -136,6 +155,9 @@ class _AddTaskViewState extends State<AddTaskView> {
                     onTimeSelected: (value) {
                       setState(() {
                         _dueTime = value;
+                        if (_dueDate != null) {
+                          _isDateTimeSelected = true;
+                        }
                       });
                     },
                   ),
@@ -152,6 +174,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                       : (value) {
                           setState(() {
                             _setNoti = !_setNoti;
+                            //_isDateTimeSelected = true;
                           });
                         },
                 ),
@@ -160,7 +183,14 @@ class _AddTaskViewState extends State<AddTaskView> {
                   style: Theme.of(context).textTheme.headline3,
                 )
               ],
-            )
+            ),
+            _isDateTimeSelected ? SizedBox.shrink() : Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'You must first select a date and time',
+                style: TextStyle(fontSize: 14, color: Colors.red),
+              ),
+            ),
           ],
         ),
       ),
