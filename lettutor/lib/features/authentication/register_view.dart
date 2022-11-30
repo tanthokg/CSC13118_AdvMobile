@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
 import 'package:lettutor/constants/routes.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+class RegisterView extends StatefulWidget {
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
+
   String chosenLanguage = Language.english;
 
   @override
@@ -48,7 +49,7 @@ class _LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/logo.png',
+                    'assets/logo/lettutor.png',
                     width: 100,
                     height: 100,
                   ),
@@ -70,7 +71,7 @@ class _LoginViewState extends State<LoginView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: 'abc@example.com',
+                  hintText: "abc@example.com",
                   prefixIcon: const Icon(Icons.mail, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
@@ -89,7 +90,26 @@ class _LoginViewState extends State<LoginView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: '******',
+                  hintText: "******",
+                  prefixIcon: const Icon(Icons.lock, size: 26),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('CONFIRM PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: TextField(
+                obscureText: true,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintText: "******",
                   prefixIcon: const Icon(Icons.lock, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
@@ -100,66 +120,24 @@ class _LoginViewState extends State<LoginView> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.main,
-                    (route) => false,
-                  );
-                },
-                style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue),
+                onPressed: () {},
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Text(
-                  'LOG IN',
+                  'REGISTER',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, Routes.forgotPassword);
-                },
-                child: const Text('Forgot Password?'),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text(
-                'Or continue with',
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.facebook, size: 40),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.g_mobiledata, size: 40),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.phone_android, size: 40),
-                  ),
-                ],
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Not a member yet?'),
+                const Text('Already have an account?'),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, Routes.register);
+                    Navigator.pop(context);
                   },
-                  child: const Text('Register'),
+                  child: const Text('Log In'),
                 ),
               ],
             )

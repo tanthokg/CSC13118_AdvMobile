@@ -20,7 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
             alignment: Alignment.center,
             child: CircleAvatar(
               radius: 60,
-              backgroundImage: AssetImage('assets/user-avatar-01.png'),
+              backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
             ),
           ),
           const SizedBox(height: 12),

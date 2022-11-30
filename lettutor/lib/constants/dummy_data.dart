@@ -54,7 +54,7 @@ const filters = [
 const teachers = [
   Teacher(
       'Keegan',
-      'assets/keegan-avatar.png',
+      'assets/tutor/keegan-avatar.png',
       'France',
       5,
       60,
@@ -73,7 +73,7 @@ const teachers = [
       ]),
   Teacher(
       'Jill Leano',
-      'assets/jill-leano-avatar.png',
+      'assets/tutor/jill-leano-avatar.png',
       'France',
       4,
       9,
@@ -95,7 +95,7 @@ const teachers = [
       ]),
   Teacher(
       'April Baldo',
-      'assets/april-baldo-avatar.png',
+      'assets/tutor/april-baldo-avatar.png',
       'Philippine',
       4,
       22,
@@ -114,7 +114,7 @@ const teachers = [
       ]),
   Teacher(
       'Joan Gacer',
-      'assets/joan-gacer-avatar.png',
+      'assets/tutor/joan-gacer-avatar.png',
       'Taiwan',
       3,
       6,
@@ -144,42 +144,42 @@ const teachers = [
 const courses = [
   Course(
     'Life in the Internet Age',
-    'assets/course-01.png',
+    'assets/course/course-01.png',
     "Let's discuss how technology is changing the way we live",
     'Intermediate',
     9,
   ),
   Course(
     'Caring for Our Planet',
-    'assets/course-02.png',
+    'assets/course/course-02.png',
     "Let's discuss our relationship as humans with our planet, Earth",
     'Intermediate',
     7,
   ),
   Course(
     'Healthy Mind, Healthy Body',
-    'assets/course-03.png',
+    'assets/course/course-03.png',
     "Let's discuss the many aspects of living a long, happy life",
     'Intermediate',
     6,
   ),
   Course(
     'Movies and Television',
-    'assets/course-04.png',
+    'assets/course/course-04.png',
     "Let's discuss our preferences and habits surrounding movies and television shows",
     'Beginner',
     10,
   ),
   Course(
     'Raising Children',
-    'assets/course-05.png',
+    'assets/course/course-05.png',
     "Let's discuss raising children and practice using English for common parenting situations",
     'Intermediate',
     11,
   ),
   Course(
     'The Olympics',
-    'assets/course-06.png',
+    'assets/course/course-06.png',
     "Let’s practice talking about the Olympics, the biggest sports festival on earth!",
     'Advanced',
     8,
@@ -203,17 +203,17 @@ const ebooks = [
       'Family and Friends 1',
       "For kids who can read pretty well, get ready for compound sentences and...",
       'Upper-Beginner',
-      'assets/family-and-friends.jpg'),
+      'assets/ebook/family-and-friends.jpg'),
   EBook(
       'Family and Friends 2',
       "For kids who can read pretty well, get ready for compound sentences and...",
       'Upper-Beginner',
-      'assets/family-and-friends.jpg'),
+      'assets/ebook/family-and-friends.jpg'),
   EBook(
       'Family and Friends 3',
       "For kids who can read pretty well, get ready for compound sentences and...",
       'Upper-Beginner',
-      'assets/family-and-friends.jpg'),
+      'assets/ebook/family-and-friends.jpg'),
   EBook(
       'Everybody Up',
       "For: kids who want to learn English through pictures, pick up simple...",
@@ -223,17 +223,17 @@ const ebooks = [
       'Cambridge Storyfun For Starter',
       "For kids who can handle single words and simple sentences with assistance.",
       'Beginner',
-      'assets/storyfun.jpg'),
+      'assets/ebook/storyfun.jpg'),
   EBook(
       'New Headway Elementary',
       "For teenagers who want to form a grammatical background as well as...",
       'Beginner',
-      'assets/new-headway.jpg'),
+      'assets/ebook/new-headway.jpg'),
   EBook(
       'English World ',
       "For kids who are able to pick up simple sounds, letters, words and learn new...",
       'Beginner',
-      'assets/english-world.jpg'),
+      'assets/ebook/english-world.jpg'),
 ];
 
 const courseHours = [

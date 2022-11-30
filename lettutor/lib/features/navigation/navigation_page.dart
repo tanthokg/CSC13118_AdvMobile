@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/routes.dart';
-import 'package:lettutor/pages/courses_page.dart';
-import 'package:lettutor/pages/home_page.dart';
-import 'package:lettutor/pages/schedule_page.dart';
-import 'package:lettutor/pages/settings_page.dart';
-import 'package:lettutor/pages/tutors_page.dart';
+import 'package:lettutor/features/courses/courses_page.dart';
+import 'package:lettutor/features/homepage/homepage.dart';
+import 'package:lettutor/features/schedules/schedule_page.dart';
+import 'package:lettutor/features/settings/settings_page.dart';
+import 'package:lettutor/features/tutor/tutors_page.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       Navigator.pushNamed(context, Routes.userProfile);
                     },
                     child: const CircleAvatar(
-                      backgroundImage: AssetImage('assets/user-avatar-01.png'),
+                      backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
                     ),
                   ),
                 )

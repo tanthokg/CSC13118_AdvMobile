@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/constants/datatype.dart';
 import 'package:lettutor/constants/routes.dart';
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
-
+class _LoginViewState extends State<LoginView> {
   String chosenLanguage = Language.english;
 
   @override
@@ -49,7 +48,7 @@ class _RegisterViewState extends State<RegisterView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/logo.png',
+                    'assets/logo/lettutor.png',
                     width: 100,
                     height: 100,
                   ),
@@ -71,7 +70,7 @@ class _RegisterViewState extends State<RegisterView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "abc@example.com",
+                  hintText: 'abc@example.com',
                   prefixIcon: const Icon(Icons.mail, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
@@ -90,26 +89,7 @@ class _RegisterViewState extends State<RegisterView> {
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "******",
-                  prefixIcon: const Icon(Icons.lock, size: 26),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('CONFIRM PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: TextField(
-                obscureText: true,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "******",
+                  hintText: '******',
                   prefixIcon: const Icon(Icons.lock, size: 26),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 2),
@@ -120,24 +100,62 @@ class _RegisterViewState extends State<RegisterView> {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: TextButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    Routes.main,
+                    (route) => false,
+                  );
+                },
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue),
                 child: const Text(
-                  'REGISTER',
+                  'LOG IN',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.forgotPassword);
+                },
+                child: const Text('Forgot Password?'),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text(
+                'Or continue with',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/logo/facebook.png', width: 40, height: 40,),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Image.asset('assets/logo/google.png', width: 40, height: 40,),
+                  ),
+                ],
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Already have an account?'),
+                const Text('Not a member yet?'),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, Routes.register);
                   },
-                  child: const Text('Log In'),
+                  child: const Text('Register'),
                 ),
               ],
             )

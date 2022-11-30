@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/constants/dummy_data.dart';
 import 'package:lettutor/constants/routes.dart';
 
-class TeacherDetailView extends StatefulWidget {
-  const TeacherDetailView({Key? key}) : super(key: key);
+class TutorDetailView extends StatefulWidget {
+  const TutorDetailView({Key? key}) : super(key: key);
 
   @override
-  State<TeacherDetailView> createState() => _TeacherDetailViewState();
+  State<TutorDetailView> createState() => _TutorDetailViewState();
 }
 
-class _TeacherDetailViewState extends State<TeacherDetailView> {
+class _TutorDetailViewState extends State<TutorDetailView> {
   final teacher = teachers[0];
   bool isFavorite = false;
 

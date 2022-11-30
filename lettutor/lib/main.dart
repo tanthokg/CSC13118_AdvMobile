@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/routes.dart';
-import 'package:lettutor/pages/navigation_page.dart';
-import 'package:lettutor/views/authentication/forgot_password_view.dart';
-import 'package:lettutor/views/authentication/login_view.dart';
-import 'package:lettutor/views/authentication/register_view.dart';
-import 'package:lettutor/views/become_tutor_view.dart';
-import 'package:lettutor/views/booking_detail_view.dart';
-import 'package:lettutor/views/course_detail_view.dart';
-import 'package:lettutor/views/teacher_detail_view.dart';
-import 'package:lettutor/views/tutor_review_view.dart';
-import 'package:lettutor/views/user_profile_view.dart';
-import 'package:lettutor/views/video_call_view.dart';
-import 'package:lettutor/views/write_review_view.dart';
+import 'package:lettutor/features/authentication/forgot_password_view.dart';
+import 'package:lettutor/features/authentication/login_view.dart';
+import 'package:lettutor/features/authentication/register_view.dart';
+import 'package:lettutor/features/navigation/navigation_page.dart';
+
+import 'package:lettutor/features/user_profile/become_tutor_view.dart';
+import 'package:lettutor/features/booking/booking_detail_view.dart';
+import 'package:lettutor/features/courses/course_detail_view.dart';
+import 'package:lettutor/features/tutor/tutor_detail_view.dart';
+import 'package:lettutor/features/tutor/tutor_review_view.dart';
+import 'package:lettutor/features/user_profile/user_profile_view.dart';
+import 'package:lettutor/features/video_call/video_call_view.dart';
+import 'package:lettutor/features/tutor/write_review_view.dart';
+
 
 void main() {
   runApp(const LetTutor());
@@ -25,6 +27,7 @@ class LetTutor extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'LetTutor',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
           primaryColor: Colors.blue,
@@ -64,7 +67,7 @@ class LetTutor extends StatelessWidget {
           Routes.becomeTutor: (context) => const BecomeTutorView(),
           Routes.userProfile: (context) => const UserProfileView(),
           Routes.courseDetail: (context) => const CourseDetailView(),
-          Routes.teacherDetail: (context) => const TeacherDetailView(),
+          Routes.teacherDetail: (context) => const TutorDetailView(),
           Routes.bookingDetail: (context) => const BookingDetailView(),
           Routes.review: (context) => const TutorReviewView(),
           Routes.writeReview: (context) => const WriteReviewView(),

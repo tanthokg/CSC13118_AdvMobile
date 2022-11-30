@@ -35,7 +35,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                 children: [
                   const CircleAvatar(
                     radius: 60,
-                    backgroundImage: AssetImage('assets/user-avatar-01.png'),
+                    backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
                   ),
                   Positioned(
                     bottom: 0,

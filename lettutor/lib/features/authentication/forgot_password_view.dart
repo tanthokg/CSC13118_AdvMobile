@@ -46,7 +46,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/logo.png',
+                    'assets/logo/lettutor.png',
                     width: 100,
                     height: 100,
                   ),

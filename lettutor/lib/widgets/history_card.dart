@@ -26,7 +26,7 @@ class _HistoryCardState extends State<HistoryCard> {
                     Navigator.pushNamed(context, Routes.teacherDetail);
                   },
                   child: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/keegan-avatar.png'),
+                    backgroundImage: AssetImage('assets/tutor/keegan-avatar.png'),
                     radius: 32,
                   ),
                 ),
