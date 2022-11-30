@@ -1,7 +1,7 @@
-import 'package:lettutor/entities/course.dart';
-import 'package:lettutor/entities/ebook.dart';
-import 'package:lettutor/entities/review.dart';
-import 'package:lettutor/entities/teacher.dart';
+import 'package:lettutor/dummy/course.dart';
+import 'package:lettutor/dummy/ebook.dart';
+import 'package:lettutor/dummy/review.dart';
+import 'package:lettutor/dummy/teacher.dart';
 
 const nationalities = [
   'Foreign Tutor',

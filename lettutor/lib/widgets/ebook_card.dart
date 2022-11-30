@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/entities/ebook.dart';
+import 'package:lettutor/dummy/ebook.dart';
 
 class EbookCard extends StatelessWidget {
   const EbookCard({Key? key, required this.ebook}) : super(key: key);

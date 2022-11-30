@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/entities/review.dart';
+import 'package:lettutor/dummy/review.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({Key? key, required this.review}) : super(key: key);

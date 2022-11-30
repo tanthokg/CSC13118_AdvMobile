@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/constants/dummy_data.dart';
+import 'package:lettutor/dummy/dummy_data.dart';
 import 'package:lettutor/constants/routes.dart';
 
 class TutorDetailView extends StatefulWidget {
