@@ -20,7 +20,7 @@ class _LoginViewState extends State<LoginView> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isAuthenticating = false;
+  bool _isAuthenticating = true;
   bool _isAuthenticated = false;
 
   void _handleLogin(AuthProvider authProvider) async {
@@ -29,39 +29,25 @@ class _LoginViewState extends State<LoginView> {
         email: _emailController.text,
         password: _passwordController.text,
         authProvider: authProvider,
-        callback: callback,
+        callback: _handleAuthentication,
       );
     } catch (e) {
-      print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error Login: ${e.toString()}')),
       );
     }
   }
 
-  callback(User user, Token token, AuthProvider authProvider) async {
-    final prefs = await SharedPreferences.getInstance();
-    authProvider.logIn(user, token);
-    await prefs.setString('refresh_token', authProvider.token!.refresh!.token!);
-
-    setState(() {
-      _isAuthenticating = false;
-      _isAuthenticated = true;
-    });
-
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
-    });
-  }
-
-  void authenticate(AuthProvider authProvider) async {
+  void _authenticate(AuthProvider authProvider) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final refreshToken = prefs.getString('refresh_token') ?? '';
+
       await AuthService.authenticate(
-          refreshToken: refreshToken,
-          authProvider: authProvider,
-          callback: callback);
+        refreshToken: refreshToken,
+        authProvider: authProvider,
+        callback: _handleAuthentication,
+      );
     } catch (e) {
       setState(() {
         _isAuthenticating = false;
@@ -69,17 +55,33 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  void _handleAuthentication(User user, Token token, AuthProvider authProvider) async {
+    authProvider.logIn(user, token);
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('refresh_token', authProvider.token!.refresh!.token!);
+
+    setState(() {
+      _isAuthenticating = false;
+      _isAuthenticated = true;
+    });
+
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
     if (_isAuthenticating) {
-      authenticate(authProvider);
+      _authenticate(authProvider);
     }
 
     return Scaffold(
       body: _isAuthenticating
-          ? const CircularProgressIndicator()
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : _isAuthenticated
               ? const SizedBox.shrink()
               : SingleChildScrollView(
