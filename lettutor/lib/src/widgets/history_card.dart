@@ -111,7 +111,7 @@ Future<bool> showReportDialog(BuildContext context) {
               Row(
                 children: [
                   const CircleAvatar(
-                    backgroundImage: AssetImage('assets/keegan-avatar.png'),
+                    backgroundImage: AssetImage('assets/tutor/keegan-avatar.png'),
                     radius: 32,
                   ),
                   const SizedBox(width: 12),

@@ -30,7 +30,7 @@ class _CourseDetailState extends State<CourseDetailView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/course-01.png'),
+            Image.asset('assets/course/course-01.png'),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Text(

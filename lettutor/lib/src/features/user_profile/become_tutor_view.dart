@@ -37,7 +37,7 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
                 Column(
                   children: [
                     Image.asset(
-                      'assets/user-avatar-01.png',
+                      'assets/user/user-avatar-01.png',
                       width: 100,
                       height: 100,
                     ),
