@@ -20,7 +20,7 @@ class _LoginViewState extends State<LoginView> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isAuthenticating = true;
+  bool _isAuthenticating = false;
   bool _isAuthenticated = false;
 
   void _handleLogin(AuthProvider authProvider) async {
@@ -32,8 +32,9 @@ class _LoginViewState extends State<LoginView> {
         callback: callback,
       );
     } catch (e) {
+      print(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error Login')),
+        SnackBar(content: Text('Error Login: ${e.toString()}')),
       );
     }
   }
@@ -75,8 +76,6 @@ class _LoginViewState extends State<LoginView> {
     if (_isAuthenticating) {
       authenticate(authProvider);
     }
-
-    print(MediaQuery.of(context).padding.top);
 
     return Scaffold(
       body: _isAuthenticating
@@ -135,6 +134,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         autocorrect: false,
                         decoration: InputDecoration(
@@ -153,6 +153,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
+                        controller: _passwordController,
                         obscureText: true,
                         autocorrect: false,
                         decoration: InputDecoration(
