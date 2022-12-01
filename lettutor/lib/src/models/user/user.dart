@@ -24,27 +24,28 @@ class User {
   String? studySchedule;
   bool? canSendMessage;
 
-  User(
-      {this.id,
-      this.email,
-      this.name,
-      this.avatar,
-      this.country,
-      this.phone,
-      this.roles,
-      this.language,
-      this.birthday,
-      this.isActivated,
-      this.walletInfo,
-      this.coursesId,
-      this.requireNote,
-      this.level,
-      this.learnTopics,
-      this.testPreparations,
-      this.isPhoneActivated,
-      this.timezone,
-      this.studySchedule,
-      this.canSendMessage});
+  User({
+    this.id,
+    this.email,
+    this.name,
+    this.avatar,
+    this.country,
+    this.phone,
+    this.roles,
+    this.language,
+    this.birthday,
+    this.isActivated,
+    this.walletInfo,
+    this.coursesId,
+    this.requireNote,
+    this.level,
+    this.learnTopics,
+    this.testPreparations,
+    this.isPhoneActivated,
+    this.timezone,
+    this.studySchedule,
+    this.canSendMessage,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

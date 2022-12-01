@@ -7,14 +7,15 @@ class WalletInfo {
   String? updatedAt;
   int? bonus;
 
-  WalletInfo(
-      {this.id,
-      this.userId,
-      this.amount,
-      this.isBlocked,
-      this.createdAt,
-      this.updatedAt,
-      this.bonus});
+  WalletInfo({
+    this.id,
+    this.userId,
+    this.amount,
+    this.isBlocked,
+    this.createdAt,
+    this.updatedAt,
+    this.bonus,
+  });
 
   WalletInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
