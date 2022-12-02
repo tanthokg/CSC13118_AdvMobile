@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/datatype.dart';
 import 'package:lettutor/src/constants/routes.dart';
-import 'package:lettutor/src/models/user/token.dart';
-import 'package:lettutor/src/models/user/user.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +26,28 @@ class _LoginViewState extends State<LoginView> {
       await AuthService.loginWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-        authProvider: authProvider,
-        callback: _handleAuthentication,
+        onSuccess: (user, token) async {
+          authProvider.logIn(user, token);
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'refresh_token',
+            authProvider.token!.refresh!.token!,
+          );
+
+          setState(() {
+            _isAuthenticating = false;
+            _isAuthenticated = true;
+          });
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.main,
+              (route) => false,
+            );
+          });
+        },
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,15 +56,35 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void _authenticate(AuthProvider authProvider) async {
+  void _handlePreviousSession(AuthProvider authProvider) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final refreshToken = prefs.getString('refresh_token') ?? '';
 
-      await AuthService.authenticate(
+      await AuthService.continueSession(
         refreshToken: refreshToken,
-        authProvider: authProvider,
-        callback: _handleAuthentication,
+        onSuccess: (user, token) async {
+          authProvider.logIn(user, token);
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'refresh_token',
+            authProvider.token!.refresh!.token!,
+          );
+
+          setState(() {
+            _isAuthenticating = false;
+            _isAuthenticated = true;
+          });
+
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.main,
+              (route) => false,
+            );
+          });
+        },
       );
     } catch (e) {
       setState(() {
@@ -55,28 +93,12 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void _handleAuthentication(User user, Token token, AuthProvider authProvider) async {
-    authProvider.logIn(user, token);
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('refresh_token', authProvider.token!.refresh!.token!);
-
-    setState(() {
-      _isAuthenticating = false;
-      _isAuthenticated = true;
-    });
-
-    Future.delayed(const Duration(seconds: 1), () {
-      Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
     if (_isAuthenticating) {
-      _authenticate(authProvider);
+      _handlePreviousSession(authProvider);
     }
 
     return Scaffold(

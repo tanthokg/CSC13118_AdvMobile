@@ -104,7 +104,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                 Expanded(
                   child: TextButton(
                     onPressed: () async {
-                      await showReportDialog(context);
+                      await _showReportDialog(context);
                     },
                     child: Column(
                       children: const [
@@ -205,9 +205,9 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                     padding: const EdgeInsets.all(8),
                     side: const BorderSide(color: Colors.blue, width: 1.5)),
                 onPressed: () async {
-                  final selectedDate = await bookLearningDate(context);
+                  final selectedDate = await _bookLearningDate(context);
                   if (mounted) {
-                    await bookLearningHour(context, selectedDate!);
+                    await _bookLearningHour(context, selectedDate!);
                   }
                   // Navigator.pushNamed(context, Routes.booking);
                 },
@@ -224,7 +224,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
   }
 }
 
-Future<DateTime?> bookLearningDate(BuildContext context) async {
+Future<DateTime?> _bookLearningDate(BuildContext context) async {
   DateTime? selectedDate = await showDatePicker(
     context: context,
     initialDate: DateTime.now(),
@@ -234,7 +234,7 @@ Future<DateTime?> bookLearningDate(BuildContext context) async {
   return selectedDate ?? DateTime.now();
 }
 
-Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async {
+Future<void> _bookLearningHour(BuildContext context, DateTime selectedDate) async {
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -272,7 +272,7 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () async {
-                        final dialogResult = await showBookingConfirmDialog(context);
+                        final dialogResult = await _showBookingConfirmDialog(context);
                         if (dialogResult) {
                           Navigator.of(context).pushNamed(
                             Routes.bookingDetail,
@@ -300,7 +300,7 @@ Future<void> bookLearningHour(BuildContext context, DateTime selectedDate) async
   );
 }
 
-Future<bool> showBookingConfirmDialog(BuildContext context) {
+Future<bool> _showBookingConfirmDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
     builder: (context) {
@@ -324,7 +324,7 @@ Future<bool> showBookingConfirmDialog(BuildContext context) {
   ).then((value) => value ?? false);
 }
 
-Future<bool> showReportDialog(BuildContext context) {
+Future<bool> _showReportDialog(BuildContext context) {
   return showDialog<bool>(
     context: context,
     builder: (context) {

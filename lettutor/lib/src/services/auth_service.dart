@@ -14,8 +14,7 @@ class AuthService {
   static Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
-    required AuthProvider authProvider,
-    required Function(User, Token, AuthProvider) callback,
+    required Function(User, Token) onSuccess,
   }) async {
     final response = await post(
       Uri.parse("$baseUrl/auth/login"),
@@ -33,13 +32,12 @@ class AuthService {
 
     final user = User.fromJson(jsonDecode['user']);
     final token = Token.fromJson(jsonDecode['tokens']);
-    await callback(user, token, authProvider);
+    await onSuccess(user, token);
   }
 
-  static Future<void> authenticate({
+  static Future<void> continueSession({
     required String refreshToken,
-    required AuthProvider authProvider,
-    required Function(User, Token, AuthProvider) callback,
+    required Function(User, Token) onSuccess,
   }) async {
     final response = await post(
       Uri.parse("$baseUrl/auth/refresh-token"),
@@ -50,13 +48,42 @@ class AuthService {
     );
 
     final jsonDecode = json.decode(response.body);
-
     if (response.statusCode != 200) {
       throw Exception(jsonDecode['message']);
     }
 
     final user = User.fromJson(jsonDecode['user']);
     final token = Token.fromJson(jsonDecode['tokens']);
-    await callback(user, token, authProvider);
+    await onSuccess(user, token);
+  }
+
+  static Future<void> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    final response = await post(Uri.parse("$baseUrl/auth/register"), body: {
+      'email': email,
+      'password': password,
+      "source": 'null',
+    });
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 201) {
+      throw Exception(jsonDecode['message']);
+    }
+  }
+
+  static Future<void> forgotPassword(String email) async {
+    final response = await post(
+      Uri.parse("$baseUrl/user/forgotPassword"),
+      body: {
+        'email': email,
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode['message']);
+    }
   }
 }

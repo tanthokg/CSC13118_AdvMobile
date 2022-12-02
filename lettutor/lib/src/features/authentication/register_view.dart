@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/datatype.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/services/auth_service.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -10,8 +11,31 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-
   String chosenLanguage = Language.english;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  void _handleRegister() async {
+    try {
+      await AuthService.registerWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account Created Successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error Register: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,73 +84,73 @@ class _RegisterViewState extends State<RegisterView> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 12),
-              child: Text('EMAIL', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            const SizedBox(height: 16),
+            const Text(
+              'EMAIL',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: TextField(
-                keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "abc@example.com",
-                  prefixIcon: const Icon(Icons.mail, size: 26),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              autocorrect: false,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintText: "abc@example.com",
+                prefixIcon: const Icon(Icons.mail, size: 26),
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            const SizedBox(height: 16),
+            const Text(
+              'PASSWORD',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: TextField(
-                obscureText: true,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "******",
-                  prefixIcon: const Icon(Icons.lock, size: 26),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              autocorrect: false,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintText: "******",
+                prefixIcon: const Icon(Icons.lock, size: 26),
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('CONFIRM PASSWORD', style: TextStyle(fontSize: 16, color: Colors.grey)),
+            const SizedBox(height: 16),
+            const Text(
+              'CONFIRM PASSWORD',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: TextField(
-                obscureText: true,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  hintText: "******",
-                  prefixIcon: const Icon(Icons.lock, size: 26),
-                  border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _confirmPasswordController,
+              obscureText: true,
+              autocorrect: false,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintText: "******",
+                prefixIcon: const Icon(Icons.lock, size: 26),
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: TextButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-                child: const Text(
-                  'REGISTER',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                _handleRegister();
+              },
+              style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+              child: const Text(
+                'REGISTER',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
             Row(
