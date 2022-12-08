@@ -9,16 +9,17 @@ class Feedback {
   String? updatedAt;
   FirstInfo? firstInfo;
 
-  Feedback(
-      {this.id,
-      this.bookingId,
-      this.firstId,
-      this.secondId,
-      this.rating,
-      this.content,
-      this.createdAt,
-      this.updatedAt,
-      this.firstInfo});
+  Feedback({
+    this.id,
+    this.bookingId,
+    this.firstId,
+    this.secondId,
+    this.rating,
+    this.content,
+    this.createdAt,
+    this.updatedAt,
+    this.firstInfo,
+  });
 
   Feedback.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -30,11 +31,11 @@ class Feedback {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     firstInfo =
-        json['firstInfo'] != null ? new FirstInfo.fromJson(json['firstInfo']) : null;
+        json['firstInfo'] != null ? FirstInfo.fromJson(json['firstInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = {};
     data['id'] = id;
     data['bookingId'] = bookingId;
     data['firstId'] = firstId;
