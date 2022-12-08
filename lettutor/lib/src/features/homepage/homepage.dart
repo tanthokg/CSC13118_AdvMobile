@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/homepage/homepage_banner.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:lettutor/src/widgets/teacher_card.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,75 +17,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<bool> isFavorite = [false, true, true, false];
 
+  final _tutors = [];
+  bool _isLoading = true;
+
+  void _fetchRecommendedTutors(String token) async {
+    final result = await TutorService.getListTutorWithPagination(
+      page: 1,
+      perPage: 50,
+      token: token,
+    );
+    print(result.length);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
+    if (_isLoading && authProvider.token != null) {
+      final String accessToken = authProvider.token?.access?.token as String;
+      _fetchRecommendedTutors(accessToken);
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: Colors.blue[700],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Text(
-                    'Upcoming Lesson',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 26, color: Colors.white),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      '2022-10-21  18:30-18:55',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    const SizedBox(width: 16),
-                    TextButton(
-                        style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 32),
-                            backgroundColor: Colors.white),
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.videoCall);
-                        },
-                        child: const Text('Join', style: TextStyle(fontSize: 16)))
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 12, bottom: 24),
-                  child: Text(
-                    'Total Lesson Time: 4 hours 30 minutes',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const HomepageBanner(),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+            padding: const EdgeInsets.all(12),
             child: Text(
               'Recommended Tutors',
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
-          ...List<Widget>.generate(
-            teachers.length,
-            (index) => TeacherCard(
-              teacher: teachers[index],
-              isFavorite: isFavorite[index],
-              onFavoriteClicked: () {
-                // print('favorite button clicked');
-                setState(() {
-                  isFavorite[index] = !isFavorite[index];
-                });
-              },
-            ),
-          ),
+          // ...List<Widget>.generate(
+          //   teachers.length,
+          //   (index) => TeacherCard(
+          //     teacher: teachers[index],
+          //     isFavorite: isFavorite[index],
+          //     onFavoriteClicked: () {
+          //       // print('favorite button clicked');
+          //       setState(() {
+          //         isFavorite[index] = !isFavorite[index];
+          //       });
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
