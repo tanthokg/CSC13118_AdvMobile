@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/routes.dart';
-import 'package:lettutor/src/dummy/teacher.dart';
+import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 
 class TutorCard extends StatefulWidget {
@@ -23,7 +23,7 @@ class _TutorCardState extends State<TutorCard> {
             ?.split(',')
             .map((e) => e.replaceAll('-', ' '))
             .toList() ??
-        ['no specs'];
+        ['no specs at all'];
 
     return Card(
       surfaceTintColor: Colors.white,
@@ -46,11 +46,13 @@ class _TutorCardState extends State<TutorCard> {
                       shape: BoxShape.circle,
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: widget.tutor.avatar ?? 'null',
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error_outline_rounded, size: 32, color: Colors.redAccent,)
-                    ),
+                        imageUrl: widget.tutor.avatar ?? 'null',
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => const Icon(
+                              Icons.error_outline_rounded,
+                              size: 32,
+                              color: Colors.redAccent,
+                            )),
                   ),
                 ),
                 Expanded(
@@ -65,7 +67,7 @@ class _TutorCardState extends State<TutorCard> {
                           child: Text(widget.tutor.name ?? 'null',
                               style: Theme.of(context).textTheme.headline3),
                         ),
-                        Text(widget.tutor.country ?? 'null',
+                        Text(countryList[widget.tutor.country ?? 'null'] ?? 'no country',
                             style: const TextStyle(fontSize: 16)),
                         Row(
                           children: List<Widget>.generate(
@@ -100,7 +102,11 @@ class _TutorCardState extends State<TutorCard> {
                 ),
               ),
             ),
-            Text(widget.tutor.bio ?? 'null'),
+            Text(
+              widget.tutor.bio ?? 'null',
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: OutlinedButton.icon(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/homepage/homepage_banner.dart';
+import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:lettutor/src/widgets/tutor_card.dart';
@@ -17,23 +18,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<bool> isFavorite = [false, true, true, false];
 
-  final _tutors = [];
+  List<Tutor> _tutors = [];
   bool _isLoading = true;
 
   void _fetchRecommendedTutors(String token) async {
-    final result = await TutorService.getListTutorWithPagination(
+    _tutors = await TutorService.getListTutorWithPagination(
       page: 1,
       perPage: 5,
       token: token,
     );
-    for (var tutor in result) {
-      _tutors.add(tutor);
-    }
-    print('$_isLoading');
+
     setState(() {
       _isLoading = false;
     });
-    print('$_isLoading ${result.length}');
   }
 
   @override
@@ -59,23 +56,10 @@ class _HomePageState extends State<HomePage> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: _tutors.length,
             itemBuilder: (context, index) => TutorCard(tutor: _tutors[index]),
           )
-          // ...List<Widget>.generate(
-          //   teachers.length,
-          //   (index) => TeacherCard(
-          //     teacher: teachers[index],
-          //     isFavorite: isFavorite[index],
-          //     onFavoriteClicked: () {
-          //       // print('favorite button clicked');
-          //       setState(() {
-          //         isFavorite[index] = !isFavorite[index];
-          //       });
-          //     },
-          //   ),
-          // ),
         ],
       ),
     );

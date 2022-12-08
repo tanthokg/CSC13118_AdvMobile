@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
-import 'package:lettutor/src/widgets/select_date.dart';
-import 'package:lettutor/src/widgets/select_time.dart';
+import 'package:lettutor/src/models/tutor/tutor.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/tutor_service.dart';
+import 'package:provider/provider.dart';
 
 class TutorsPage extends StatefulWidget {
   const TutorsPage({Key? key}) : super(key: key);
@@ -11,10 +13,29 @@ class TutorsPage extends StatefulWidget {
 }
 
 class _TutorsPageState extends State<TutorsPage> {
+  final _nameController = TextEditingController();
+
   int chosenFilter = 0;
+  List<Tutor> _tutors = [];
+
+  void _searchTutors(AuthProvider authProvider) async {
+    final name = _nameController.text;
+    final accessToken = authProvider.token?.access?.token as String;
+
+    _tutors = await TutorService.searchTutor(
+      page: 1,
+      perPage: 20,
+      token: accessToken,
+      search: name,
+    );
+
+    print(_tutors.length);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -23,6 +44,7 @@ class _TutorsPageState extends State<TutorsPage> {
           Text('Find a tutor', style: Theme.of(context).textTheme.headline4),
           const SizedBox(height: 8),
           TextField(
+            controller: _nameController,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
               hintStyle: TextStyle(color: Colors.grey[400]),
@@ -39,26 +61,14 @@ class _TutorsPageState extends State<TutorsPage> {
               hintText: 'select nationality',
               hintStyle: TextStyle(color: Colors.grey[400]),
               border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
+                borderSide: BorderSide(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
             ),
             items: nationalities
                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),
             onChanged: (value) {},
-          ),
-          const SizedBox(height: 16),
-          Text('Select available tutoring time',
-              style: Theme.of(context).textTheme.headline4),
-          const SizedBox(height: 8),
-          const SelectDate(),
-          const SizedBox(height: 8),
-          Row(
-            children: const [
-              SelectTime(),
-              SizedBox(width: 20),
-              SelectTime(),
-            ],
           ),
           const SizedBox(height: 16),
           Text('Specialties', style: Theme.of(context).textTheme.headline4),
@@ -105,7 +115,9 @@ class _TutorsPageState extends State<TutorsPage> {
               ),
               const SizedBox(width: 10),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _searchTutors(authProvider);
+                },
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Padding(
