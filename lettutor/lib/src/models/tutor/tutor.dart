@@ -19,7 +19,7 @@ class Tutor {
   int? timezone;
   String? phoneAuth;
   bool? isPhoneAuthActivated;
-  String? studySchedule;
+  // String? studySchedule;
   bool? canSendMessage;
   bool? isPublicRecord;
   String? caredByStaffId;
@@ -65,7 +65,7 @@ class Tutor {
     this.timezone,
     this.phoneAuth,
     this.isPhoneAuthActivated,
-    this.studySchedule,
+    // this.studySchedule,
     this.canSendMessage,
     this.isPublicRecord,
     this.caredByStaffId,
@@ -112,7 +112,7 @@ class Tutor {
     timezone = json['timezone'];
     phoneAuth = json['phoneAuth'];
     isPhoneAuthActivated = json['isPhoneAuthActivated'];
-    studySchedule = json['studySchedule'];
+    // studySchedule = json['studySchedule'];
     canSendMessage = json['canSendMessage'];
     isPublicRecord = json['isPublicRecord'];
     caredByStaffId = json['caredByStaffId'];
@@ -165,7 +165,7 @@ class Tutor {
     data['timezone'] = timezone;
     data['phoneAuth'] = phoneAuth;
     data['isPhoneAuthActivated'] = isPhoneAuthActivated;
-    data['studySchedule'] = studySchedule;
+    // data['studySchedule'] = studySchedule;
     data['canSendMessage'] = canSendMessage;
     data['isPublicRecord'] = isPublicRecord;
     data['caredByStaffId'] = caredByStaffId;
