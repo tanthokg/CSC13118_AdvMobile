@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/constants/routes.dart';
-import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 
 class TutorCard extends StatefulWidget {
@@ -62,8 +62,7 @@ class _TutorCardState extends State<TutorCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () =>
-                              Navigator.pushNamed(context, Routes.teacherDetail),
+                          onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
                           child: Text(widget.tutor.name ?? 'null',
                               style: Theme.of(context).textTheme.headline3),
                         ),
