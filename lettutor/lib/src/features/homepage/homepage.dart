@@ -4,7 +4,7 @@ import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/homepage/homepage_banner.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
-import 'package:lettutor/src/widgets/teacher_card.dart';
+import 'package:lettutor/src/widgets/tutor_card.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,10 +23,17 @@ class _HomePageState extends State<HomePage> {
   void _fetchRecommendedTutors(String token) async {
     final result = await TutorService.getListTutorWithPagination(
       page: 1,
-      perPage: 50,
+      perPage: 5,
       token: token,
     );
-    print(result.length);
+    for (var tutor in result) {
+      _tutors.add(tutor);
+    }
+    print('$_isLoading');
+    setState(() {
+      _isLoading = false;
+    });
+    print('$_isLoading ${result.length}');
   }
 
   @override
@@ -50,6 +57,12 @@ class _HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.headline3,
             ),
           ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: _tutors.length,
+            itemBuilder: (context, index) => TutorCard(tutor: _tutors[index]),
+          )
           // ...List<Widget>.generate(
           //   teachers.length,
           //   (index) => TeacherCard(

@@ -1,27 +1,36 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/dummy/teacher.dart';
+import 'package:lettutor/src/models/tutor/tutor.dart';
 
-class TeacherCard extends StatelessWidget {
-  const TeacherCard({
+class TutorCard extends StatefulWidget {
+  const TutorCard({
     Key? key,
-    required this.teacher,
-    required this.isFavorite,
-    required this.onFavoriteClicked,
+    required this.tutor,
   }) : super(key: key);
 
-  final Teacher teacher;
-  final bool isFavorite;
-  final Function() onFavoriteClicked;
+  final Tutor tutor;
 
   @override
+  State<TutorCard> createState() => _TutorCardState();
+}
+
+class _TutorCardState extends State<TutorCard> {
+  @override
   Widget build(BuildContext context) {
+    final specialties = widget.tutor.specialties
+            ?.split(',')
+            .map((e) => e.replaceAll('-', ' '))
+            .toList() ??
+        ['no specs'];
+
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 3.0,
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,9 +38,19 @@ class TeacherCard extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundImage: AssetImage(teacher.avatarUrl),
+                  child: Container(
+                    width: 72,
+                    height: 72,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.tutor.avatar ?? 'null',
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error_outline_rounded, size: 32, color: Colors.redAccent,)
+                    ),
                   ),
                 ),
                 Expanded(
@@ -41,14 +60,16 @@ class TeacherCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
-                          child: Text(teacher.name,
+                          onTap: () =>
+                              Navigator.pushNamed(context, Routes.teacherDetail),
+                          child: Text(widget.tutor.name ?? 'null',
                               style: Theme.of(context).textTheme.headline3),
                         ),
-                        Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
+                        Text(widget.tutor.country ?? 'null',
+                            style: const TextStyle(fontSize: 16)),
                         Row(
                           children: List<Widget>.generate(
-                            teacher.reviewScore,
+                            widget.tutor.rating?.round() ?? 3,
                             (index) => const Icon(Icons.star, color: Colors.amber),
                           ),
                         )
@@ -57,29 +78,29 @@ class TeacherCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: onFavoriteClicked,
-                  icon: Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.blue,
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.favorite_border,
+                    color: Colors.red,
                   ),
                 )
               ],
             ),
             Wrap(
-              spacing: 4,
-              runSpacing: -6,
+              spacing: 8,
+              runSpacing: -4,
               children: List<Widget>.generate(
-                teacher.specialties.length,
+                specialties.length,
                 (index) => Chip(
                   backgroundColor: Colors.lightBlue[50],
                   label: Text(
-                    teacher.specialties[index],
+                    specialties[index],
                     style: const TextStyle(fontSize: 14, color: Colors.blue),
                   ),
                 ),
               ),
             ),
-            Text(teacher.description),
+            Text(widget.tutor.bio ?? 'null'),
             Align(
               alignment: Alignment.centerRight,
               child: OutlinedButton.icon(
