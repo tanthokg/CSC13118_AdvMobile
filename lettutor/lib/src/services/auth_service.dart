@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:lettutor/src/models/user/token.dart';
 import 'package:lettutor/src/models/user/user.dart';
-import 'package:lettutor/src/providers/auth_provider.dart';
 
 class AuthService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
