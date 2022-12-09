@@ -25,7 +25,10 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-              child: Text('Found ${widget.tutors.length} result(s)', style: Theme.of(context).textTheme.headline4,),
+              child: Text(
+                'Found ${widget.tutors.length} result(s)',
+                style: Theme.of(context).textTheme.headline4,
+              ),
             ),
             widget.tutors.isEmpty ? const Text('No Matches') : const SizedBox.shrink(),
             ...List<Widget>.generate(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/features/tutor/tutor_search_result.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
@@ -24,12 +25,39 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
     final name = _nameController.text;
     final accessToken = authProvider.token?.access?.token as String;
 
-    _tutors = await TutorService.searchTutor(
+    final result = await TutorService.searchTutor(
       page: 1,
       perPage: 10,
       token: accessToken,
       search: name,
     );
+
+    if (_countryController.text.isEmpty) {
+      _tutors = result;
+    } else {
+      _tutors.clear();
+      for (var tutor in result) {
+        if (countryList[tutor.country] != null) {
+          if (countryList[tutor.country]!.toLowerCase().contains(_countryController.text)) {
+            _tutors.add(tutor);
+          }
+        }
+      }
+    }
+
+    // final countryCodes = countryList.keys.toList();
+    // for (var tutor in result) {
+    //   final countryCode = tutor.country;
+    //   bool result = false;
+    //   for (var code in countryCodes) {
+    //     if (countryList[code] != null) {
+    //       result = countryList[code]!.toLowerCase().contains(_countryController.text);
+    //     }
+    //   }
+    //   if (result) {
+    //     _tutors.add(tutor);
+    //   }
+    // }
   }
 
   @override
