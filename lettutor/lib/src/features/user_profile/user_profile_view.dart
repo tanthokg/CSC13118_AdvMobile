@@ -209,7 +209,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              items: subjects
+              items: learnTopics
                   .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                   .toList(),
               onChanged: (value) {},

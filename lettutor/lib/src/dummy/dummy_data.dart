@@ -19,7 +19,7 @@ const levels = [
   'C2 (Proficiency)',
 ];
 
-const subjects = [
+const learnTopics = [
   'English for kids',
   'English for Business',
   'Conversational',
@@ -36,7 +36,7 @@ const testPreparations = [
   'TOEIC'
 ];
 
-const filters = [
+const specialties = [
   'All',
   'English for kids',
   'English for Business',

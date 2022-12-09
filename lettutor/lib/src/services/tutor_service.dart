@@ -32,10 +32,10 @@ class TutorService {
   }
 
   static Future<List<Tutor>> searchTutor({
-    required int page,
-    required int perPage,
     required String token,
     String search = '',
+    required int page,
+    required int perPage,
     List<String> specialties = const [],
   }) async {
     final response = await post(

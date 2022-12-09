@@ -18,18 +18,23 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
   final _nameController = TextEditingController();
   final _countryController = TextEditingController();
 
-  int chosenFilter = 0;
+  int _chosenSpecialty = 0;
   List<Tutor> _tutors = [];
 
   Future<void> _searchTutors(AuthProvider authProvider) async {
     final name = _nameController.text;
     final accessToken = authProvider.token?.access?.token as String;
+    final List<String> filterSpecialties = [];
+    if (_chosenSpecialty != 0) {
+      filterSpecialties.add(specialties[_chosenSpecialty].toLowerCase().replaceAll(' ', '-'));
+    }
 
     final result = await TutorService.searchTutor(
-      page: 1,
-      perPage: 10,
       token: accessToken,
       search: name,
+      page: 1,
+      perPage: 10,
+      specialties: filterSpecialties,
     );
 
     if (_countryController.text.isEmpty) {
@@ -44,20 +49,6 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
         }
       }
     }
-
-    // final countryCodes = countryList.keys.toList();
-    // for (var tutor in result) {
-    //   final countryCode = tutor.country;
-    //   bool result = false;
-    //   for (var code in countryCodes) {
-    //     if (countryList[code] != null) {
-    //       result = countryList[code]!.toLowerCase().contains(_countryController.text);
-    //     }
-    //   }
-    //   if (result) {
-    //     _tutors.add(tutor);
-    //   }
-    // }
   }
 
   @override
@@ -116,21 +107,21 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
             spacing: 8,
             runSpacing: -4,
             children: List<Widget>.generate(
-              filters.length,
+              specialties.length,
               (index) => ChoiceChip(
                 label: Text(
-                  filters[index],
+                  specialties[index],
                   style: TextStyle(
                     fontSize: 14,
-                    color: chosenFilter == index ? Colors.blue[700] : Colors.black54,
+                    color: _chosenSpecialty == index ? Colors.blue[700] : Colors.black54,
                   ),
                 ),
                 backgroundColor: Colors.grey[100],
                 selectedColor: Colors.lightBlue[100],
-                selected: chosenFilter == index,
+                selected: _chosenSpecialty == index,
                 onSelected: (bool selected) {
                   setState(() {
-                    chosenFilter = index;
+                    _chosenSpecialty = index;
                   });
                 },
               ),
@@ -144,7 +135,7 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    chosenFilter = 0;
+                    _chosenSpecialty = 0;
                   });
                 },
                 child: const Padding(
