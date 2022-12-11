@@ -54,7 +54,7 @@ class User {
     avatar = json['avatar'];
     country = json['country'];
     phone = json['phone'];
-    roles = json['roles'].cast<String>();
+    roles = json['roles']?.cast<String>();
     language = json['language'];
     birthday = json['birthday'];
     isActivated = json['isActivated'];

@@ -2,9 +2,20 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
+import 'package:lettutor/src/models/tutor/tutor_info.dart';
+import 'package:lettutor/src/models/user/learn_topic.dart';
+import 'package:lettutor/src/models/user/test_preparation.dart';
 
 class TutorService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
+
+  static Future<List<LearnTopic>> getTopics() async {
+    return <LearnTopic>[];
+  }
+
+  static Future<List<TestPreparation>> getTestPreparations() async {
+    return <TestPreparation>[];
+  }
 
   static Future<List<Tutor>> getListTutorWithPagination({
     required int page,
@@ -31,6 +42,27 @@ class TutorService {
     return tutors.map((tutor) => Tutor.fromJson(tutor)).toList();
   }
 
+  static Future<TutorInfo> getTutorInfoById({
+    required String token,
+    required String userId,
+  }) async {
+    final response = await get(
+      Uri.parse('$baseUrl/tutor/$userId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode['message']);
+    }
+
+    return TutorInfo.fromJson(jsonDecode);
+  }
+
   static Future<List<Tutor>> searchTutor({
     required String token,
     String search = '',
@@ -41,8 +73,8 @@ class TutorService {
     final response = await post(
       Uri.parse('$baseUrl/tutor/search'),
       headers: {
-        'Authorization': 'Bearer $token',
         'Content-type': 'application/json;encoding=utf-8',
+        'Authorization': 'Bearer $token',
       },
       body: json.encode({
         'page': page,
@@ -59,7 +91,7 @@ class TutorService {
     if (response.statusCode != 200) {
       throw Exception(jsonDecode['message']);
     }
-    
+
     final List<dynamic> tutors = jsonDecode['rows'];
     return tutors.map((tutor) => Tutor.fromJson(tutor)).toList();
   }

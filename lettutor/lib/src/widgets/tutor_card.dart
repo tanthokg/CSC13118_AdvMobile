@@ -37,7 +37,11 @@ class _TutorCardState extends State<TutorCard> {
             Row(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    Routes.teacherDetail,
+                    arguments: widget.tutor.userId,
+                  ),
                   child: Container(
                     width: 72,
                     height: 72,
@@ -45,14 +49,15 @@ class _TutorCardState extends State<TutorCard> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: CachedNetworkImage(
-                        imageUrl: widget.tutor.avatar ?? 'null',
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => const Icon(
-                              Icons.error_outline_rounded,
-                              size: 32,
-                              color: Colors.redAccent,
-                            )),
+                    child: Image.network(
+                      widget.tutor.avatar ?? '',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.error_outline_rounded,
+                        color: Colors.red,
+                        size: 32,
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -62,7 +67,11 @@ class _TutorCardState extends State<TutorCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pushNamed(context, Routes.teacherDetail),
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            Routes.teacherDetail,
+                            arguments: widget.tutor.userId,
+                          ),
                           child: Text(widget.tutor.name ?? 'null',
                               style: Theme.of(context).textTheme.headline3),
                         ),
@@ -109,7 +118,11 @@ class _TutorCardState extends State<TutorCard> {
             Align(
               alignment: Alignment.centerRight,
               child: OutlinedButton.icon(
-                onPressed: () => Navigator.pushNamed(context, Routes.teacherDetail),
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  Routes.teacherDetail,
+                  arguments: widget.tutor.userId,
+                ),
                 icon: const Icon(Icons.edit_calendar),
                 label: const Text('Book'),
               ),

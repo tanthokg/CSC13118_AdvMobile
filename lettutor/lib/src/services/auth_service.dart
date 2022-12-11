@@ -7,8 +7,7 @@ import 'package:lettutor/src/models/user/user.dart';
 class AuthService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
 
-  static User parseUser(String responseBody) =>
-      User.fromJson(jsonDecode(responseBody));
+  static User parseUser(String responseBody) => User.fromJson(jsonDecode(responseBody));
 
   static Future<void> loginWithEmailAndPassword({
     required String email,
@@ -60,11 +59,14 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final response = await post(Uri.parse("$baseUrl/auth/register"), body: {
-      'email': email,
-      'password': password,
-      "source": 'null',
-    });
+    final response = await post(
+      Uri.parse("$baseUrl/auth/register"),
+      body: {
+        'email': email,
+        'password': password,
+        "source": 'null',
+      },
+    );
 
     final jsonDecode = json.decode(response.body);
     if (response.statusCode != 201) {

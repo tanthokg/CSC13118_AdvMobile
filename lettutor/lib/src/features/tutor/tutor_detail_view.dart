@@ -1,6 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/models/tutor/tutor_info.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/tutor_service.dart';
+import 'package:provider/provider.dart';
 
 class TutorDetailView extends StatefulWidget {
   const TutorDetailView({Key? key}) : super(key: key);
@@ -10,11 +16,39 @@ class TutorDetailView extends StatefulWidget {
 }
 
 class _TutorDetailViewState extends State<TutorDetailView> {
-  final teacher = teachers[0];
-  bool isFavorite = false;
+  late TutorInfo _tutorInfo;
+  late final List<String> specialties;
+  bool _isLoading = true;
+  late String _userId;
+
+  Future<void> _fetchTutorInfo(String token) async {
+    final result = await TutorService.getTutorInfoById(token: token, userId: _userId);
+    specialties = result.specialties?.split(',') ?? ['null'];
+
+    if (mounted) {
+      setState(() {
+        _tutorInfo = result;
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+    _userId = ModalRoute.of(context)?.settings.arguments as String;
+    print(_userId);
+
+    if (_isLoading && authProvider.token != null) {
+      final String accessToken = authProvider.token?.access?.token as String;
+      _fetchTutorInfo(accessToken);
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -27,199 +61,223 @@ class _TutorDetailViewState extends State<TutorDetailView> {
           style: Theme.of(context).textTheme.headline2,
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 45,
-                  backgroundImage: AssetImage(teacher.avatarUrl),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Text(teacher.name, style: Theme.of(context).textTheme.headline3),
-                      Text(teacher.nationality, style: const TextStyle(fontSize: 16)),
-                      Row(children: [
-                        ...List<Widget>.generate(
-                          teacher.reviewScore,
-                          (index) => const Icon(Icons.star, color: Colors.amber),
+                      Container(
+                        width: 72,
+                        height: 72,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
                         ),
-                        const SizedBox(width: 8),
-                        Text('(${teacher.reviewCount})',
-                            style: const TextStyle(fontSize: 18))
-                      ])
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(teacher.description, style: const TextStyle(fontSize: 16)),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : Colors.blue,
-                        ),
-                        Text(
-                          'Favorite',
-                          style: TextStyle(
-                            color: isFavorite ? Colors.red : Colors.blue,
+                        child: CachedNetworkImage(
+                          imageUrl: _tutorInfo.user?.avatar ?? '',
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.error_outline_rounded,
+                            size: 32,
+                            color: Colors.redAccent,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.review);
-                    },
-                    child: Column(
-                      children: const [
-                        Icon(Icons.reviews_outlined, color: Colors.blue),
-                        Text('Review', style: TextStyle(color: Colors.blue))
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () async {
-                      await _showReportDialog(context);
-                    },
-                    child: Column(
-                      children: const [
-                        Icon(Icons.report_outlined, color: Colors.blue),
-                        Text('Report', style: TextStyle(color: Colors.blue))
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              height: 200,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 2),
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: Text(
-                'Introduction Video Goes Here',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blue[700],
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text('Languages', style: Theme.of(context).textTheme.headline3),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Wrap(children: [
-                Chip(
-                  label: const Text(
-                    'English',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  backgroundColor: Colors.blue[50],
-                ),
-              ]),
-            ),
-            const SizedBox(height: 8),
-            Text('Specialties', style: Theme.of(context).textTheme.headline3),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: -4,
-                children: List<Widget>.generate(
-                  teacher.specialties.length,
-                  (index) => Chip(
-                    label: Text(
-                      teacher.specialties[index],
-                      style: const TextStyle(color: Colors.blue),
-                    ),
-                    backgroundColor: Colors.blue[50],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text('Suggested Courses', style: Theme.of(context).textTheme.headline3),
-            ...courses.map((course) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      Text(
-                        course.name,
-                        style: Theme.of(context).textTheme.headline4,
+                        ),
                       ),
-                      const SizedBox(width: 16),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.courseDetail);
-                          },
-                          child: const Text('View'))
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _tutorInfo.user?.name ?? 'null name',
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
+                            Text(
+                              countryList[_tutorInfo.user?.country] ?? 'null country',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            Row(children: [
+                              ...List<Widget>.generate(
+                                _tutorInfo.rating?.round() ?? 0,
+                                (index) => const Icon(Icons.star, color: Colors.amber),
+                              ),
+                              const SizedBox(width: 8),
+                              Text('(${_tutorInfo.totalFeedback})',
+                                  style: const TextStyle(fontSize: 18))
+                            ])
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                )),
-            const SizedBox(height: 12),
-            Text('Interests', style: Theme.of(context).textTheme.headline3),
-            const Padding(
-              padding: EdgeInsets.only(left: 10, right: 8),
-              child: Text('I loved the weather, the scenery and the '
-                  'laid-back lifestyle of the locals.'),
-            ),
-            const SizedBox(height: 12),
-            Text('Teaching Experiences', style: Theme.of(context).textTheme.headline3),
-            const Padding(
-              padding: EdgeInsets.only(left: 10, right: 8),
-              child: Text('I have more than 10 years of teaching english experience'),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 24, bottom: 12),
-              child: OutlinedButton(
-                style: TextButton.styleFrom(
-                    minimumSize: const Size.fromHeight(0),
-                    padding: const EdgeInsets.all(8),
-                    side: const BorderSide(color: Colors.blue, width: 1.5)),
-                onPressed: () async {
-                  final selectedDate = await _bookLearningDate(context);
-                  if (mounted) {
-                    await _bookLearningHour(context, selectedDate!);
-                  }
-                  // Navigator.pushNamed(context, Routes.booking);
-                },
-                child: const Text(
-                  'Book This Tutor',
-                  style: TextStyle(fontSize: 18, color: Colors.blue),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text(_tutorInfo.bio ?? 'null bio',
+                        style: const TextStyle(fontSize: 16)),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Column(
+                            children: [
+                              Icon(
+                                _tutorInfo.isFavorite ?? false
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: _tutorInfo.isFavorite ?? false
+                                    ? Colors.red
+                                    : Colors.blue,
+                              ),
+                              Text(
+                                'Favorite',
+                                style: TextStyle(
+                                  color: _tutorInfo.isFavorite ?? false
+                                      ? Colors.red
+                                      : Colors.blue,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.review);
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(Icons.reviews_outlined, color: Colors.blue),
+                              Text('Review', style: TextStyle(color: Colors.blue))
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () async {
+                            await _showReportDialog(context);
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(Icons.report_outlined, color: Colors.blue),
+                              Text('Report', style: TextStyle(color: Colors.blue))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    height: 200,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        borderRadius: const BorderRadius.all(Radius.circular(10))),
+                    child: Text(
+                      'Introduction Video Goes Here',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('Languages', style: Theme.of(context).textTheme.headline3),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(children: [
+                      Chip(
+                        label: const Text(
+                          'English',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        backgroundColor: Colors.blue[50],
+                      ),
+                    ]),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('Specialties', style: Theme.of(context).textTheme.headline3),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: -4,
+                      children: List<Widget>.generate(
+                        specialties.length,
+                        (index) => Chip(
+                          label: Text(
+                            specialties[index],
+                            style: const TextStyle(color: Colors.blue),
+                          ),
+                          backgroundColor: Colors.blue[50],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('Suggested Courses', style: Theme.of(context).textTheme.headline3),
+                  ...courses.map((course) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            Text(
+                              course.name,
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            const SizedBox(width: 16),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.courseDetail);
+                                },
+                                child: const Text('View'))
+                          ],
+                        ),
+                      )),
+                  const SizedBox(height: 12),
+                  Text('Interests', style: Theme.of(context).textTheme.headline3),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 8),
+                    child: Text(_tutorInfo.interests ?? 'null interests'),
+                  ),
+                  const SizedBox(height: 12),
+                  Text('Teaching Experiences',
+                      style: Theme.of(context).textTheme.headline3),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 8),
+                    child: Text(_tutorInfo.experience ?? 'null teaching experiences'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24, bottom: 12),
+                    child: OutlinedButton(
+                      style: TextButton.styleFrom(
+                          minimumSize: const Size.fromHeight(0),
+                          padding: const EdgeInsets.all(8),
+                          side: const BorderSide(color: Colors.blue, width: 1.5)),
+                      onPressed: () async {
+                        final selectedDate = await _bookLearningDate(context);
+                        if (mounted) {
+                          await _bookLearningHour(context, selectedDate!);
+                        }
+                        // Navigator.pushNamed(context, Routes.booking);
+                      },
+                      child: const Text(
+                        'Book This Tutor',
+                        style: TextStyle(fontSize: 18, color: Colors.blue),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
