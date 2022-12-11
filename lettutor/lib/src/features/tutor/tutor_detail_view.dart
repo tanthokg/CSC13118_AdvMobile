@@ -19,11 +19,13 @@ class _TutorDetailViewState extends State<TutorDetailView> {
   late TutorInfo _tutorInfo;
   late final List<String> specialties;
   bool _isLoading = true;
-  late String _userId;
+  late final String _userId;
 
   Future<void> _fetchTutorInfo(String token) async {
     final result = await TutorService.getTutorInfoById(token: token, userId: _userId);
-    specialties = result.specialties?.split(',') ?? ['null'];
+    if (_isLoading) {
+      specialties = result.specialties?.split(',') ?? ['null'];
+    }
 
     if (mounted) {
       setState(() {
@@ -41,10 +43,10 @@ class _TutorDetailViewState extends State<TutorDetailView> {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
-    _userId = ModalRoute.of(context)?.settings.arguments as String;
-    print(_userId);
 
     if (_isLoading && authProvider.token != null) {
+      _userId = ModalRoute.of(context)?.settings.arguments as String;
+      print('User ID: $_userId');
       final String accessToken = authProvider.token?.access?.token as String;
       _fetchTutorInfo(accessToken);
     }
@@ -116,30 +118,33 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(_tutorInfo.bio ?? 'null bio',
-                        style: const TextStyle(fontSize: 16)),
+                    child: Text(_tutorInfo.bio ?? 'null bio', style: const TextStyle(fontSize: 16)),
                   ),
                   Row(
                     children: [
                       Expanded(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (authProvider.token != null) {
+                              final String accessToken =
+                                  authProvider.token?.access?.token as String;
+                              await TutorService.addTutorToFavorite(
+                                  token: accessToken, userId: _userId);
+                              _fetchTutorInfo(accessToken);
+                            }
+                          },
                           child: Column(
                             children: [
                               Icon(
                                 _tutorInfo.isFavorite ?? false
                                     ? Icons.favorite
                                     : Icons.favorite_border,
-                                color: _tutorInfo.isFavorite ?? false
-                                    ? Colors.red
-                                    : Colors.blue,
+                                color: _tutorInfo.isFavorite ?? false ? Colors.red : Colors.blue,
                               ),
                               Text(
                                 'Favorite',
                                 style: TextStyle(
-                                  color: _tutorInfo.isFavorite ?? false
-                                      ? Colors.red
-                                      : Colors.blue,
+                                  color: _tutorInfo.isFavorite ?? false ? Colors.red : Colors.blue,
                                 ),
                               )
                             ],
@@ -249,8 +254,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                     child: Text(_tutorInfo.interests ?? 'null interests'),
                   ),
                   const SizedBox(height: 12),
-                  Text('Teaching Experiences',
-                      style: Theme.of(context).textTheme.headline3),
+                  Text('Teaching Experiences', style: Theme.of(context).textTheme.headline3),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 8),
                     child: Text(_tutorInfo.experience ?? 'null teaching experiences'),

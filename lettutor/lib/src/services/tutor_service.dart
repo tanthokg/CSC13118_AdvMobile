@@ -95,4 +95,26 @@ class TutorService {
     final List<dynamic> tutors = jsonDecode['rows'];
     return tutors.map((tutor) => Tutor.fromJson(tutor)).toList();
   }
+
+  static Future<void> addTutorToFavorite({
+    required String token,
+    required String userId,
+  }) async {
+    final response = await post(
+      Uri.parse('$baseUrl/user/manageFavoriteTutor'),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode({
+        'tutorId': userId,
+        },
+      ),
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode['message']);
+    }
+  }
 }
