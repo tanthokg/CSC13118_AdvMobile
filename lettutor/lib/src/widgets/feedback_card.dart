@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/review.dart';
+import 'package:lettutor/src/models/tutor/tutor_feedback.dart';
 
-class ReviewCard extends StatelessWidget {
-  const ReviewCard({Key? key, required this.review}) : super(key: key);
+class FeedbackCard extends StatelessWidget {
+  const FeedbackCard({Key? key, required this.feedback, }) : super(key: key);
 
-  final Review review;
+  final TutorFeedback feedback;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class ReviewCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    review.username,
+                    feedback.firstInfo?.name ?? 'null name',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -29,19 +30,19 @@ class ReviewCard extends StatelessWidget {
                   ),
                 ),
                 ...List<Widget>.generate(
-                  review.rating,
+                  feedback.rating ?? 0,
                   (index) => const Icon(Icons.star, color: Colors.amber),
 
                 ),
                 ...List<Widget>.generate(
-                  5 - review.rating,
+                  5 - feedback.rating!.toInt(),
                       (index) => const Icon(Icons.star, color: Colors.grey),
 
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            Text(review.content)
+            Text(feedback.content ?? 'null content')
           ],
         ),
       ),

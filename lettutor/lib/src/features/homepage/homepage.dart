@@ -50,19 +50,20 @@ class _HomePageState extends State<HomePage> {
     }
 
     return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HomepageBanner(),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    'Recommended Tutors',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ),
-                _isLoading ? const Center(child: CircularProgressIndicator()) :
-                ListView.builder(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const HomepageBanner(),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              'Recommended Tutors',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+          ),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _tutors.length,
@@ -70,8 +71,8 @@ class _HomePageState extends State<HomePage> {
                     return TutorCard(tutor: _tutors[index]);
                   },
                 )
-              ],
-            ),
-          );
+        ],
+      ),
+    );
   }
 }

@@ -23,6 +23,17 @@ class TutorCard extends StatefulWidget {
 class _TutorCardState extends State<TutorCard> {
   TutorInfo? _tutorInfo;
 
+  void _handleTutorDetailView() {
+    Navigator.pushNamed(
+      context,
+      Routes.teacherDetail,
+      arguments: {
+        'userId': widget.tutor.userId,
+        'tutor': widget.tutor,
+      },
+    );
+  }
+
   Future<void> _fetchTutorInfo(String token) async {
     final result = await TutorService.getTutorInfoById(
       token: token,
@@ -31,8 +42,8 @@ class _TutorCardState extends State<TutorCard> {
 
     if (mounted) {
       setState(() {
-      _tutorInfo = result;
-    });
+        _tutorInfo = result;
+      });
     }
   }
 
@@ -61,11 +72,9 @@ class _TutorCardState extends State<TutorCard> {
             Row(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    Routes.teacherDetail,
-                    arguments: widget.tutor.userId,
-                  ),
+                  onTap: () {
+                    _handleTutorDetailView();
+                  },
                   child: Container(
                     width: 72,
                     height: 72,
@@ -91,11 +100,9 @@ class _TutorCardState extends State<TutorCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () => Navigator.pushNamed(
-                            context,
-                            Routes.teacherDetail,
-                            arguments: widget.tutor.userId,
-                          ),
+                          onTap: () {
+                            _handleTutorDetailView();
+                          },
                           child: Text(widget.tutor.name ?? 'null name',
                               style: Theme.of(context).textTheme.headline3),
                         ),
@@ -157,11 +164,9 @@ class _TutorCardState extends State<TutorCard> {
             Align(
               alignment: Alignment.centerRight,
               child: OutlinedButton.icon(
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  Routes.teacherDetail,
-                  arguments: widget.tutor.userId,
-                ),
+                onPressed: () {
+                  _handleTutorDetailView();
+                },
                 icon: const Icon(Icons.edit_calendar),
                 label: const Text('Book'),
               ),

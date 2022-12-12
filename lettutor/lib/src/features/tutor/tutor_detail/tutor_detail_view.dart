@@ -4,6 +4,7 @@ import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_report_dialog.dart';
+import 'package:lettutor/src/models/tutor/tutor_feedback.dart';
 import 'package:lettutor/src/models/tutor/tutor_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
@@ -19,13 +20,15 @@ class TutorDetailView extends StatefulWidget {
 class _TutorDetailViewState extends State<TutorDetailView> {
   late TutorInfo _tutorInfo;
   late final List<String> specialties;
+  late final List<TutorFeedback> feedbacks;
+  late String userId;
+
   bool _isLoading = true;
-  late final String _userId;
 
   Future<void> _fetchTutorInfo(String token) async {
     final result = await TutorService.getTutorInfoById(
       token: token,
-      userId: _userId,
+      userId: userId,
     );
     if (_isLoading) {
       specialties = result.specialties?.split(',') ?? ['null'];
@@ -49,8 +52,10 @@ class _TutorDetailViewState extends State<TutorDetailView> {
     final authProvider = context.watch<AuthProvider>();
 
     if (_isLoading && authProvider.token != null) {
-      _userId = ModalRoute.of(context)?.settings.arguments as String;
-      print('User ID: $_userId');
+      final data = ModalRoute.of(context)?.settings.arguments as Map;
+      userId = data['userId'];
+      feedbacks = data['tutor'].feedbacks;
+
       final String accessToken = authProvider.token?.access?.token as String;
       _fetchTutorInfo(accessToken);
     }
@@ -137,7 +142,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                                   authProvider.token?.access?.token as String;
                               await TutorService.addTutorToFavorite(
                                 token: accessToken,
-                                userId: _userId,
+                                userId: userId,
                               );
                               _fetchTutorInfo(accessToken);
                             }
@@ -167,12 +172,16 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                       Expanded(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, Routes.review);
+                            Navigator.pushNamed(
+                              context,
+                              Routes.review,
+                              arguments: feedbacks,
+                            );
                           },
                           child: Column(
                             children: const [
                               Icon(Icons.reviews_outlined, color: Colors.blue),
-                              Text('Review', style: TextStyle(color: Colors.blue))
+                              Text('Reviews', style: TextStyle(color: Colors.blue))
                             ],
                           ),
                         ),
@@ -185,7 +194,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                               context: context,
                               builder: (context) => TutorReportDialog(
                                 token: authProvider.token?.access?.token ?? '',
-                                userId: _userId,
+                                userId: userId,
                               ),
                             );
                             if (result) {

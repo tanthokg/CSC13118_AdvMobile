@@ -1,4 +1,4 @@
-import 'feedback.dart';
+import 'tutor_feedback.dart';
 
 class Tutor {
   String? level;
@@ -27,7 +27,7 @@ class Tutor {
   String? updatedAt;
   String? deletedAt;
   String? studentGroupId;
-  List<Feedback>? feedbacks;
+  List<TutorFeedback>? feedbacks;
   String? id;
   String? userId;
   String? video;
@@ -121,9 +121,9 @@ class Tutor {
     deletedAt = json['deletedAt'];
     studentGroupId = json['studentGroupId'];
     if (json['feedbacks'] != null) {
-      feedbacks = <Feedback>[];
+      feedbacks = <TutorFeedback>[];
       json['feedbacks'].forEach((v) {
-        feedbacks!.add(Feedback.fromJson(v));
+        feedbacks!.add(TutorFeedback.fromJson(v));
       });
     }
     id = json['id'];

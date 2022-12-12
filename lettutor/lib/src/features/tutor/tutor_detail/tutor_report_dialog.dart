@@ -82,15 +82,16 @@ class _TutorReportDialogState extends State<TutorReportDialog> {
         TextButton(
           onPressed: _choices.contains(true) || _controller.text.isNotEmpty
               ? () async {
-                  String content = '';
+                  String reportContent = '';
                   for (int i = 0; i < _choices.length; ++i) {
-                    if (_choices[i]) content += _contents[i];
+                    if (_choices[i]) reportContent += _contents[i];
                   }
+                  reportContent += _controller.text;
 
                   await TutorService.reportTutor(
                     token: widget.token,
                     userId: widget.userId,
-                    content: content,
+                    content: reportContent,
                   );
                   if (mounted) {
                     Navigator.pop(context, true);
