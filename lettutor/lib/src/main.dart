@@ -4,15 +4,15 @@ import 'package:lettutor/src/features/authentication/forgot_password_view.dart';
 import 'package:lettutor/src/features/authentication/login_view.dart';
 import 'package:lettutor/src/features/authentication/register_view.dart';
 import 'package:lettutor/src/features/navigation/navigation_page.dart';
+import 'package:lettutor/src/features/tutor/tutor_review/write_review_view.dart';
 
 import 'package:lettutor/src/features/user_profile/become_tutor_view.dart';
 import 'package:lettutor/src/features/booking/booking_detail_view.dart';
 import 'package:lettutor/src/features/courses/course_detail_view.dart';
-import 'package:lettutor/src/features/tutor/tutor_detail_view.dart';
-import 'package:lettutor/src/features/tutor/tutor_review_view.dart';
+import 'package:lettutor/src/features/tutor/tutor_detail/tutor_detail_view.dart';
+import 'package:lettutor/src/features/tutor/tutor_review/tutor_review_view.dart';
 import 'package:lettutor/src/features/user_profile/user_profile_view.dart';
 import 'package:lettutor/src/features/video_call/video_call_view.dart';
-import 'package:lettutor/src/features/tutor/write_review_view.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 

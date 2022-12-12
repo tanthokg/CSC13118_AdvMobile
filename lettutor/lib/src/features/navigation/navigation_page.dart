@@ -4,7 +4,7 @@ import 'package:lettutor/src/features/courses/courses_page.dart';
 import 'package:lettutor/src/features/homepage/homepage.dart';
 import 'package:lettutor/src/features/schedules/schedule_page.dart';
 import 'package:lettutor/src/features/settings/settings_page.dart';
-import 'package:lettutor/src/features/tutor/tutor_search_page.dart';
+import 'package:lettutor/src/features/tutor/search_tutor/tutor_search_page.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);

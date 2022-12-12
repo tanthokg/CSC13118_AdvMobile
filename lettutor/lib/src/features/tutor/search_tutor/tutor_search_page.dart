@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
-import 'package:lettutor/src/features/tutor/tutor_search_result.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:provider/provider.dart';
+
+import 'tutor_search_result.dart';
 
 class TutorSearchPage extends StatefulWidget {
   const TutorSearchPage({Key? key}) : super(key: key);

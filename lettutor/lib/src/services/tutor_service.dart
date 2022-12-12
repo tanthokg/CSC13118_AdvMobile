@@ -106,8 +106,9 @@ class TutorService {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-      body: json.encode({
-        'tutorId': userId,
+      body: json.encode(
+        {
+          'tutorId': userId,
         },
       ),
     );
@@ -115,6 +116,31 @@ class TutorService {
     final jsonDecode = json.decode(response.body);
     if (response.statusCode != 200) {
       throw Exception(jsonDecode['message']);
+    }
+  }
+
+  static Future<void> reportTutor({
+    required String token,
+    required String userId,
+    required String content,
+  }) async {
+    final response = await post(
+      Uri.parse('$baseUrl/report'),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode(
+        {
+          'tutorId': userId,
+          'content': content,
+        },
+      ),
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode(['message']));
     }
   }
 }

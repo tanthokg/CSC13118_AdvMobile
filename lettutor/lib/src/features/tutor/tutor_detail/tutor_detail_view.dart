@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/tutor/tutor_detail/tutor_report_dialog.dart';
 import 'package:lettutor/src/models/tutor/tutor_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
@@ -146,13 +147,13 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                             children: [
                               _tutorInfo.isFavorite!
                                   ? const Icon(
-                                Icons.favorite_rounded,
-                                color: Colors.red,
-                              )
+                                      Icons.favorite_rounded,
+                                      color: Colors.red,
+                                    )
                                   : const Icon(
-                                Icons.favorite_border_rounded,
-                                color: Colors.blue,
-                              ),
+                                      Icons.favorite_border_rounded,
+                                      color: Colors.blue,
+                                    ),
                               Text(
                                 'Favorite',
                                 style: TextStyle(
@@ -179,7 +180,31 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                       Expanded(
                         child: TextButton(
                           onPressed: () async {
-                            await _showReportDialog(context);
+                            // await _showReportDialog(context);
+                            final result = await showDialog(
+                              context: context,
+                              builder: (context) => TutorReportDialog(
+                                token: authProvider.token?.access?.token ?? '',
+                                userId: _userId,
+                              ),
+                            );
+                            if (result) {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Report Success'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK')),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                           child: Column(
                             children: const [
@@ -381,30 +406,6 @@ Future<bool> _showBookingConfirmDialog(BuildContext context) {
       return AlertDialog(
         title: const Text('Book Tutor'),
         content: const Text('Are you sure to book this tutor at this time?'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              child: const Text('CANCEL')),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: const Text('YES')),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
-}
-
-Future<bool> _showReportDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Report Tutor'),
-        content: const Text('Are you sure to report this tutor?'),
         actions: [
           TextButton(
               onPressed: () {
