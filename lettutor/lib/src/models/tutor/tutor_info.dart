@@ -15,7 +15,7 @@ class TutorInfo {
   bool? isNative;
   User? user;
   bool? isFavorite;
-  double? avgRating;
+  num? avgRating;
   int? totalFeedback;
 
   TutorInfo({

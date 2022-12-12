@@ -3,27 +3,51 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
+import 'package:lettutor/src/models/tutor/tutor_info.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/tutor_service.dart';
+import 'package:provider/provider.dart';
 
 class TutorCard extends StatefulWidget {
   const TutorCard({
     Key? key,
-    required this.tutor,
+    required this.tutorInfo,
   }) : super(key: key);
 
-  final Tutor tutor;
+  final TutorInfo tutorInfo;
 
   @override
   State<TutorCard> createState() => _TutorCardState();
 }
 
 class _TutorCardState extends State<TutorCard> {
+  TutorInfo? _tutorInfo;
+
+  Future<void> _fetchTutorInfo(String token) async {
+    final result = await TutorService.getTutorInfoById(
+      token: token,
+      userId: widget.tutorInfo.user?.id ?? '',
+    );
+
+    if (mounted) {
+      setState(() {
+      _tutorInfo = result;
+    });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final specialties = widget.tutor.specialties
-            ?.split(',')
-            .map((e) => e.replaceAll('-', ' '))
-            .toList() ??
-        ['no specs at all'];
+    final authProvider = context.watch<AuthProvider>();
+
+    if (authProvider.token != null) {
+      final String accessToken = authProvider.token?.access?.token as String;
+      _fetchTutorInfo(accessToken);
+    }
+
+    final specialties =
+        widget.tutorInfo.specialties?.split(',').map((e) => e.replaceAll('-', ' ')).toList() ??
+            ['no specs at all'];
 
     return Card(
       surfaceTintColor: Colors.white,
@@ -40,7 +64,7 @@ class _TutorCardState extends State<TutorCard> {
                   onTap: () => Navigator.pushNamed(
                     context,
                     Routes.teacherDetail,
-                    arguments: widget.tutor.userId,
+                    arguments: widget.tutorInfo.user?.id,
                   ),
                   child: Container(
                     width: 72,
@@ -50,7 +74,7 @@ class _TutorCardState extends State<TutorCard> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.network(
-                      widget.tutor.avatar ?? '',
+                      widget.tutorInfo.user?.avatar ?? '',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => const Icon(
                         Icons.error_outline_rounded,
@@ -70,16 +94,16 @@ class _TutorCardState extends State<TutorCard> {
                           onTap: () => Navigator.pushNamed(
                             context,
                             Routes.teacherDetail,
-                            arguments: widget.tutor.userId,
+                            arguments: widget.tutorInfo.user?.id,
                           ),
-                          child: Text(widget.tutor.name ?? 'null',
+                          child: Text(widget.tutorInfo.user?.name ?? 'null',
                               style: Theme.of(context).textTheme.headline3),
                         ),
-                        Text(countryList[widget.tutor.country ?? 'null'] ?? 'no country',
+                        Text(countryList[widget.tutorInfo.user?.country ?? 'null'] ?? 'no country',
                             style: const TextStyle(fontSize: 16)),
                         Row(
                           children: List<Widget>.generate(
-                            widget.tutor.rating?.round() ?? 3,
+                            widget.tutorInfo.rating?.round() ?? 3,
                             (index) => const Icon(Icons.star, color: Colors.amber),
                           ),
                         )
@@ -88,11 +112,26 @@ class _TutorCardState extends State<TutorCard> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                  ),
+                  onPressed: () async {
+                    if (authProvider.token != null) {
+                      final String accessToken = authProvider.token?.access?.token as String;
+                      await TutorService.addTutorToFavorite(
+                        token: accessToken,
+                        userId: widget.tutorInfo.user?.id ?? '',
+                      );
+                      _fetchTutorInfo(accessToken);
+                    }
+                    // print('IS FAVORITE (CARD): ${_tutorInfo.isFavorite}');
+                  },
+                  icon: _tutorInfo?.isFavorite ?? false
+                      ? const Icon(
+                          Icons.favorite_rounded,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.favorite_border_rounded,
+                          color: Colors.blue,
+                        ),
                 )
               ],
             ),
@@ -111,7 +150,7 @@ class _TutorCardState extends State<TutorCard> {
               ),
             ),
             Text(
-              widget.tutor.bio ?? 'null',
+              widget.tutorInfo.bio ?? 'null',
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
@@ -121,7 +160,7 @@ class _TutorCardState extends State<TutorCard> {
                 onPressed: () => Navigator.pushNamed(
                   context,
                   Routes.teacherDetail,
-                  arguments: widget.tutor.userId,
+                  arguments: widget.tutorInfo.user?.id,
                 ),
                 icon: const Icon(Icons.edit_calendar),
                 label: const Text('Book'),

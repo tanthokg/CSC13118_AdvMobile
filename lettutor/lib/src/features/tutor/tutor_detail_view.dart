@@ -22,7 +22,10 @@ class _TutorDetailViewState extends State<TutorDetailView> {
   late final String _userId;
 
   Future<void> _fetchTutorInfo(String token) async {
-    final result = await TutorService.getTutorInfoById(token: token, userId: _userId);
+    final result = await TutorService.getTutorInfoById(
+      token: token,
+      userId: _userId,
+    );
     if (_isLoading) {
       specialties = result.specialties?.split(',') ?? ['null'];
     }
@@ -118,7 +121,10 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(_tutorInfo.bio ?? 'null bio', style: const TextStyle(fontSize: 16)),
+                    child: Text(
+                      _tutorInfo.bio ?? 'null bio',
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
                   Row(
                     children: [
@@ -129,22 +135,28 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                               final String accessToken =
                                   authProvider.token?.access?.token as String;
                               await TutorService.addTutorToFavorite(
-                                  token: accessToken, userId: _userId);
+                                token: accessToken,
+                                userId: _userId,
+                              );
                               _fetchTutorInfo(accessToken);
                             }
+                            // print('IS FAVORITE (DETAIL): ${_tutorInfo.isFavorite}');
                           },
                           child: Column(
                             children: [
-                              Icon(
-                                _tutorInfo.isFavorite ?? false
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: _tutorInfo.isFavorite ?? false ? Colors.red : Colors.blue,
+                              _tutorInfo.isFavorite!
+                                  ? const Icon(
+                                Icons.favorite_rounded,
+                                color: Colors.red,
+                              )
+                                  : const Icon(
+                                Icons.favorite_border_rounded,
+                                color: Colors.blue,
                               ),
                               Text(
                                 'Favorite',
                                 style: TextStyle(
-                                  color: _tutorInfo.isFavorite ?? false ? Colors.red : Colors.blue,
+                                  color: _tutorInfo.isFavorite! ? Colors.red : Colors.blue,
                                 ),
                               )
                             ],
