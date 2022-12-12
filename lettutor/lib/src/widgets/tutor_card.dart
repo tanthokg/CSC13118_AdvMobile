@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 class TutorCard extends StatefulWidget {
   const TutorCard({
     Key? key,
-    required this.tutorInfo,
+    required this.tutor,
   }) : super(key: key);
 
-  final TutorInfo tutorInfo;
+  final Tutor tutor;
 
   @override
   State<TutorCard> createState() => _TutorCardState();
@@ -26,7 +26,7 @@ class _TutorCardState extends State<TutorCard> {
   Future<void> _fetchTutorInfo(String token) async {
     final result = await TutorService.getTutorInfoById(
       token: token,
-      userId: widget.tutorInfo.user?.id ?? '',
+      userId: widget.tutor.userId ?? '',
     );
 
     if (mounted) {
@@ -46,7 +46,7 @@ class _TutorCardState extends State<TutorCard> {
     }
 
     final specialties =
-        widget.tutorInfo.specialties?.split(',').map((e) => e.replaceAll('-', ' ')).toList() ??
+        widget.tutor.specialties?.split(',').map((e) => e.replaceAll('-', ' ')).toList() ??
             ['no specs at all'];
 
     return Card(
@@ -64,7 +64,7 @@ class _TutorCardState extends State<TutorCard> {
                   onTap: () => Navigator.pushNamed(
                     context,
                     Routes.teacherDetail,
-                    arguments: widget.tutorInfo.user?.id,
+                    arguments: widget.tutor.userId,
                   ),
                   child: Container(
                     width: 72,
@@ -74,7 +74,7 @@ class _TutorCardState extends State<TutorCard> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.network(
-                      widget.tutorInfo.user?.avatar ?? '',
+                      widget.tutor.avatar ?? '',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => const Icon(
                         Icons.error_outline_rounded,
@@ -94,16 +94,16 @@ class _TutorCardState extends State<TutorCard> {
                           onTap: () => Navigator.pushNamed(
                             context,
                             Routes.teacherDetail,
-                            arguments: widget.tutorInfo.user?.id,
+                            arguments: widget.tutor.userId,
                           ),
-                          child: Text(widget.tutorInfo.user?.name ?? 'null',
+                          child: Text(widget.tutor.name ?? 'null name',
                               style: Theme.of(context).textTheme.headline3),
                         ),
-                        Text(countryList[widget.tutorInfo.user?.country ?? 'null'] ?? 'no country',
+                        Text(countryList[widget.tutor.country ?? 'null'] ?? 'no country',
                             style: const TextStyle(fontSize: 16)),
                         Row(
                           children: List<Widget>.generate(
-                            widget.tutorInfo.rating?.round() ?? 3,
+                            widget.tutor.rating?.round() ?? 0,
                             (index) => const Icon(Icons.star, color: Colors.amber),
                           ),
                         )
@@ -117,7 +117,7 @@ class _TutorCardState extends State<TutorCard> {
                       final String accessToken = authProvider.token?.access?.token as String;
                       await TutorService.addTutorToFavorite(
                         token: accessToken,
-                        userId: widget.tutorInfo.user?.id ?? '',
+                        userId: widget.tutor.userId ?? '',
                       );
                       _fetchTutorInfo(accessToken);
                     }
@@ -150,7 +150,7 @@ class _TutorCardState extends State<TutorCard> {
               ),
             ),
             Text(
-              widget.tutorInfo.bio ?? 'null',
+              widget.tutor.bio ?? 'null',
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
@@ -160,7 +160,7 @@ class _TutorCardState extends State<TutorCard> {
                 onPressed: () => Navigator.pushNamed(
                   context,
                   Routes.teacherDetail,
-                  arguments: widget.tutorInfo.user?.id,
+                  arguments: widget.tutor.userId,
                 ),
                 icon: const Icon(Icons.edit_calendar),
                 label: const Text('Book'),

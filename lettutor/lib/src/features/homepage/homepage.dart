@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _tutors.length,
                   itemBuilder: (context, index) {
-                    return TutorCard(tutorInfo: _infos[index]);
+                    return TutorCard(tutor: _tutors[index]);
                   },
                 )
               ],

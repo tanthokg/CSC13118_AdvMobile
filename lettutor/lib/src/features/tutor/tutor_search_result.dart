@@ -31,10 +31,10 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
               ),
             ),
             widget.tutors.isEmpty ? const Text('No Matches') : const SizedBox.shrink(),
-            // ...List<Widget>.generate(
-            //   widget.tutors.length,
-            //   (index) => TutorCard(tutorInfo: widget.tutors[index]),
-            // )
+            ...List<Widget>.generate(
+              widget.tutors.length,
+              (index) => TutorCard(tutor: widget.tutors[index]),
+            )
           ],
         ),
       ),
