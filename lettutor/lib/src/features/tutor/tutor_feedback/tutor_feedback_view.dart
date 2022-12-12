@@ -33,7 +33,7 @@ class _TutorFeedbackViewState extends State<TutorFeedbackView> {
         child: ListView.builder(
           itemCount: feedbacks.length,
           shrinkWrap: true,
-          itemBuilder: (context, index) => FeedbackCard(feedback: feedbacks[index]),
+          itemBuilder: (context, index) => FeedbackCard(feedback: feedbacks[feedbacks.length - index - 1]),
         ),
       ),
     );
