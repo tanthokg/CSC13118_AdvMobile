@@ -142,6 +142,7 @@ class _TutorCardState extends State<TutorCard> {
                 )
               ],
             ),
+            const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: -4,
@@ -156,6 +157,7 @@ class _TutorCardState extends State<TutorCard> {
                 ),
               ),
             ),
+            const SizedBox(height: 8),
             Text(
               widget.tutor.bio ?? 'null',
               maxLines: 5,

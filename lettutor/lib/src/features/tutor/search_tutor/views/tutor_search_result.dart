@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
-import 'package:lettutor/src/widgets/tutor_card.dart';
+
+import '../widgets/tutor_search_card.dart';
 
 class TutorSearchResult extends StatefulWidget {
   const TutorSearchResult({Key? key, required this.tutors}) : super(key: key);
@@ -33,7 +34,7 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
             widget.tutors.isEmpty ? const Text('No Matches') : const SizedBox.shrink(),
             ...List<Widget>.generate(
               widget.tutors.length,
-              (index) => TutorCard(tutor: widget.tutors[index]),
+              (index) => TutorSearchCard(tutor: widget.tutors[index]),
             )
           ],
         ),
