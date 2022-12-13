@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
+import 'package:lettutor/src/constants/language_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_report_dialog.dart';
@@ -9,6 +11,7 @@ import 'package:lettutor/src/models/tutor/tutor_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class TutorDetailView extends StatefulWidget {
   const TutorDetailView({Key? key}) : super(key: key);
@@ -18,8 +21,12 @@ class TutorDetailView extends StatefulWidget {
 }
 
 class _TutorDetailViewState extends State<TutorDetailView> {
+  VideoPlayerController? _videoPlayerController;
+  ChewieController? _chewieController;
+
   late TutorInfo _tutorInfo;
   late final List<String> specialties;
+  late final List<String> languages;
   late final List<TutorFeedback> feedbacks;
   late String userId;
 
@@ -30,21 +37,31 @@ class _TutorDetailViewState extends State<TutorDetailView> {
       token: token,
       userId: userId,
     );
+
     if (_isLoading) {
       specialties = result.specialties?.split(',') ?? ['null'];
+      languages = result.languages?.split(',') ?? ['null'];
     }
 
     if (mounted) {
       setState(() {
         _tutorInfo = result;
         _isLoading = false;
+        _videoPlayerController = VideoPlayerController.network(_tutorInfo.video ?? '');
+        _chewieController = ChewieController(
+          videoPlayerController: _videoPlayerController!,
+          aspectRatio: 2 / 3,
+          autoPlay: true,
+        );
       });
     }
   }
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -108,18 +125,26 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                               style: Theme.of(context).textTheme.headline3,
                             ),
                             Text(
-                              countryList[_tutorInfo.user?.country] ?? 'null country',
+                              countryList[_tutorInfo.user?.country] ?? 'unknown country',
                               style: const TextStyle(fontSize: 16),
                             ),
-                            Row(children: [
-                              ...List<Widget>.generate(
-                                _tutorInfo.rating?.round() ?? 0,
-                                (index) => const Icon(Icons.star, color: Colors.amber),
-                              ),
-                              const SizedBox(width: 8),
-                              Text('(${_tutorInfo.totalFeedback})',
-                                  style: const TextStyle(fontSize: 18))
-                            ])
+                            _tutorInfo.rating == null
+                                ? const Text(
+                                    'No reviews yet',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.grey,
+                                    ),
+                                  )
+                                : Row(children: [
+                                    ...List<Widget>.generate(
+                                      _tutorInfo.rating?.round() ?? 0,
+                                      (index) => const Icon(Icons.star, color: Colors.amber),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text('(${_tutorInfo.totalFeedback})',
+                                        style: const TextStyle(fontSize: 18))
+                                  ])
                           ],
                         ),
                       ),
@@ -227,33 +252,40 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 8),
-                    height: 200,
+                    height: 300,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blue, width: 2),
                         borderRadius: const BorderRadius.all(Radius.circular(10))),
-                    child: Text(
-                      'Introduction Video Goes Here',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue[700],
-                      ),
-                    ),
+                    child: _chewieController == null
+                        ? Text(
+                            'No Introduction Video',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.blue[700],
+                            ),
+                          )
+                        : Chewie(controller: _chewieController!),
                   ),
                   const SizedBox(height: 8),
                   Text('Languages', style: Theme.of(context).textTheme.headline3),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Wrap(children: [
-                      Chip(
-                        label: const Text(
-                          'English',
-                          style: TextStyle(color: Colors.blue),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: -4,
+                      children: List<Widget>.generate(
+                        languages.length,
+                        (index) => Chip(
+                          label: Text(
+                            languageList[languages[index]]?['name'] ?? 'unknown language',
+                            style: const TextStyle(color: Colors.blue),
+                          ),
+                          backgroundColor: Colors.blue[50],
                         ),
-                        backgroundColor: Colors.blue[50],
                       ),
-                    ]),
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text('Specialties', style: Theme.of(context).textTheme.headline3),
@@ -431,3 +463,12 @@ Future<bool> _showBookingConfirmDialog(BuildContext context) {
     },
   ).then((value) => value ?? false);
 }
+
+// Text(
+// 'Introduction Video Goes Here',
+// style: TextStyle(
+// fontSize: 22,
+// fontWeight: FontWeight.w500,
+// color: Colors.blue[700],
+// ),
+// ),

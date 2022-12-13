@@ -85,14 +85,22 @@ class _TutorSearchCardState extends State<TutorSearchCard> {
                       children: [
                         Text(widget.tutor.name ?? 'null name',
                             style: Theme.of(context).textTheme.headline3),
-                        Text(countryList[widget.tutor.country ?? 'null'] ?? 'no country',
+                        Text(countryList[widget.tutor.country ?? 'null'] ?? 'unknown country',
                             style: const TextStyle(fontSize: 16)),
-                        Row(
-                          children: List<Widget>.generate(
-                            widget.tutor.rating?.round() ?? 0,
-                            (index) => const Icon(Icons.star, color: Colors.amber),
+                        widget.tutor.rating == null
+                            ? const Text(
+                          'No reviews yet',
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey,
                           ),
-                        ),
+                        )
+                            : Row(
+                          children: List<Widget>.generate(
+                            widget.tutor.rating!.round(),
+                                (index) => const Icon(Icons.star, color: Colors.amber),
+                          ),
+                        )
                       ],
                     ),
                   ),
