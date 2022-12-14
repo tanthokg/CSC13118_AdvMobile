@@ -72,83 +72,58 @@ class _TutorScheduleState extends State<TutorSchedule> {
       _fetchTutorSchedule(accessToken);
     }
 
-    return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : OutlinedButton(
-            style: TextButton.styleFrom(
-                minimumSize: const Size.fromHeight(0),
-                padding: const EdgeInsets.all(8),
-                side: const BorderSide(color: Colors.blue, width: 1.5)),
-            onPressed: () async {
-              await showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                elevation: 5,
-                clipBehavior: Clip.hardEdge,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(16),
+    return SafeArea(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.75,
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, bottom: 0),
+                    child: Text(
+                      'Choose Learning Date',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
-                ),
-                builder: (context) {
-                  return SafeArea(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.75,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Choose Learning Date',
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
+                  Expanded(
+                    child: GridView.count(
+                      padding: const EdgeInsets.all(24),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 24,
+                      crossAxisSpacing: 32,
+                      childAspectRatio: 3,
+                      children: List<Widget>.generate(
+                        schedules.length,
+                        (index) => ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue[300],
                           ),
-                          Expanded(
-                            child: GridView.count(
-                              padding: const EdgeInsets.all(24),
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 24,
-                              crossAxisSpacing: 32,
-                              childAspectRatio: 3,
-                              children: List<Widget>.generate(
-                                schedules.length,
-                                (index) => ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue[300],
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) {
-                                        return BookingHourView(
-                                          schedules: schedules,
-                                          timestamp: schedules[index].startTimestamp!,
-                                        );
-                                      },
-                                    ));
-                                  },
-                                  child: Text(
-                                    DateFormat.MMMEd().format(DateTime.fromMillisecondsSinceEpoch(
-                                        schedules[index].startTimestamp ?? 0)),
-                                    style: const TextStyle(fontSize: 16, color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return BookingHourView(
+                                  schedules: schedules,
+                                  timestamp: schedules[index].startTimestamp!,
+                                );
+                              },
+                            ));
+                          },
+                          child: Text(
+                            DateFormat.MMMEd().format(DateTime.fromMillisecondsSinceEpoch(
+                                schedules[index].startTimestamp ?? 0)),
+                            style: const TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  );
-                },
-              );
-            },
-            child: const Text(
-              'Book This Tutor',
-              style: TextStyle(fontSize: 18, color: Colors.blue),
-            ),
-          );
+                  ),
+                ],
+              ),
+      ),
+    );
   }
 }
 
@@ -180,7 +155,7 @@ Future<void> _bookLearningHour(BuildContext context, DateTime selectedDate) asyn
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 32, bottom: 8),
                 child: Text(
                   'Choose Your Time',
                   style: Theme.of(context).textTheme.headline3,

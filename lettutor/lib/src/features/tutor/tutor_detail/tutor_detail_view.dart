@@ -339,9 +339,31 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                     child: Text(_tutorInfo.experience ?? 'No teaching experiences'),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 24, bottom: 12),
-                    child: TutorSchedule(userId: userId)
-                  )
+                      padding: const EdgeInsets.only(top: 24, bottom: 12),
+                      child: OutlinedButton(
+                        style: TextButton.styleFrom(
+                            minimumSize: const Size.fromHeight(0),
+                            padding: const EdgeInsets.all(8),
+                            side: const BorderSide(color: Colors.blue, width: 1.5)),
+                        onPressed: () async {
+                          await showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            elevation: 5,
+                            clipBehavior: Clip.hardEdge,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16),
+                              ),
+                            ),
+                            builder: (context) => TutorSchedule(userId: userId),
+                          );
+                        },
+                        child: const Text(
+                          'Book This Tutor',
+                          style: TextStyle(fontSize: 18, color: Colors.blue),
+                        ),
+                      ))
                 ],
               ),
             ),

@@ -37,7 +37,7 @@ class BookingHourView extends StatelessWidget {
         leading: BackButton(
           color: Colors.blue[600],
         ),
-        title: const Text('Choose learning time'),
+        title: Text('Choose learning time', style: Theme.of(context).textTheme.headline2,),
       ),
       body: Column(
         children: [
