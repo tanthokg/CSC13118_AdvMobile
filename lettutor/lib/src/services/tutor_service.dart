@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:lettutor/src/models/schedule/schedule.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/models/tutor/tutor_info.dart';
 import 'package:lettutor/src/models/user/learn_topic.dart';
@@ -73,7 +74,7 @@ class TutorService {
     final response = await post(
       Uri.parse('$baseUrl/tutor/search'),
       headers: {
-        'Content-type': 'application/json;encoding=utf-8',
+        'Content-Type': 'application/json;encoding=utf-8',
         'Authorization': 'Bearer $token',
       },
       body: json.encode({
@@ -103,7 +104,7 @@ class TutorService {
     final response = await post(
       Uri.parse('$baseUrl/user/manageFavoriteTutor'),
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
       body: json.encode(
@@ -127,7 +128,7 @@ class TutorService {
     final response = await post(
       Uri.parse('$baseUrl/report'),
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
       body: json.encode(
@@ -142,5 +143,25 @@ class TutorService {
     if (response.statusCode != 200) {
       throw Exception(jsonDecode(['message']));
     }
+  }
+
+  static Future<List<Schedule>> getTutorScheduleById({
+    required String token,
+    required String userId,
+  }) async {
+    final response = await post(Uri.parse('$baseUrl/schedule'), headers: {
+      'Authorization': 'Bearer $token',
+    }, body: {
+      'tutorId': userId,
+    });
+
+    final jsonDecode = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception('Cannot get schedule of tutor with userId $userId');
+    }
+
+    final schedules = jsonDecode['data'] as List;
+    return schedules.map((schedule) => Schedule.fromJson(schedule)).toList();
   }
 }

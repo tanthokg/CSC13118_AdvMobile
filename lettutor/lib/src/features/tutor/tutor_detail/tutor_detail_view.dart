@@ -5,6 +5,7 @@ import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/constants/language_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/booking/widgets/tutor_schedule.dart';
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_report_dialog.dart';
 import 'package:lettutor/src/models/tutor/tutor_feedback.dart';
 import 'package:lettutor/src/models/tutor/tutor_info.dart';
@@ -329,33 +330,17 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                   Text('Interests', style: Theme.of(context).textTheme.headline3),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 8),
-                    child: Text(_tutorInfo.interests ?? 'null interests'),
+                    child: Text(_tutorInfo.interests ?? 'No interests'),
                   ),
                   const SizedBox(height: 12),
                   Text('Teaching Experiences', style: Theme.of(context).textTheme.headline3),
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 8),
-                    child: Text(_tutorInfo.experience ?? 'null teaching experiences'),
+                    child: Text(_tutorInfo.experience ?? 'No teaching experiences'),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 24, bottom: 12),
-                    child: OutlinedButton(
-                      style: TextButton.styleFrom(
-                          minimumSize: const Size.fromHeight(0),
-                          padding: const EdgeInsets.all(8),
-                          side: const BorderSide(color: Colors.blue, width: 1.5)),
-                      onPressed: () async {
-                        final selectedDate = await _bookLearningDate(context);
-                        if (mounted) {
-                          await _bookLearningHour(context, selectedDate!);
-                        }
-                        // Navigator.pushNamed(context, Routes.booking);
-                      },
-                      child: const Text(
-                        'Book This Tutor',
-                        style: TextStyle(fontSize: 18, color: Colors.blue),
-                      ),
-                    ),
+                    child: TutorSchedule(userId: userId)
                   )
                 ],
               ),
@@ -363,112 +348,3 @@ class _TutorDetailViewState extends State<TutorDetailView> {
     );
   }
 }
-
-Future<DateTime?> _bookLearningDate(BuildContext context) async {
-  DateTime? selectedDate = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime.now(),
-    lastDate: DateTime(2050),
-  );
-  return selectedDate ?? DateTime.now();
-}
-
-Future<void> _bookLearningHour(BuildContext context, DateTime selectedDate) async {
-  await showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    elevation: 5,
-    clipBehavior: Clip.hardEdge,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(16),
-      ),
-    ),
-    builder: (context) {
-      return SafeArea(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Choose Your Time',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Expanded(
-                child: GridView.count(
-                  padding: const EdgeInsets.all(24),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 24,
-                  crossAxisSpacing: 32,
-                  childAspectRatio: 3,
-                  children: List<Widget>.generate(
-                    courseHours.length,
-                    (index) => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                      ),
-                      onPressed: () async {
-                        final dialogResult = await _showBookingConfirmDialog(context);
-                        if (dialogResult) {
-                          Navigator.of(context).pushNamed(
-                            Routes.bookingDetail,
-                            arguments: {
-                              'selectedDate': selectedDate,
-                              'selectedHour': courseHours[index],
-                              'weekday': selectedDate.weekday
-                            },
-                          );
-                        }
-                      },
-                      child: Text(
-                        courseHours[index],
-                        style: const TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Future<bool> _showBookingConfirmDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Book Tutor'),
-        content: const Text('Are you sure to book this tutor at this time?'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              child: const Text('CANCEL')),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: const Text('YES')),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
-}
-
-// Text(
-// 'Introduction Video Goes Here',
-// style: TextStyle(
-// fontSize: 22,
-// fontWeight: FontWeight.w500,
-// color: Colors.blue[700],
-// ),
-// ),

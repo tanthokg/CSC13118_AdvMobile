@@ -8,7 +8,7 @@ import 'package:lettutor/src/features/tutor/tutor_feedback/tutor_feedback_view.d
 import 'package:lettutor/src/features/tutor/tutor_feedback/write_review_view.dart';
 
 import 'package:lettutor/src/features/user_profile/become_tutor_view.dart';
-import 'package:lettutor/src/features/booking/booking_detail_view.dart';
+import 'package:lettutor/src/features/booking/views/booking_detail_view.dart';
 import 'package:lettutor/src/features/courses/course_detail_view.dart';
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_detail_view.dart';
 import 'package:lettutor/src/features/user_profile/user_profile_view.dart';
