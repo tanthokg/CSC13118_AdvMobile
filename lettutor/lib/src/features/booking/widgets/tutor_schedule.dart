@@ -101,7 +101,7 @@ class _TutorScheduleState extends State<TutorSchedule> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Choose Your Date',
+                              'Choose Learning Date',
                               style: Theme.of(context).textTheme.headline3,
                             ),
                           ),
@@ -121,7 +121,10 @@ class _TutorScheduleState extends State<TutorSchedule> {
                                   onPressed: () {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
-                                        return BookingHourView(schedule: schedules[index]);
+                                        return BookingHourView(
+                                          schedules: schedules,
+                                          timestamp: schedules[index].startTimestamp!,
+                                        );
                                       },
                                     ));
                                   },
