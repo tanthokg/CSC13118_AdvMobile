@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/booking/widgets/booking_dialog.dart';
 import 'package:lettutor/src/models/schedule/schedule.dart';
 
 class BookingHourView extends StatelessWidget {
@@ -37,7 +38,10 @@ class BookingHourView extends StatelessWidget {
         leading: BackButton(
           color: Colors.blue[600],
         ),
-        title: Text('Choose learning time', style: Theme.of(context).textTheme.headline2,),
+        title: Text(
+          'Choose learning time',
+          style: Theme.of(context).textTheme.headline2,
+        ),
       ),
       body: Column(
         children: [
@@ -55,18 +59,24 @@ class BookingHourView extends StatelessWidget {
               children: List<Widget>.generate(
                 validSchedules.length,
                 (index) {
-                  final start = DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(
-                      validSchedules[index].startTimestamp ?? 0));
-                  final end = DateFormat('HH:mm').format(
-                      DateTime.fromMillisecondsSinceEpoch(validSchedules[index].endTimestamp ?? 0));
+                  final start = validSchedules[index].startTime;
+                  final end = validSchedules[index].endTime;
 
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[300],
                     ),
-                    onPressed: validSchedules[index].isBooked ?? true ? null : () {
-                      Navigator.pushNamed(context, Routes.bookingDetail);
-                    },
+                    onPressed: validSchedules[index].isBooked as bool
+                        ? null
+                        :  () async {
+                            print(validSchedules[index].isBooked);
+                            await showDialog(
+                              context: context,
+                              builder: (context) => BookingConfirmDialog(
+                                schedule: validSchedules[index],
+                              ),
+                            );
+                          },
                     child: Text(
                       '$start - $end',
                       style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -80,4 +90,51 @@ class BookingHourView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> _showBookingConfirmDialog(BuildContext context, Schedule schedule) {
+  final start = schedule.startTime;
+  final end = schedule.endTime;
+  final date =
+      DateFormat.yMMMMEEEEd().format(DateTime.fromMillisecondsSinceEpoch(schedule.startTimestamp!));
+
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Book This Tutor'),
+        content: Column(
+          children: [
+            const Text('Booking time'),
+            Text('$start - $end, $date'),
+            TextField(
+              minLines: 4,
+              maxLines: 5,
+              onChanged: (value) {},
+              decoration: const InputDecoration(
+                hintText: 'Please let us know details about your problems',
+                hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),
+                contentPadding: EdgeInsets.all(12),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('CANCEL')),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('YES')),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/models/schedule/schedule.dart';
 
-class BookingDetailView extends StatelessWidget {
-  const BookingDetailView({Key? key}) : super(key: key);
+class BookingDetailView extends StatefulWidget {
+  const BookingDetailView({Key? key, required this.schedule}) : super(key: key);
 
+  final Schedule schedule;
+
+  @override
+  State<BookingDetailView> createState() => _BookingDetailViewState();
+}
+
+class _BookingDetailViewState extends State<BookingDetailView> {
   String weekdayConverter(int weekday) {
     String result = '';
 
@@ -35,10 +43,10 @@ class BookingDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as Map;
-    final String time = data['selectedHour'];
-    final String date = data['selectedDate'].toString().substring(0, 11);
-    final String weekday = weekdayConverter(data['weekday']);
+    // final data = ModalRoute.of(context)!.settings.arguments as Map;
+    // final String time = data['selectedHour'];
+    // final String date = data['selectedDate'].toString().substring(0, 11);
+    // final String weekday = weekdayConverter(data['weekday']);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -58,49 +66,49 @@ class BookingDetailView extends StatelessWidget {
           children: [
             Text('Booking Time', style: Theme.of(context).textTheme.headline3),
             const SizedBox(height: 8),
-            Center(
-              child: Text(
-                '$time\n$weekday $date',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22, color: Colors.blue[800]),
-              ),
-            ),
+            // Center(
+            //   child: Text(
+            //     '$time\n$weekday $date',
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(fontSize: 22, color: Colors.blue[800]),
+            //   ),
+            // ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Balance',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ),
-                const Text(
-                  'You have 1 lesson left',
-                  style: TextStyle(fontSize: 17, color: Colors.blue),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Price',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ),
-                const Text(
-                  '1 lesson',
-                  style: TextStyle(fontSize: 17, color: Colors.blue),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Text(
+            //         'Balance',
+            //         style: Theme.of(context).textTheme.headline3,
+            //       ),
+            //     ),
+            //     const Text(
+            //       'You have 1 lesson left',
+            //       style: TextStyle(fontSize: 17, color: Colors.blue),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(height: 16),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Text(
+            //         'Price',
+            //         style: Theme.of(context).textTheme.headline3,
+            //       ),
+            //     ),
+            //     const Text(
+            //       '1 lesson',
+            //       style: TextStyle(fontSize: 17, color: Colors.blue),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 16),
             Text('Notes', style: Theme.of(context).textTheme.headline3),
             const SizedBox(height: 12),
             TextField(
-              minLines: 5,
-              maxLines: 10,
+              minLines: 3,
+              maxLines: 5,
               decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(12),
                   border: OutlineInputBorder(

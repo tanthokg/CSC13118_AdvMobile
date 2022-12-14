@@ -144,24 +144,4 @@ class TutorService {
       throw Exception(jsonDecode(['message']));
     }
   }
-
-  static Future<List<Schedule>> getTutorScheduleById({
-    required String token,
-    required String userId,
-  }) async {
-    final response = await post(Uri.parse('$baseUrl/schedule'), headers: {
-      'Authorization': 'Bearer $token',
-    }, body: {
-      'tutorId': userId,
-    });
-
-    final jsonDecode = json.decode(response.body);
-
-    if (response.statusCode != 200) {
-      throw Exception('Cannot get schedule of tutor with userId $userId');
-    }
-
-    final schedules = jsonDecode['data'] as List;
-    return schedules.map((schedule) => Schedule.fromJson(schedule)).toList();
-  }
 }

@@ -5,6 +5,7 @@ import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/features/booking/views/booking_hour_view.dart';
 import 'package:lettutor/src/models/schedule/schedule.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/booking_service.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class _TutorScheduleState extends State<TutorSchedule> {
   bool _isLoading = true;
 
   Future<void> _fetchTutorSchedule(String token) async {
-    List<Schedule> result = await TutorService.getTutorScheduleById(
+    List<Schedule> result = await BookingService.getTutorScheduleById(
       token: token,
       userId: widget.userId,
     );
@@ -175,17 +176,17 @@ Future<void> _bookLearningHour(BuildContext context, DateTime selectedDate) asyn
                         backgroundColor: Colors.blue,
                       ),
                       onPressed: () async {
-                        final dialogResult = await _showBookingConfirmDialog(context);
-                        if (dialogResult) {
-                          Navigator.of(context).pushNamed(
-                            Routes.bookingDetail,
-                            arguments: {
-                              'selectedDate': selectedDate,
-                              'selectedHour': courseHours[index],
-                              'weekday': selectedDate.weekday
-                            },
-                          );
-                        }
+                        // final dialogResult = await _showBookingConfirmDialog(context);
+                        // if (dialogResult) {
+                        //   Navigator.of(context).pushNamed(
+                        //     Routes.bookingDetail,
+                        //     arguments: {
+                        //       'selectedDate': selectedDate,
+                        //       'selectedHour': courseHours[index],
+                        //       'weekday': selectedDate.weekday
+                        //     },
+                        //   );
+                        // }
                       },
                       child: Text(
                         courseHours[index],
@@ -203,13 +204,18 @@ Future<void> _bookLearningHour(BuildContext context, DateTime selectedDate) asyn
   );
 }
 
-Future<bool> _showBookingConfirmDialog(BuildContext context) {
+Future<bool> _showBookingConfirmDialog(BuildContext context, Schedule schedule) {
   return showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Book Tutor'),
-        content: const Text('Are you sure to book this tutor at this time?'),
+        title: const Text('Book This Tutor'),
+        content: Column(
+          children: [
+            const Text('Booking time'),
+            Text(DateFormat.yMMMMEEEEd().format(DateTime.fromMillisecondsSinceEpoch(schedule.startTimestamp!))),
+          ],
+        ),
         actions: [
           TextButton(
               onPressed: () {

@@ -31,9 +31,9 @@ class _TutorReportDialogState extends State<TutorReportDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             "Help us understand what's happening",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headline4,
           ),
           ...List<Widget>.generate(_choices.length, (index) {
             return Row(
