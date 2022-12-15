@@ -7,7 +7,7 @@ import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/homepage_banner.dart';
+import '../widgets/homepage_header.dart';
 import '../widgets/tutor_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HomepageBanner(),
+          const HomepageHeader(),
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(

@@ -16,6 +16,7 @@ class BookingHourView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(schedules.length);
     final pickedDate = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
     final validSchedules = schedules.where((schedule) {
@@ -59,8 +60,10 @@ class BookingHourView extends StatelessWidget {
               children: List<Widget>.generate(
                 validSchedules.length,
                 (index) {
-                  final start = validSchedules[index].startTime;
-                  final end = validSchedules[index].endTime;
+                  final start = DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(
+                      validSchedules[index].startTimestamp ?? 0));
+                  final end = DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(
+                      validSchedules[index].endTimestamp ?? 0));
 
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -68,8 +71,7 @@ class BookingHourView extends StatelessWidget {
                     ),
                     onPressed: validSchedules[index].isBooked as bool
                         ? null
-                        :  () async {
-                            print(validSchedules[index].isBooked);
+                        : () async {
                             await showDialog(
                               context: context,
                               builder: (context) => BookingConfirmDialog(

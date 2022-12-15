@@ -60,17 +60,20 @@ class _BookingConfirmDialogState extends State<BookingConfirmDialog> {
             style: Theme.of(context).textTheme.headline3,
           ),
           const SizedBox(height: 4),
-          TextField(
-            controller: _controller,
-            minLines: 3,
-            maxLines: 4,
-            decoration: const InputDecoration(
-              hintText: 'Your requests for the tutor',
-              hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),
-              contentPadding: EdgeInsets.all(12),
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.all(Radius.circular(16))),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: TextField(
+              controller: _controller,
+              minLines: 3,
+              maxLines: 4,
+              decoration: const InputDecoration(
+                hintText: 'Your requests for the tutor',
+                hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),
+                contentPadding: EdgeInsets.all(12),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.all(Radius.circular(16))),
+              ),
             ),
           ),
         ],

@@ -20,6 +20,7 @@ class TutorSchedule extends StatefulWidget {
 
 class _TutorScheduleState extends State<TutorSchedule> {
   List<Schedule> schedules = [];
+  List<int> scheduleStartTimestamps = [];
 
   bool _isLoading = true;
 
@@ -35,29 +36,54 @@ class _TutorScheduleState extends State<TutorSchedule> {
 
       final now = DateTime.now();
       final start = DateTime.fromMillisecondsSinceEpoch(schedule.startTimestamp!);
-      return start.isAfter(now.subtract(const Duration(days: 1)));
+
+      // bool isTheSameDate = now.day == start.day && now.month == start.month && now.year == start.year;
+      return start.isAfter(DateTime.now());
     }).toList();
 
-    // Sort learning date increasingly
+    // Sort learning DateTime increasingly
     result.sort((s1, s2) {
       if (s1.startTimestamp == null || s2.startTimestamp == null) return 0;
       return s1.startTimestamp!.compareTo(s2.startTimestamp!);
     });
 
-    // Remove duplicates learning dates
-    schedules.clear();
-    for (var schedule in result) {
-      if (!schedules.any((element) {
-        final date1 = DateTime.fromMillisecondsSinceEpoch(schedule.startTimestamp!);
-        final date2 = DateTime.fromMillisecondsSinceEpoch(element.startTimestamp!);
-        if (date1.day == date2.day && date1.month == date2.month && date1.year == date2.year) {
+    schedules = result;
+
+
+    final timestamps = schedules.map((schedule) => schedule.startTimestamp ?? 0).toList();
+
+    for (var timestamp in timestamps) {
+      bool isExisted = false;
+      if (!scheduleStartTimestamps.any((element) {
+        final date1 = DateTime.fromMillisecondsSinceEpoch(timestamp);
+        final date2 = DateTime.fromMillisecondsSinceEpoch(element);
+
+        bool isTheSameDate = date1.day == date2.day && date1.month == date2.month && date1.year == date2.year;
+        if (isTheSameDate) {
           return true;
         }
         return false;
       })) {
-        schedules.add(schedule);
+        scheduleStartTimestamps.add(timestamp);
       }
     }
+    scheduleStartTimestamps.sort();
+
+    // Remove duplicates learning dates
+    // schedules.clear();
+    // for (var schedule in result) {
+    //   if (!schedules.any((element) {
+    //     final date1 = DateTime.fromMillisecondsSinceEpoch(schedule.startTimestamp!);
+    //     final date2 = DateTime.fromMillisecondsSinceEpoch(element.startTimestamp!);
+    //     bool isTheSameDate = date1.day == date2.day && date1.month == date2.month && date1.year == date2.year;
+    //     if (isTheSameDate) {
+    //       return true;
+    //     }
+    //     return false;
+    //   })) {
+    //     schedules.add(schedule);
+    //   }
+    // }
 
     setState(() {
       _isLoading = false;
@@ -97,7 +123,7 @@ class _TutorScheduleState extends State<TutorSchedule> {
                       crossAxisSpacing: 32,
                       childAspectRatio: 3,
                       children: List<Widget>.generate(
-                        schedules.length,
+                        scheduleStartTimestamps.length,
                         (index) => ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue[300],
@@ -107,14 +133,14 @@ class _TutorScheduleState extends State<TutorSchedule> {
                               builder: (context) {
                                 return BookingHourView(
                                   schedules: schedules,
-                                  timestamp: schedules[index].startTimestamp!,
+                                  timestamp: scheduleStartTimestamps[index],
                                 );
                               },
                             ));
                           },
                           child: Text(
                             DateFormat.MMMEd().format(DateTime.fromMillisecondsSinceEpoch(
-                                schedules[index].startTimestamp ?? 0)),
+                                scheduleStartTimestamps[index])),
                             style: const TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),

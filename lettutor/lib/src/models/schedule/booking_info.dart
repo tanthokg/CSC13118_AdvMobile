@@ -1,3 +1,5 @@
+import 'schedule_detail.dart';
+
 class BookingInfo {
   int? createdAtTimeStamp;
   int? updatedAtTimeStamp;
@@ -12,11 +14,13 @@ class BookingInfo {
   String? createdAt;
   String? updatedAt;
   String? recordUrl;
+
   // String? cancelReasonId;
   // String? lessonPlanId;
   // String? cancelNote;
   // String? calendarId;
   bool? isDeleted;
+  ScheduleDetail? scheduleDetailInfo;
 
   BookingInfo({
     this.createdAtTimeStamp,
@@ -37,6 +41,7 @@ class BookingInfo {
     // this.cancelNote,
     // this.calendarId,
     this.isDeleted,
+    this.scheduleDetailInfo,
   });
 
   BookingInfo.fromJson(Map<String, dynamic> json) {
@@ -58,6 +63,9 @@ class BookingInfo {
     // cancelNote = json['cancelNote'];
     // calendarId = json['calendarId'];
     isDeleted = json['isDeleted'];
+    scheduleDetailInfo = json['scheduleDetailInfo'] != null
+        ? ScheduleDetail.fromJson(json['scheduleDetailInfo'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +88,9 @@ class BookingInfo {
     // data['cancelNote'] = cancelNote;
     // data['calendarId'] = calendarId;
     data['isDeleted'] = isDeleted;
+    if (scheduleDetailInfo != null) {
+      data['scheduleDetailInfo'] = scheduleDetailInfo!.toJson();
+    }
     return data;
   }
 }

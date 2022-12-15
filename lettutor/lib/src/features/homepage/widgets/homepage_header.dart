@@ -4,14 +4,14 @@ import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
 import 'package:provider/provider.dart';
 
-class HomepageBanner extends StatefulWidget {
-  const HomepageBanner({Key? key}) : super(key: key);
+class HomepageHeader extends StatefulWidget {
+  const HomepageHeader({Key? key}) : super(key: key);
 
   @override
-  State<HomepageBanner> createState() => _HomepageBannerState();
+  State<HomepageHeader> createState() => _HomepageHeaderState();
 }
 
-class _HomepageBannerState extends State<HomepageBanner> {
+class _HomepageHeaderState extends State<HomepageHeader> {
   late Duration totalLessonTime;
 
   Future<void> _fetchTotalLessonTime(String token) async {
