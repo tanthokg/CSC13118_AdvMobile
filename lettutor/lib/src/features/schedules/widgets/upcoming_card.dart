@@ -1,27 +1,55 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/models/schedule/booking_info.dart';
 
-class UpcomingCard extends StatelessWidget {
-  const UpcomingCard({Key? key}) : super(key: key);
+class UpcomingClassCard extends StatelessWidget {
+  const UpcomingClassCard({Key? key, required this.bookingInfo}) : super(key: key);
+
+  final BookingInfo bookingInfo;
+
+  String _convertClassTime() {
+    String result = '';
+    result += DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(
+        bookingInfo.scheduleDetailInfo!.startPeriodTimestamp ?? 0));
+    result += ' - ';
+    result += DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(
+        bookingInfo.scheduleDetailInfo!.endPeriodTimestamp ?? 0));
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       surfaceTintColor: Colors.white,
+      elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
         child: Column(
           children: [
             Row(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.teacherDetail);
-                  },
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage('assets/tutor/keegan-avatar.png'),
-                    radius: 32,
+                // const CircleAvatar(
+                //   backgroundImage: AssetImage('assets/tutor/keegan-avatar.png'),
+                //   radius: 32,
+                // ),
+                Container(
+                  width: 72,
+                  height: 72,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: bookingInfo.scheduleDetailInfo!.scheduleInfo!.tutorInfo!.avatar ?? '',
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error_outline_rounded,
+                      size: 32,
+                      color: Colors.redAccent,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -29,17 +57,21 @@ class UpcomingCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.teacherDetail);
-                        },
-                        child: Text(
-                          'Keegan',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
+                      Text(
+                        bookingInfo.scheduleDetailInfo!.scheduleInfo!.tutorInfo!.name ??
+                            'null name',
+                        style: Theme.of(context).textTheme.headline4,
                       ),
-                      const SizedBox(height: 4),
-                      const Text('2022-10-20    10:00 - 10:55')
+                      const SizedBox(height: 8),
+                      Text(
+                        DateFormat.yMMMEd().format(DateTime.fromMillisecondsSinceEpoch(
+                            bookingInfo.scheduleDetailInfo!.startPeriodTimestamp ?? 0)),
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        _convertClassTime(),
+                        style: const TextStyle(fontSize: 15),
+                      ),
                     ],
                   ),
                 ),

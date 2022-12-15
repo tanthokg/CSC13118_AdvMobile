@@ -1,3 +1,4 @@
+import '../tutor/tutor.dart';
 import 'schedule_detail.dart';
 
 class Schedule {
@@ -10,6 +11,7 @@ class Schedule {
   String? createdAt;
   bool? isBooked;
   List<ScheduleDetail>? scheduleDetails;
+  Tutor? tutorInfo;
 
   Schedule({
     this.id,
@@ -21,6 +23,7 @@ class Schedule {
     this.createdAt,
     this.isBooked,
     this.scheduleDetails,
+    this.tutorInfo,
   });
 
   Schedule.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,7 @@ class Schedule {
         scheduleDetails!.add(ScheduleDetail.fromJson(v));
       });
     }
+    tutorInfo = json['tutorInfo'] != null ? Tutor.fromJson(json['tutorInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +56,9 @@ class Schedule {
     data['isBooked'] = isBooked;
     if (scheduleDetails != null) {
       data['scheduleDetails'] = scheduleDetails!.map((v) => v.toJson()).toList();
+    }
+    if (tutorInfo != null) {
+      data['tutorInfo'] = tutorInfo!.toJson();
     }
     return data;
   }

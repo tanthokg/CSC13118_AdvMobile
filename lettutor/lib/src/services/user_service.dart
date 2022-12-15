@@ -24,9 +24,9 @@ class UserService {
   }
 
   static Future<BookingInfo> getUpcomingLesson(String token) async {
-    final dateTime = DateTime.now().millisecondsSinceEpoch;
+    final now = DateTime.now().millisecondsSinceEpoch;
     final response = await get(
-      Uri.parse('$baseUrl/booking/next?dateTime=$dateTime'),
+      Uri.parse('$baseUrl/booking/next?dateTime=$now'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
@@ -58,7 +58,7 @@ class UserService {
       if (element.scheduleDetailInfo!.startPeriodTimestamp == null) return false;
 
       final int startTimestamp = element.scheduleDetailInfo!.startPeriodTimestamp!;
-      return startTimestamp > dateTime;
+      return startTimestamp > now;
     }).toList();
 
     if (lessons.isNotEmpty) {
@@ -66,5 +66,29 @@ class UserService {
     } else {
       throw Exception('Error: Cannot get next lesson info');
     }
+  }
+
+  static Future<List<BookingInfo>> getUpcomingClasses({
+    required String token,
+    required int page,
+    required int perPage,
+  }) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final response = await get(
+      Uri.parse(
+          '$baseUrl/booking/list/student?page=$page&perPage=$perPage&dateTimeGte=$now&orderBy=meeting&sortBy=asc'),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception('Error: Cannot get upcoming classes. ${jsonDecode['message']}');
+    }
+
+    final List<dynamic> classes = jsonDecode['data']['rows'];
+    return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
   }
 }

@@ -60,9 +60,9 @@ class BookingHourView extends StatelessWidget {
               children: List<Widget>.generate(
                 validSchedules.length,
                 (index) {
-                  final start = DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(
+                  final start = DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(
                       validSchedules[index].startTimestamp ?? 0));
-                  final end = DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(
+                  final end = DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(
                       validSchedules[index].endTimestamp ?? 0));
 
                   return ElevatedButton(

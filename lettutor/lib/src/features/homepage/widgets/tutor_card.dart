@@ -82,10 +82,10 @@ class _TutorCardState extends State<TutorCard> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Image.network(
-                      widget.tutor.avatar ?? '',
+                    child: CachedNetworkImage(
+                      imageUrl: widget.tutor.avatar ?? '',
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => const Icon(
+                      errorWidget: (context, error, stackTrace) => const Icon(
                         Icons.error_outline_rounded,
                         color: Colors.red,
                         size: 32,

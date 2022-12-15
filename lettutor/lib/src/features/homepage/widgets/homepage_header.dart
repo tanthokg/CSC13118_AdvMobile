@@ -21,11 +21,13 @@ class _HomepageHeaderState extends State<HomepageHeader> {
     final total = await UserService.getTotalLessonTime(token);
     final upcoming = await UserService.getUpcomingLesson(token);
 
-    setState(() {
-      totalLessonTime = Duration(minutes: total);
-      upcomingClass = upcoming;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        totalLessonTime = Duration(minutes: total);
+        upcomingClass = upcoming;
+        _isLoading = false;
+      });
+    }
   }
 
   String _convertTotalLessonTime() {
@@ -77,8 +79,8 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                 ),
                 Text(
                   '${DateFormat.yMMMEd().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.startPeriodTimestamp ?? 0))} '
-                  '${DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.startPeriodTimestamp ?? 0))} - '
-                  '${DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.endPeriodTimestamp ?? 0))}',
+                  '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.startPeriodTimestamp ?? 0))} - '
+                  '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.endPeriodTimestamp ?? 0))}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
