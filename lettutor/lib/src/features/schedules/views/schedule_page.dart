@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/src/features/schedules/views/upcoming_classes_view.dart';
-import 'package:lettutor/src/widgets/history_card.dart';
+import 'package:lettutor/src/features/schedules/views/history_view.dart';
+import 'package:lettutor/src/features/schedules/views/upcoming_view.dart';
+import 'package:lettutor/src/features/schedules/widgets/history_card.dart';
 import 'package:lettutor/src/features/schedules/widgets/upcoming_card.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -56,21 +57,11 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
               ],
             ),
-            Expanded(
+            const Expanded(
               child: TabBarView(
                 children: [
-                  // Here goes the first tab
-                  const UpcomingClassesView(),
-                  // Here goes the second tab
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    child: Column(
-                      children: List<Widget>.generate(
-                        count,
-                        (index) => const HistoryCard(),
-                      ),
-                    ),
-                  ),
+                  UpcomingView(),
+                  HistoryView(),
                 ],
               ),
             )

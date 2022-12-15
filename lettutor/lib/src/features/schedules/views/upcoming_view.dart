@@ -5,14 +5,14 @@ import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
 import 'package:provider/provider.dart';
 
-class UpcomingClassesView extends StatefulWidget {
-  const UpcomingClassesView({Key? key}) : super(key: key);
+class UpcomingView extends StatefulWidget {
+  const UpcomingView({Key? key}) : super(key: key);
 
   @override
-  State<UpcomingClassesView> createState() => _UpcomingClassViewState();
+  State<UpcomingView> createState() => _UpcomingClassViewState();
 }
 
-class _UpcomingClassViewState extends State<UpcomingClassesView> {
+class _UpcomingClassViewState extends State<UpcomingView> {
   late final List<BookingInfo> upcoming;
 
   bool _isLoading = true;
@@ -45,14 +45,16 @@ class _UpcomingClassViewState extends State<UpcomingClassesView> {
           )
         : upcoming.isEmpty
             ? const Center(
-                child: Text('You have no upcoming class'),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListView.builder(
-                  itemCount: upcoming.length,
-                  itemBuilder: (context, index) => UpcomingClassCard(bookingInfo: upcoming[index]),
+                child: Text(
+                  'You have no upcoming class',
+                  style: TextStyle(fontSize: 16),
                 ),
-              );
+              )
+            : ListView.builder(
+              itemCount: upcoming.length,
+              itemBuilder: (context, index) => UpcomingClassCard(
+                bookingInfo: upcoming[index],
+              ),
+            );
   }
 }

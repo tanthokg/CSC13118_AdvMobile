@@ -22,7 +22,7 @@ class UpcomingClassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(

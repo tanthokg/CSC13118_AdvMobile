@@ -91,4 +91,28 @@ class UserService {
     final List<dynamic> classes = jsonDecode['data']['rows'];
     return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
   }
+
+  static Future<List<BookingInfo>> getHistory({
+    required String token,
+    required int page,
+    required int perPage,
+  }) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final response = await get(
+      Uri.parse(
+          '$baseUrl/booking/list/student?page=$page&perPage=$perPage&dateTimeLte=$now&orderBy=meeting&sortBy=desc'),
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception('Error: Cannot get history. ${jsonDecode['message']}');
+    }
+
+    final List<dynamic> classes = jsonDecode['data']['rows'];
+    return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
+  }
 }
