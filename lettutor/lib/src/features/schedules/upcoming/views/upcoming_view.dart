@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/src/features/schedules/widgets/upcoming_card.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/upcoming_card.dart';
 
 class UpcomingView extends StatefulWidget {
   const UpcomingView({Key? key}) : super(key: key);

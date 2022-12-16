@@ -308,24 +308,24 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text('Suggested Courses', style: Theme.of(context).textTheme.headline3),
-                  ...courses.map((course) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Row(
-                          children: [
-                            Text(
-                              course.name,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            const SizedBox(width: 16),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, Routes.courseDetail);
-                                },
-                                child: const Text('View'))
-                          ],
-                        ),
-                      )),
+                  // Text('Suggested Courses', style: Theme.of(context).textTheme.headline3),
+                  // ...courses.map((course) => Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 12),
+                  //       child: Row(
+                  //         children: [
+                  //           Text(
+                  //             course.name,
+                  //             style: Theme.of(context).textTheme.headline4,
+                  //           ),
+                  //           const SizedBox(width: 16),
+                  //           TextButton(
+                  //               onPressed: () {
+                  //                 Navigator.pushNamed(context, Routes.courseDetail);
+                  //               },
+                  //               child: const Text('View'))
+                  //         ],
+                  //       ),
+                  //     )),
                   const SizedBox(height: 12),
                   Text('Interests', style: Theme.of(context).textTheme.headline3),
                   Padding(

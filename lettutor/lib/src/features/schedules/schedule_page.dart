@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/src/features/schedules/views/history_view.dart';
-import 'package:lettutor/src/features/schedules/views/upcoming_view.dart';
-import 'package:lettutor/src/features/schedules/widgets/history_card.dart';
-import 'package:lettutor/src/features/schedules/widgets/upcoming_card.dart';
 
-class SchedulePage extends StatefulWidget {
+import 'history/views/history_view.dart';
+import 'upcoming/views/upcoming_view.dart';
+
+class SchedulePage extends StatelessWidget {
   const SchedulePage({Key? key}) : super(key: key);
-
-  @override
-  State<SchedulePage> createState() => _SchedulePageState();
-}
-
-class _SchedulePageState extends State<SchedulePage> {
-  int count = 10;
 
   @override
   Widget build(BuildContext context) {

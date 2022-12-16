@@ -159,16 +159,16 @@ class _CourseDetailState extends State<CourseDetailView> {
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
-            ...List<Widget>.generate(
-                courseTopics.length,
-                (index) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                      child: Card(
-                          elevation: 1.5,
-                          surfaceTintColor: Colors.white,
-                          child: ListTile(
-                              title: Text('${index + 1}. ${courseTopics[index]}'))),
-                    )),
+            // ...List<Widget>.generate(
+            //     courseTopics.length,
+            //     (index) => Padding(
+            //           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+            //           child: Card(
+            //               elevation: 1.5,
+            //               surfaceTintColor: Colors.white,
+            //               child: ListTile(
+            //                   title: Text('${index + 1}. ${courseTopics[index]}'))),
+            //         )),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Text(

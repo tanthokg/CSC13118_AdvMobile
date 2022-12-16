@@ -141,100 +141,100 @@ const teachers = [
       ]),
 ];
 
-const courses = [
-  Course(
-    'Life in the Internet Age',
-    'assets/course/course-01.png',
-    "Let's discuss how technology is changing the way we live",
-    'Intermediate',
-    9,
-  ),
-  Course(
-    'Caring for Our Planet',
-    'assets/course/course-02.png',
-    "Let's discuss our relationship as humans with our planet, Earth",
-    'Intermediate',
-    7,
-  ),
-  Course(
-    'Healthy Mind, Healthy Body',
-    'assets/course/course-03.png',
-    "Let's discuss the many aspects of living a long, happy life",
-    'Intermediate',
-    6,
-  ),
-  Course(
-    'Movies and Television',
-    'assets/course/course-04.png',
-    "Let's discuss our preferences and habits surrounding movies and television shows",
-    'Beginner',
-    10,
-  ),
-  Course(
-    'Raising Children',
-    'assets/course/course-05.png',
-    "Let's discuss raising children and practice using English for common parenting situations",
-    'Intermediate',
-    11,
-  ),
-  Course(
-    'The Olympics',
-    'assets/course/course-06.png',
-    "Let’s practice talking about the Olympics, the biggest sports festival on earth!",
-    'Advanced',
-    8,
-  ),
-];
+// const courses = [
+//   Course(
+//     'Life in the Internet Age',
+//     'assets/course/course-01.png',
+//     "Let's discuss how technology is changing the way we live",
+//     'Intermediate',
+//     9,
+//   ),
+//   Course(
+//     'Caring for Our Planet',
+//     'assets/course/course-02.png',
+//     "Let's discuss our relationship as humans with our planet, Earth",
+//     'Intermediate',
+//     7,
+//   ),
+//   Course(
+//     'Healthy Mind, Healthy Body',
+//     'assets/course/course-03.png',
+//     "Let's discuss the many aspects of living a long, happy life",
+//     'Intermediate',
+//     6,
+//   ),
+//   Course(
+//     'Movies and Television',
+//     'assets/course/course-04.png',
+//     "Let's discuss our preferences and habits surrounding movies and television shows",
+//     'Beginner',
+//     10,
+//   ),
+//   Course(
+//     'Raising Children',
+//     'assets/course/course-05.png',
+//     "Let's discuss raising children and practice using English for common parenting situations",
+//     'Intermediate',
+//     11,
+//   ),
+//   Course(
+//     'The Olympics',
+//     'assets/course/course-06.png',
+//     "Let’s practice talking about the Olympics, the biggest sports festival on earth!",
+//     'Advanced',
+//     8,
+//   ),
+// ];
+//
+// const courseTopics = [
+//   'The Internet',
+//   'Artificial Intelligence (AI)',
+//   'Social Media',
+//   'Internet Privacy',
+//   'Live Streaming',
+//   'Coding',
+//   'Technology Transforming Healthcare',
+//   'Smart Home Technology',
+//   'Remote Work - A Dream Job?',
+// ];
 
-const courseTopics = [
-  'The Internet',
-  'Artificial Intelligence (AI)',
-  'Social Media',
-  'Internet Privacy',
-  'Live Streaming',
-  'Coding',
-  'Technology Transforming Healthcare',
-  'Smart Home Technology',
-  'Remote Work - A Dream Job?',
-];
-
-const ebooks = [
-  EBook(
-      'Family and Friends 1',
-      "For kids who can read pretty well, get ready for compound sentences and...",
-      'Upper-Beginner',
-      'assets/ebook/family-and-friends.jpg'),
-  EBook(
-      'Family and Friends 2',
-      "For kids who can read pretty well, get ready for compound sentences and...",
-      'Upper-Beginner',
-      'assets/ebook/family-and-friends.jpg'),
-  EBook(
-      'Family and Friends 3',
-      "For kids who can read pretty well, get ready for compound sentences and...",
-      'Upper-Beginner',
-      'assets/ebook/family-and-friends.jpg'),
-  EBook(
-      'Everybody Up',
-      "For: kids who want to learn English through pictures, pick up simple...",
-      'Beginner',
-      'assets/everybody-up.jpg'),
-  EBook(
-      'Cambridge Storyfun For Starter',
-      "For kids who can handle single words and simple sentences with assistance.",
-      'Beginner',
-      'assets/ebook/storyfun.jpg'),
-  EBook(
-      'New Headway Elementary',
-      "For teenagers who want to form a grammatical background as well as...",
-      'Beginner',
-      'assets/ebook/new-headway.jpg'),
-  EBook(
-      'English World ',
-      "For kids who are able to pick up simple sounds, letters, words and learn new...",
-      'Beginner',
-      'assets/ebook/english-world.jpg'),
-];
+// const ebooks = [
+//   EBook(
+//       'Family and Friends 1',
+//       "For kids who can read pretty well, get ready for compound sentences and...",
+//       'Upper-Beginner',
+//       'assets/ebook/family-and-friends.jpg'),
+//   EBook(
+//       'Family and Friends 2',
+//       "For kids who can read pretty well, get ready for compound sentences and...",
+//       'Upper-Beginner',
+//       'assets/ebook/family-and-friends.jpg'),
+//   EBook(
+//       'Family and Friends 3',
+//       "For kids who can read pretty well, get ready for compound sentences and...",
+//       'Upper-Beginner',
+//       'assets/ebook/family-and-friends.jpg'),
+//   EBook(
+//       'Everybody Up',
+//       "For: kids who want to learn English through pictures, pick up simple...",
+//       'Beginner',
+//       'assets/everybody-up.jpg'),
+//   EBook(
+//       'Cambridge Storyfun For Starter',
+//       "For kids who can handle single words and simple sentences with assistance.",
+//       'Beginner',
+//       'assets/ebook/storyfun.jpg'),
+//   EBook(
+//       'New Headway Elementary',
+//       "For teenagers who want to form a grammatical background as well as...",
+//       'Beginner',
+//       'assets/ebook/new-headway.jpg'),
+//   EBook(
+//       'English World ',
+//       "For kids who are able to pick up simple sounds, letters, words and learn new...",
+//       'Beginner',
+//       'assets/ebook/english-world.jpg'),
+// ];
 
 const courseHours = [
   '00:00 - 00:25',

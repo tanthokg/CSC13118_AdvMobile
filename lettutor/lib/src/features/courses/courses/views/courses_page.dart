@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
-import 'package:lettutor/src/widgets/course_card.dart';
+import 'package:lettutor/src/features/courses/courses/widgets/course_card.dart';
 import 'package:lettutor/src/widgets/ebook_card.dart';
 
 class CoursesPage extends StatefulWidget {
@@ -71,20 +71,20 @@ class _CoursesPageState extends State<CoursesPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: courses.length,
-                          itemBuilder: (context, index) => CourseCard(
-                            course: courses[index],
-                            onTap: ((value) => Navigator.pushNamed(
-                                  context,
-                                  Routes.courseDetail,
-                                )),
-                          ),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(height: 8),
-                        ),
-                      )
+                      // Expanded(
+                      //   child: ListView.separated(
+                      //     itemCount: courses.length,
+                      //     itemBuilder: (context, index) => CourseCard(
+                      //       course: courses[index],
+                      //       onTap: ((value) => Navigator.pushNamed(
+                      //             context,
+                      //             Routes.courseDetail,
+                      //           )),
+                      //     ),
+                      //     separatorBuilder: (BuildContext context, int index) =>
+                      //         const SizedBox(height: 8),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -104,16 +104,16 @@ class _CoursesPageState extends State<CoursesPage> {
                               borderRadius: BorderRadius.all(Radius.circular(10))),
                         ),
                       ),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: ebooks.length,
-                          itemBuilder: (context, index) => EbookCard(
-                            ebook: ebooks[index],
-                          ),
-                          separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(height: 8),
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: ListView.separated(
+                      //     itemCount: ebooks.length,
+                      //     itemBuilder: (context, index) => EbookCard(
+                      //       ebook: ebooks[index],
+                      //     ),
+                      //     separatorBuilder: (BuildContext context, int index) =>
+                      //     const SizedBox(height: 8),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
