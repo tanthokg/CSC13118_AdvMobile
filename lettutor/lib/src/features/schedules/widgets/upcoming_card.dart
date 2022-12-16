@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 
 class UpcomingClassCard extends StatelessWidget {
@@ -106,7 +107,15 @@ class UpcomingClassCard extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, Routes.videoCall);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
+                            return VideoCallView(startTimestamp: start);
+                          },
+                        ),
+                      );
                     },
                     child: const Text(
                       'Go to meeting',

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
-class VideoCallView extends StatefulWidget {
-  const VideoCallView({Key? key}) : super(key: key);
+class VideoCallView extends StatelessWidget {
+  const VideoCallView({Key? key, required this.startTimestamp}) : super(key: key);
 
-  @override
-  State<VideoCallView> createState() => _VideoCallViewState();
-}
+  final int startTimestamp;
 
-class _VideoCallViewState extends State<VideoCallView> {
+  String _countWaitingTime() {
+
+
+    return '${DateTime.fromMillisecondsSinceEpoch(startTimestamp).difference(DateTime.now()).inMinutes} minute(s)';
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,12 +18,12 @@ class _VideoCallViewState extends State<VideoCallView> {
         backgroundColor: Colors.black,
         body: Column(
           children: [
-            const Expanded(
+            Expanded(
               child: Center(
                 child: Text(
-                  'Lesson is starting in\n00:15:44',
+                  'Lesson is starting in\n${_countWaitingTime()}',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, color: Colors.white60),
+                  style: const TextStyle(fontSize: 20, color: Colors.white60),
                 ),
               ),
             ),

@@ -74,7 +74,6 @@ class LetTutor extends StatelessWidget {
             Routes.teacherDetail: (context) => const TutorDetailView(),
             Routes.review: (context) => const TutorFeedbackView(),
             Routes.writeReview: (context) => const WriteReviewView(),
-            Routes.videoCall: (context) => const VideoCallView(),
           }),
     );
   }
