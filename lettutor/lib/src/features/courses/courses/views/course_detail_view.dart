@@ -84,7 +84,7 @@ class _CourseDetailState extends State<CourseDetailView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Text(
-                      courseDetail.name ?? 'null course name',
+                      courseDetail.name ?? 'null. You name it',
                       style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _CourseDetailState extends State<CourseDetailView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      courseDetail.description ?? 'null description',
+                      courseDetail.description ?? 'null. No one knows what this is about',
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),

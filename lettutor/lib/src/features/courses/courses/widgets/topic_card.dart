@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/features/courses/courses/views/topic_view.dart';
 import 'package:lettutor/src/models/course/course_topic.dart';
 
 class TopicCard extends StatelessWidget {
@@ -20,7 +21,17 @@ class TopicCard extends StatelessWidget {
         surfaceTintColor: Colors.white,
         child: ListTile(
           title: Text('${index + 1}. ${topic.name}'),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TopicView(
+                  title: topic.name ?? 'null name',
+                  url: topic.nameFile ?? 'null file',
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
