@@ -19,7 +19,11 @@ class _CoursesViewState extends State<CoursesView> {
   bool _isLoading = true;
 
   Future<void> _fetchAllCourses(String token) async {
-    final result = await CourseService.getListCourseWithPagination(page: 1, size: 20, token: token);
+    final result = await CourseService.getListCourseWithPagination(
+      page: 1,
+      size: 20,
+      token: token,
+    );
 
     setState(() {
       courses = result;

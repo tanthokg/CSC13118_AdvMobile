@@ -28,4 +28,23 @@ class CourseService {
     final List<dynamic> courses = jsonDecode['data']['rows'];
     return courses.map((e) => Course.fromJson(e)).toList();
   }
+
+  static Future<Course> getCourseDetailById(
+      {required String token, required String courseId}) async {
+    final response = await get(
+      Uri.parse('$baseUrl/course/$courseId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception('Error: Cannot get course detail. ${jsonDecode['message']}');
+    }
+
+    return Course.fromJson(jsonDecode['data']);
+  }
 }
