@@ -15,6 +15,7 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       surfaceTintColor: Colors.white,

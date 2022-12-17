@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/courses/courses/views/courses_view.dart';
 import 'package:lettutor/src/features/courses/courses/widgets/course_card.dart';
 import 'package:lettutor/src/widgets/ebook_card.dart';
 
@@ -55,39 +56,7 @@ class _CoursesPageState extends State<CoursesPage> {
             Expanded(
               child: TabBarView(children: [
                 // Here goes the first tab
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Column(
-                    children: [
-                      TextField(
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(right: 24),
-                          hintStyle: TextStyle(color: Colors.grey[400]),
-                          hintText: 'search courses',
-                          prefixIcon: const Icon(Icons.search),
-                          border: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey, width: 2),
-                              borderRadius: BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Expanded(
-                      //   child: ListView.separated(
-                      //     itemCount: courses.length,
-                      //     itemBuilder: (context, index) => CourseCard(
-                      //       course: courses[index],
-                      //       onTap: ((value) => Navigator.pushNamed(
-                      //             context,
-                      //             Routes.courseDetail,
-                      //           )),
-                      //     ),
-                      //     separatorBuilder: (BuildContext context, int index) =>
-                      //         const SizedBox(height: 8),
-                      //   ),
-                      // )
-                    ],
-                  ),
-                ),
+                CoursesView(),
                 // Here goes the second tab
                 Padding(
                   padding: const EdgeInsets.all(16),
