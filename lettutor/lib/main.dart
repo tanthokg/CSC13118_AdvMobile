@@ -24,7 +24,6 @@ void main() {
 class LetTutor extends StatelessWidget {
   const LetTutor({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
