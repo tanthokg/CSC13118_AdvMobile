@@ -3,3 +3,4 @@ through 1-1 video call with teachers around the world.
 
 # Demo Videos
 - Milestone 1 - UI Mockup: https://youtu.be/h1UGGRKwbrc
+- Milestone 2 + 3 - Basic Flows: https://youtu.be/QlnHO2yuHdU
