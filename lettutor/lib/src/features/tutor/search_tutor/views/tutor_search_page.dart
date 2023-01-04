@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 import 'tutor_search_result.dart';
 
-
 class TutorSearchPage extends StatefulWidget {
   const TutorSearchPage({Key? key}) : super(key: key);
 
@@ -20,6 +19,7 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
   final _nameController = TextEditingController();
   final _countryController = TextEditingController();
 
+  Nationality? _nationality = Nationality.foreign;
   int _chosenSpecialty = 0;
   List<Tutor> _tutors = [];
 
@@ -30,14 +30,16 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
     if (_chosenSpecialty != 0) {
       filterSpecialties.add(specialties[_chosenSpecialty].toLowerCase().replaceAll(' ', '-'));
     }
-
+    print(_nationality?.index == Nationality.vietnamese.index);
     final result = await TutorService.searchTutor(
       token: accessToken,
       search: name,
       page: 1,
       perPage: 10,
+      nationality: {'isVietNamese': _nationality?.index == Nationality.vietnamese.index},
       specialties: filterSpecialties,
     );
+    print(result.length);
 
     if (_countryController.text.isEmpty) {
       _tutors = result;
@@ -87,6 +89,38 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
+          const SizedBox(height: 16),
+          Text('Nationality', style: Theme.of(context).textTheme.headline4),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Radio<Nationality>(
+                value: Nationality.vietnamese,
+                groupValue: _nationality,
+                onChanged: (value) {
+                  setState(() {
+                    _nationality = value;
+                  });
+                },
+              ),
+              const Text('Vietnamese Tutors'),
+            ],
+          ),
+          Row(
+            children: [
+              Radio<Nationality>(
+                value: Nationality.foreign,
+                groupValue: _nationality,
+                onChanged: (value) {
+                  setState(() {
+                    _nationality = value;
+                  });
+                },
+              ),
+              const Text('Foreign Tutors'),
+            ],
+          ),
+          const SizedBox(height: 8),
           // DropdownButtonFormField(
           //   decoration: InputDecoration(
           //     contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -152,13 +186,11 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
                   if (mounted) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => TutorSearchResult(tutors: _tutors)),
+                      MaterialPageRoute(builder: (context) => TutorSearchResult(tutors: _tutors)),
                     );
                   }
                 },
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blue)),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
@@ -173,4 +205,9 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
       ),
     );
   }
+}
+
+enum Nationality {
+  vietnamese,
+  foreign,
 }

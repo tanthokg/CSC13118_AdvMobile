@@ -69,6 +69,7 @@ class TutorService {
     String search = '',
     required int page,
     required int perPage,
+    required Map<String, bool> nationality,
     List<String> specialties = const [],
   }) async {
     final response = await post(
@@ -83,6 +84,7 @@ class TutorService {
         'search': search,
         'filters': {
           'specialties': specialties,
+          'nationality': nationality,
         },
       }),
     );
