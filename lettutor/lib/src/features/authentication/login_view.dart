@@ -21,6 +21,37 @@ class _LoginViewState extends State<LoginView> {
   bool _isAuthenticating = true;
   bool _isAuthenticated = false;
 
+  String _emailErrorText = '';
+  String _passwordErrorText = '';
+  bool _isValidToLogin = false;
+
+  void _handleValidation() {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    if (_emailController.text.isEmpty) {
+      _emailErrorText = 'Email cannot be empty';
+      _isValidToLogin = false;
+    } else if (!emailRegExp.hasMatch(_emailController.text)) {
+      _emailErrorText = 'Email format must be abc@example.com';
+      _isValidToLogin = false;
+    } else {
+      _emailErrorText = '';
+      _isValidToLogin = true;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      _passwordErrorText = 'Password cannot be empty';
+      _isValidToLogin = false;
+    } else if (_passwordController.text.length < 6) {
+      _passwordErrorText = 'Password must be at least 6 characters';
+      _isValidToLogin = false;
+    } else {
+      _passwordErrorText = '';
+      _isValidToLogin = true;
+    }
+    setState(() {});
+  }
+
   void _handleLogin(AuthProvider authProvider) async {
     try {
       await AuthService.loginWithEmailAndPassword(
@@ -107,8 +138,7 @@ class _LoginViewState extends State<LoginView> {
           : _isAuthenticated
               ? const SizedBox.shrink()
               : SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(
-                      16, MediaQuery.of(context).padding.top, 16, 16),
+                  padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -161,10 +191,17 @@ class _LoginViewState extends State<LoginView> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         autocorrect: false,
+                        onChanged: (value) {
+                          _handleValidation();
+                        },
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: Colors.grey[400]),
                           hintText: 'abc@example.com',
-                          prefixIcon: const Icon(Icons.mail, size: 26),
+                          errorText: _emailErrorText.isEmpty ? null : _emailErrorText,
+                          prefixIcon: Icon(
+                            Icons.mail,
+                            color: _emailErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                          ),
                           border: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey, width: 2),
                               borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -180,10 +217,17 @@ class _LoginViewState extends State<LoginView> {
                         controller: _passwordController,
                         obscureText: true,
                         autocorrect: false,
+                        onChanged: (value) {
+                          _handleValidation();
+                        },
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: Colors.grey[400]),
                           hintText: '******',
-                          prefixIcon: const Icon(Icons.lock, size: 26),
+                          errorText: _passwordErrorText.isEmpty ? null : _passwordErrorText,
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: _passwordErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                          ),
                           border: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey, width: 2),
                               borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -191,16 +235,18 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       const SizedBox(height: 24),
                       TextButton(
-                        onPressed: () {
-                          _handleLogin(authProvider);
-                        },
+                        onPressed: _isValidToLogin
+                            ? () {
+                                _handleLogin(authProvider);
+                              }
+                            : null,
                         style: TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(56),
-                          backgroundColor: Colors.blue,
+                          backgroundColor: _isValidToLogin ? Colors.blue : Colors.grey[400],
                         ),
                         child: const Text(
                           'LOG IN',
-                          style: TextStyle(fontSize: 22, color: Colors.white),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -210,7 +256,7 @@ class _LoginViewState extends State<LoginView> {
                         },
                         child: const Text(
                           'Forgot Password?',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       const SizedBox(height: 16),

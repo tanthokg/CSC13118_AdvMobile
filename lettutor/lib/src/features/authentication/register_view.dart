@@ -17,6 +17,52 @@ class _RegisterViewState extends State<RegisterView> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  String _emailErrorText = '';
+  String _passwordErrorText = '';
+  String _confirmErrorText = '';
+  bool _isValidToRegister = false;
+
+  void _handleValidation() {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    if (_emailController.text.isEmpty) {
+      _emailErrorText = 'Email cannot be empty';
+      _isValidToRegister = false;
+    } else if (!emailRegExp.hasMatch(_emailController.text)) {
+      _emailErrorText = 'Email format must be abc@example.com';
+      _isValidToRegister = false;
+    } else {
+      _emailErrorText = '';
+      _isValidToRegister = true;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      _passwordErrorText = 'Email cannot be empty';
+      _isValidToRegister = false;
+    } else if (_passwordController.text.length < 6) {
+      _passwordErrorText = 'Password must be at least 6 characters';
+      _isValidToRegister = false;
+    } else {
+      _passwordErrorText = '';
+      _isValidToRegister = true;
+    }
+
+    if (_confirmPasswordController.text.isEmpty) {
+      _confirmErrorText = 'Password cannot be empty';
+      _isValidToRegister = false;
+    } else if (_confirmPasswordController.text.length < 6) {
+      _confirmErrorText = 'Password must be at least 6 characters';
+      _isValidToRegister = false;
+    } else if (_confirmPasswordController.text != _passwordController.text) {
+      _confirmErrorText = 'Re-typed password does not match';
+      _isValidToRegister = false;
+    } else {
+      _confirmErrorText = '';
+      _isValidToRegister = true;
+    }
+    setState(() {});
+  }
+
   void _handleRegister() async {
     try {
       await AuthService.registerWithEmailAndPassword(
@@ -94,10 +140,17 @@ class _RegisterViewState extends State<RegisterView> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
+              onChanged: (value) {
+                _handleValidation();
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: "abc@example.com",
-                prefixIcon: const Icon(Icons.mail, size: 26),
+                prefixIcon: Icon(
+                  Icons.mail,
+                  color: _emailErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                ),
+                errorText: _emailErrorText.isEmpty ? null : _emailErrorText,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -113,10 +166,17 @@ class _RegisterViewState extends State<RegisterView> {
               controller: _passwordController,
               obscureText: true,
               autocorrect: false,
+              onChanged: (value) {
+                _handleValidation();
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: "******",
-                prefixIcon: const Icon(Icons.lock, size: 26),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: _passwordErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                ),
+                errorText: _passwordErrorText.isEmpty ? null : _passwordErrorText,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -132,36 +192,54 @@ class _RegisterViewState extends State<RegisterView> {
               controller: _confirmPasswordController,
               obscureText: true,
               autocorrect: false,
+              onChanged: (value) {
+                _handleValidation();
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: "******",
-                prefixIcon: const Icon(Icons.lock, size: 26),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: _confirmErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                ),
+                errorText: _confirmErrorText.isEmpty ? null : _confirmErrorText,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             TextButton(
-              onPressed: () {
-                _handleRegister();
-              },
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+              onPressed: _isValidToRegister
+                  ? () {
+                      _handleRegister();
+                    }
+                  : null,
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+                backgroundColor: _isValidToRegister ? Colors.blue : Colors.grey[400],
+              ),
               child: const Text(
                 'REGISTER',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Already have an account?'),
+                const Text(
+                  'Already have an account?',
+                  style: TextStyle(fontSize: 16),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Log In'),
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
             )

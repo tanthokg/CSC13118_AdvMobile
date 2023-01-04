@@ -14,6 +14,27 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   final _emailController = TextEditingController();
 
+  String _emailErrorText = '';
+  bool _isValidToSend = false;
+
+  void _handleValidation() {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    if (_emailController.text.isEmpty) {
+      _emailErrorText = 'Email cannot be empty';
+      _isValidToSend = false;
+    } else if (!emailRegExp.hasMatch(_emailController.text)) {
+      _emailErrorText = 'Email format must be abc@example.com';
+      _isValidToSend = false;
+    } else {
+      _emailErrorText = '';
+      _isValidToSend = true;
+    }
+    setState(() {
+
+    });
+  }
+
   void _handleForgotPassword() async {
     try {
       await AuthService.forgotPassword(_emailController.text);
@@ -92,22 +113,33 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
+              onChanged: (value) {
+                _handleValidation();
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: "abc@example.com",
-                prefixIcon: const Icon(Icons.mail, size: 26),
+                prefixIcon: Icon(
+                  Icons.mail,
+                  color: _emailErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                ),
+                errorText: _emailErrorText.isEmpty ? null : _emailErrorText,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             TextButton(
-              onPressed: () {
-                _handleForgotPassword();
-              },
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+              onPressed: _isValidToSend
+                  ? () {
+                      _handleForgotPassword();
+                    }
+                  : null,
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+                backgroundColor: _isValidToSend ? Colors.blue : Colors.grey[400],
+              ),
               child: const Text(
                 'SEND RECOVERY EMAIL',
                 style: TextStyle(fontSize: 18, color: Colors.white),
@@ -118,7 +150,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Go Back To Log In'),
+              child: const Text(
+                'Go Back To Log In',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),
