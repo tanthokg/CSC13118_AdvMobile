@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lettutor/src/constants/datatype.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
@@ -24,6 +26,8 @@ class _LoginViewState extends State<LoginView> {
   String _emailErrorText = '';
   String _passwordErrorText = '';
   bool _isValidToLogin = false;
+
+  final _googleSignIn = GoogleSignIn();
 
   void _handleValidation() {
     final emailRegExp =
@@ -122,6 +126,97 @@ class _LoginViewState extends State<LoginView> {
         _isAuthenticating = false;
       });
     }
+  }
+
+  void _handleGoogleLogin(AuthProvider authProvider) async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+      final String? accessToken = googleAuth?.accessToken;
+
+      if (accessToken != null) {
+        try {
+          await AuthService.loginByGoogle(
+            accessToken: accessToken,
+            onSuccess: (user, token) async {
+              authProvider.logIn(user, token);
+
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString(
+                'refresh_token',
+                authProvider.token!.refresh!.token!,
+              );
+
+              setState(() {
+                _isAuthenticating = false;
+                _isAuthenticated = true;
+              });
+
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  Routes.main,
+                  (route) => false,
+                );
+              });
+            },
+          );
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+      );
+    }
+  }
+
+  void _handleFacebookLogin(AuthProvider authProvider) async {
+    final result = await FacebookAuth.instance.login();
+
+    if (result.status == LoginStatus.success) {
+      final accessToken = result.accessToken!.token;
+      try {
+        await AuthService.loginByFacebook(
+          accessToken: accessToken,
+          onSuccess: (user, token) async {
+            authProvider.logIn(user, token);
+
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString(
+              'refresh_token',
+              authProvider.token!.refresh!.token!,
+            );
+
+            setState(() {
+              _isAuthenticating = false;
+              _isAuthenticated = true;
+            });
+
+            Future.delayed(const Duration(seconds: 1), () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.main,
+                (route) => false,
+              );
+            });
+          },
+        );
+      } catch (e) {
+        print(e);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error Login with Google: ${e.toString()}')),
+          );
+        }
+      }
+    } else {}
   }
 
   @override
@@ -270,7 +365,9 @@ class _LoginViewState extends State<LoginView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _handleFacebookLogin(authProvider);
+                              },
                               child: Image.asset(
                                 'assets/logo/facebook.png',
                                 width: 40,
@@ -278,7 +375,9 @@ class _LoginViewState extends State<LoginView> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _handleGoogleLogin(authProvider);
+                              },
                               child: Image.asset(
                                 'assets/logo/google.png',
                                 width: 40,
