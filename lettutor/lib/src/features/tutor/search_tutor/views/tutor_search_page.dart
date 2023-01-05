@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
+import 'package:lettutor/src/constants/datatype.dart';
+import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
@@ -17,42 +19,26 @@ class TutorSearchPage extends StatefulWidget {
 
 class _TutorSearchPageState extends State<TutorSearchPage> {
   final _nameController = TextEditingController();
-  final _countryController = TextEditingController();
+
+  // final _countryController = TextEditingController();
 
   Nationality? _nationality = Nationality.foreign;
   int _chosenSpecialty = 0;
-  List<Tutor> _tutors = [];
 
-  Future<void> _searchTutors(AuthProvider authProvider) async {
+  Map<String, dynamic> _encapsulateSearchParams(AuthProvider authProvider) {
     final name = _nameController.text;
     final accessToken = authProvider.token?.access?.token as String;
     final List<String> filterSpecialties = [];
     if (_chosenSpecialty != 0) {
       filterSpecialties.add(specialties[_chosenSpecialty].toLowerCase().replaceAll(' ', '-'));
     }
-    print(_nationality?.index == Nationality.vietnamese.index);
-    final result = await TutorService.searchTutor(
-      token: accessToken,
-      search: name,
-      page: 1,
-      perPage: 10,
-      nationality: {'isVietNamese': _nationality?.index == Nationality.vietnamese.index},
-      specialties: filterSpecialties,
-    );
-    print(result.length);
 
-    if (_countryController.text.isEmpty) {
-      _tutors = result;
-    } else {
-      _tutors.clear();
-      for (var tutor in result) {
-        if (countryList[tutor.country] != null) {
-          if (countryList[tutor.country]!.toLowerCase().contains(_countryController.text)) {
-            _tutors.add(tutor);
-          }
-        }
-      }
-    }
+    return {
+      'token': accessToken,
+      'search': name,
+      'nationality': _nationality?.index == Nationality.vietnamese.index,
+      'specialties': filterSpecialties,
+    };
   }
 
   @override
@@ -77,18 +63,18 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _countryController,
-            decoration: InputDecoration(
-              // contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              hintStyle: TextStyle(color: Colors.grey[500]),
-              hintText: "search by country",
-              border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-            ),
-          ),
+          // const SizedBox(height: 8),
+          // TextField(
+          //   controller: _countryController,
+          //   decoration: InputDecoration(
+          //     // contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          //     hintStyle: TextStyle(color: Colors.grey[500]),
+          //     hintText: "search by country",
+          //     border: const OutlineInputBorder(
+          //         borderSide: BorderSide(color: Colors.grey, width: 2),
+          //         borderRadius: BorderRadius.all(Radius.circular(10))),
+          //   ),
+          // ),
           const SizedBox(height: 16),
           Text('Nationality', style: Theme.of(context).textTheme.headline4),
           const SizedBox(height: 4),
@@ -181,16 +167,16 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
               ),
               const SizedBox(width: 10),
               TextButton(
-                onPressed: () async {
-                  await _searchTutors(authProvider);
-                  if (mounted) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TutorSearchResult(tutors: _tutors)),
-                    );
-                  }
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.tutorSearchResult,
+                    arguments: _encapsulateSearchParams(authProvider),
+                  );
                 },
-                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
@@ -205,9 +191,4 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
       ),
     );
   }
-}
-
-enum Nationality {
-  vietnamese,
-  foreign,
 }
