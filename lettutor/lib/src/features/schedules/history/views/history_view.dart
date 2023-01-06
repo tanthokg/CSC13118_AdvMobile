@@ -71,7 +71,6 @@ class _HistoryViewState extends State<HistoryView> {
                             textAlign: TextAlign.right,
                           ),
                         ),
-                        const SizedBox.shrink(),
                         const SizedBox(width: 16),
                         Expanded(
                           flex: 7,

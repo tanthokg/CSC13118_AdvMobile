@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/items_per_page.dart';
 import 'package:lettutor/src/models/course/course.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/course_service.dart';
@@ -17,18 +18,22 @@ class _CoursesViewState extends State<CoursesView> {
   final _searchController = TextEditingController();
   List<Course> courses = [];
 
+  int _page = 1;
+  int _perPage = itemsPerPage.first;
+  int _count = 0;
   bool _isLoading = true;
 
   Future<void> _fetchCourses(String token, String search) async {
     final result = await CourseService.getListCourseWithPagination(
-      page: 1,
-      size: 20,
+      page: _page,
+      size: _perPage,
       token: token,
       search: search,
     );
 
     setState(() {
-      courses = result;
+      courses = result['courses'];
+      _count = result['count'];
       _isLoading = false;
     });
   }
@@ -63,7 +68,7 @@ class _CoursesViewState extends State<CoursesView> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           Expanded(
             child: _isLoading
                 ? const Center(
@@ -83,10 +88,114 @@ class _CoursesViewState extends State<CoursesView> {
                               style: TextStyle(fontSize: 16),
                             ),
                           )
-                    : ListView.builder(
-                        itemCount: courses.length,
-                        itemBuilder: (context, index) => CourseCard(
-                          course: courses[index],
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Expanded(
+                                  flex: 20,
+                                  child: Text(
+                                    'Items per page',
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                                const SizedBox.shrink(),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex: 7,
+                                  child: DropdownButtonFormField<int>(
+                                    value: _perPage,
+                                    items: itemsPerPage
+                                        .map((itemPerPage) => DropdownMenuItem<int>(
+                                        value: itemPerPage, child: Text('$itemPerPage')))
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _perPage = value!;
+                                        _page = 1;
+                                        _isLoading = true;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down_rounded,
+                                      color: Colors.blue,
+                                    ),
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.transparent),
+                                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            ...List<Widget>.generate(
+                              courses.length,
+                              (index) => CourseCard(course: courses[index]),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              children: [
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    backgroundColor: _page == 1 ? Colors.grey : Colors.blue[300],
+                                  ),
+                                  onPressed: _page == 1
+                                      ? null
+                                      : () {
+                                    setState(() {
+                                      _isLoading = true;
+                                      _page--;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.navigate_before_rounded,
+                                    size: 28,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Page $_page/${(_count / _perPage).ceil()}',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    backgroundColor: _page == _count ? Colors.grey : Colors.blue[300],
+                                  ),
+                                  onPressed: _page == (_count / _perPage).ceil()
+                                      ? null
+                                      : () {
+                                    setState(() {
+                                      _isLoading = true;
+                                      _page++;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.navigate_next_rounded,
+                                    size: 28,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
           )

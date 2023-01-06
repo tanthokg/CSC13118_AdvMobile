@@ -6,7 +6,7 @@ import 'package:lettutor/src/models/course/course.dart';
 class CourseService {
   static const String baseUrl = 'https://sandbox.api.lettutor.com';
 
-  static Future<List<Course>> getListCourseWithPagination({
+  static Future<Map<String, dynamic>> getListCourseWithPagination({
     required String token,
     required int page,
     required int size,
@@ -27,7 +27,10 @@ class CourseService {
     }
 
     final List<dynamic> courses = jsonDecode['data']['rows'];
-    return courses.map((e) => Course.fromJson(e)).toList();
+    return {
+      'count': jsonDecode['data']['count'],
+      'courses': courses.map((e) => Course.fromJson(e)).toList(),
+    };
   }
 
   static Future<Course> getCourseDetailById(
@@ -49,27 +52,27 @@ class CourseService {
     return Course.fromJson(jsonDecode['data']);
   }
 
-  // static Future<List<Course>> searchCourse({
-  //   required String token,
-  //   required int page,
-  //   required int size,
-  //   required String search,
-  // }) async {
-  //   final response = await get(
-  //     Uri.parse('$baseUrl/course?page=$page&size=$size&q=$search'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-  //
-  //   final jsonDecode = json.decode(response.body);
-  //
-  //   if (response.statusCode != 200) {
-  //     throw Exception('Error: Cannot get list of courses. ${jsonDecode['message']}');
-  //   }
-  //
-  //   final List<dynamic> courses = jsonDecode['data']['rows'];
-  //   return courses.map((e) => Course.fromJson(e)).toList();
-  // }
+// static Future<List<Course>> searchCourse({
+//   required String token,
+//   required int page,
+//   required int size,
+//   required String search,
+// }) async {
+//   final response = await get(
+//     Uri.parse('$baseUrl/course?page=$page&size=$size&q=$search'),
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer $token',
+//     },
+//   );
+//
+//   final jsonDecode = json.decode(response.body);
+//
+//   if (response.statusCode != 200) {
+//     throw Exception('Error: Cannot get list of courses. ${jsonDecode['message']}');
+//   }
+//
+//   final List<dynamic> courses = jsonDecode['data']['rows'];
+//   return courses.map((e) => Course.fromJson(e)).toList();
+// }
 }
