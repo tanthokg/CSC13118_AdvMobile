@@ -38,6 +38,7 @@ class UpcomingClassCard extends StatelessWidget {
     final String accessToken = authProvider.token?.access?.token as String;
 
     return Card(
+      margin: const EdgeInsets.symmetric(vertical: 12),
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(

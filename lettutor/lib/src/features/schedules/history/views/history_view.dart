@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/items_per_page.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
@@ -14,19 +15,23 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
-  late final List<BookingInfo> history;
+  List<BookingInfo> history = [];
 
+  int _page = 1;
+  int _perPage = itemsPerPage.first;
+  int _count = 0;
   bool _isLoading = true;
 
   Future<void> _fetchHistory(String token) async {
     final result = await UserService.getHistory(
       token: token,
-      page: 1,
-      perPage: 20,
+      page: _page,
+      perPage: _perPage,
     );
 
     setState(() {
-      history = result;
+      history = result['classes'];
+      _count = result['count'];
       _isLoading = false;
     });
   }
@@ -48,10 +53,122 @@ class _HistoryViewState extends State<HistoryView> {
             ? const Center(
                 child: Text('You have not booked any class'),
               )
-            : ListView.builder(
-                itemCount: history.length,
-                itemBuilder: (context, index) => HistoryCard(
-                  bookingInfo: history[index],
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      'You have booked $_count classes',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Expanded(
+                          flex: 20,
+                          child: Text(
+                            'Items per page',
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                        const SizedBox.shrink(),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          flex: 7,
+                          child: DropdownButtonFormField<int>(
+                            value: _perPage,
+                            items: itemsPerPage
+                                .map((itemPerPage) => DropdownMenuItem<int>(
+                                    value: itemPerPage, child: Text('$itemPerPage')))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _perPage = value!;
+                                _page = 1;
+                                _isLoading = true;
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: Colors.blue,
+                            ),
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                              filled: true,
+                              fillColor: Colors.blue[50],
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.all(Radius.circular(24)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.all(Radius.circular(24)),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    ...List<Widget>.generate(
+                      history.length,
+                      (index) => HistoryCard(bookingInfo: history[index]),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: _page == 1 ? Colors.grey : Colors.blue[300],
+                          ),
+                          onPressed: _page == 1
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _isLoading = true;
+                                    _page--;
+                                  });
+                                },
+                          icon: const Icon(
+                            Icons.navigate_before_rounded,
+                            size: 28,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Page $_page/${(_count / _perPage).ceil()}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: _page == _count ? Colors.grey : Colors.blue[300],
+                          ),
+                          onPressed: _page == (_count / _perPage).ceil()
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _isLoading = true;
+                                    _page++;
+                                  });
+                                },
+                          icon: const Icon(
+                            Icons.navigate_next_rounded,
+                            size: 28,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               );
   }

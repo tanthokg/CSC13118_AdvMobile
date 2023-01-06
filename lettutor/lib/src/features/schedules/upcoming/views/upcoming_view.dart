@@ -127,9 +127,9 @@ class _UpcomingClassViewState extends State<UpcomingView> {
                         },
                       ),
                     ),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
-                        const SizedBox(width: 16),
                         IconButton(
                           style: IconButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -178,7 +178,6 @@ class _UpcomingClassViewState extends State<UpcomingView> {
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(width: 16),
                       ],
                     )
                   ],
