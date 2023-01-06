@@ -38,7 +38,7 @@ class _SelectDateState extends State<SelectDate> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: date == 'dd/MM/yyyy' ? Colors.grey[400]! : Colors.black54,
+            color: Colors.grey[400]!
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),

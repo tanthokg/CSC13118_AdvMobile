@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/widgets/select_date.dart';
+import 'package:provider/provider.dart';
 
 class UserProfileView extends StatefulWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -11,8 +13,29 @@ class UserProfileView extends StatefulWidget {
 }
 
 class _UserProfileViewState extends State<UserProfileView> {
+  final _nameController = TextEditingController();
+  String emailAddress = '';
+  String phoneNumber = '';
+  DateTime birthday = DateTime.now();
+
+  // bool _isLoading = true;
+  bool _isInitiated = false;
+
+  void _initiateUserProfile(AuthProvider authProvider) {
+    _nameController.text = authProvider.currentUser.name ?? 'null name';
+    emailAddress = authProvider.currentUser.email ?? 'null email';
+    phoneNumber = authProvider.currentUser.phone ?? 'null phone number';
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+
+    if (!_isInitiated) {
+      _initiateUserProfile(authProvider);
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -34,9 +57,19 @@ class _UserProfileViewState extends State<UserProfileView> {
               alignment: Alignment.center,
               child: Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
+                  Container(
+                    width: 108,
+                    height: 108,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.network(
+                      authProvider.currentUser.avatar ?? '',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.person_rounded),
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
@@ -65,9 +98,10 @@ class _UserProfileViewState extends State<UserProfileView> {
               ),
             ),
             const SizedBox(height: 4),
-            const TextField(
+            TextField(
+              controller: _nameController,
               autocorrect: false,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 4,
                   horizontal: 8,
@@ -84,22 +118,17 @@ class _UserProfileViewState extends State<UserProfileView> {
               style: TextStyle(fontSize: 16, color: Colors.grey[900]),
             ),
             const SizedBox(height: 4),
-            TextField(
-              enabled: false,
-              autocorrect: false,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[300],
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 8,
-                ),
-                disabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1.5),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
+            Text(emailAddress),
+            const SizedBox(height: 16),
+            Text(
+              'Phone Number',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[900],
               ),
             ),
+            const SizedBox(height: 4),
+            Text(phoneNumber),
             const SizedBox(height: 16),
             Text(
               'Country',
@@ -133,42 +162,23 @@ class _UserProfileViewState extends State<UserProfileView> {
               onChanged: (value) {},
             ),
             const SizedBox(height: 16),
-            Text('Phone Number',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[900],
-                )),
-            const SizedBox(height: 4),
-            TextField(
-              enabled: false,
-              autocorrect: false,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[300],
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 8,
-                ),
-                disabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1.5),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                ),
+            Text(
+              'Birthday',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[900],
               ),
             ),
-            const SizedBox(height: 16),
-            Text('Birthday',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[900],
-                )),
             const SizedBox(height: 4),
             const SelectDate(),
             const SizedBox(height: 16),
-            Text('Level',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[900],
-                )),
+            Text(
+              'Level',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[900],
+              ),
+            ),
             const SizedBox(height: 4),
             DropdownButtonFormField(
               decoration: InputDecoration(
@@ -191,11 +201,13 @@ class _UserProfileViewState extends State<UserProfileView> {
               onChanged: (value) {},
             ),
             const SizedBox(height: 16),
-            Text('Subjects',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[900],
-                )),
+            Text(
+              'Subjects',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[900],
+              ),
+            ),
             const SizedBox(height: 4),
             DropdownButtonFormField(
               decoration: InputDecoration(
@@ -209,9 +221,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              items: learnTopics
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
+              items: learnTopics.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
               onChanged: (value) {},
             ),
             const SizedBox(height: 16),
@@ -232,15 +242,15 @@ class _UserProfileViewState extends State<UserProfileView> {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
-              items: testPreparations
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
+              items:
+                  testPreparations.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
               onChanged: (value) {},
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             TextButton(
               onPressed: () {},
               style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(48),
                 backgroundColor: Colors.blue,
               ),
               child: const Text(
