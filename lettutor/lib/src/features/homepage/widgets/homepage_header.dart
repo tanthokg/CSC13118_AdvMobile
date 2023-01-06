@@ -17,15 +17,24 @@ class _HomepageHeaderState extends State<HomepageHeader> {
   late Duration totalLessonTime;
   late BookingInfo upcomingClass;
 
-  Future<void> _fetchTotalLessonTime(String token) async {
-    final total = await UserService.getTotalLessonTime(token);
-    final upcoming = await UserService.getUpcomingLesson(token);
+  bool _isLoading = true;
+  bool _isError = false;
 
-    if (mounted) {
+  Future<void> _fetchTotalLessonTime(String token) async {
+    try {
+      final total = await UserService.getTotalLessonTime(token);
+      final upcoming = await UserService.getUpcomingLesson(token);
+
+      if (mounted) {
+        setState(() {
+          totalLessonTime = Duration(minutes: total);
+          upcomingClass = upcoming;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
       setState(() {
-        totalLessonTime = Duration(minutes: total);
-        upcomingClass = upcoming;
-        _isLoading = false;
+        _isError = true;
       });
     }
   }
@@ -45,8 +54,6 @@ class _HomepageHeaderState extends State<HomepageHeader> {
     return result;
   }
 
-  bool _isLoading = true;
-
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
@@ -61,10 +68,15 @@ class _HomepageHeaderState extends State<HomepageHeader> {
       width: double.maxFinite,
       height: 208,
       child: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
+          ? Center(
+              child: _isError
+                  ? const Text(
+                      'Error: Cannot get upcoming class',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
             )
           : Column(
               children: [
@@ -74,7 +86,7 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                     'Upcoming Lesson',
                     textAlign: TextAlign.center,
                     style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
                 Text(
@@ -82,13 +94,13 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                   '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.startPeriodTimestamp ?? 0))} - '
                   '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.endPeriodTimestamp ?? 0))}',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: TextButton(
                       style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           backgroundColor: Colors.white),
                       onPressed: () {
                         Navigator.pushNamed(context, Routes.videoCall);
@@ -98,7 +110,7 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                         children: const [
                           Icon(Icons.ondemand_video_rounded),
                           SizedBox(width: 12),
-                          Text('Enter Lesson Room', style: TextStyle(fontSize: 16)),
+                          Text('Enter Lesson Room', style: TextStyle(fontSize: 14)),
                         ],
                       )),
                 ),
