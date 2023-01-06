@@ -14,7 +14,9 @@ class TutorSearchResult extends StatefulWidget {
 }
 
 class _TutorSearchResultState extends State<TutorSearchResult> {
-  int _currentPage = 1;
+  int _page = 1;
+  late int _perPage;
+  final perPages = [5, 10, 15, 20, 25, 50];
   bool _isLoading = true;
   List<Tutor> _tutors = [];
   int _count = 0;
@@ -28,8 +30,8 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
     final result = await TutorService.searchTutor(
       token: accessToken,
       search: name,
-      page: _currentPage,
-      perPage: 10,
+      page: _page,
+      perPage: _perPage,
       nationality: {'isVietNamese': isVietnamese},
       specialties: specialties,
     );
@@ -56,6 +58,12 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _perPage = perPages.first;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
     final data = ModalRoute.of(context)?.settings.arguments as Map;
@@ -79,69 +87,63 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                    child: Text(
-                      _tutors.isEmpty ? 'No Matches Found' : 'Found $_count result(s)',
-                      style: Theme.of(context).textTheme.headline4,
+                    child: Row(
+                      children: [
+                        Text(
+                          _tutors.isEmpty ? 'No Matches Found' : 'Found $_count result(s)',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        _count > 0
+                            ? const Expanded(
+                                flex: 9,
+                                child: Text(
+                                  'Tutors per page',
+                                  textAlign: TextAlign.right,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        const SizedBox(width: 16),
+                        _count > 0
+                            ? Expanded(
+                                flex: 5,
+                                child: DropdownButtonFormField<int>(
+                                  value: _perPage,
+                                  items: perPages
+                                      .map((itemPerPage) => DropdownMenuItem<int>(
+                                          value: itemPerPage, child: Text('$itemPerPage')))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _perPage = value!;
+                                      _page = 1;
+                                      _isLoading = true;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: Colors.blue,
+                                  ),
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                        const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent),
+                                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.transparent),
+                                      borderRadius: BorderRadius.all(Radius.circular(24)),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                      ],
                     ),
                   ),
-
-                  _count > 0
-                      ? Row(
-                          children: [
-                            const SizedBox(width: 16),
-                            IconButton(
-                              style: IconButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                backgroundColor: _currentPage == 1 ? Colors.grey : Colors.blue[300],
-                              ),
-                              onPressed: _currentPage == 1
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _isLoading = true;
-                                        _currentPage--;
-                                      });
-                                    },
-                              icon: const Icon(
-                                Icons.navigate_before_rounded,
-                                size: 28,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Page $_currentPage/${(_count / 10).ceil()}',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            IconButton(
-                              style: IconButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                backgroundColor:
-                                    _currentPage == _count ? Colors.grey : Colors.blue[300],
-                              ),
-                              onPressed: _currentPage == (_count / 10).ceil()
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        _isLoading = true;
-                                        _currentPage++;
-                                      });
-                                    },
-                              icon: const Icon(
-                                Icons.navigate_next_rounded,
-                                size: 28,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
+                  const SizedBox(height: 8),
                   ...List<Widget>.generate(
                     _tutors.length,
                     (index) => TutorSearchCard(tutor: _tutors[index]),
@@ -155,14 +157,14 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                backgroundColor: _currentPage == 1 ? Colors.grey : Colors.blue[300],
+                                backgroundColor: _page == 1 ? Colors.grey : Colors.blue[300],
                               ),
-                              onPressed: _currentPage == 1
+                              onPressed: _page == 1
                                   ? null
                                   : () {
                                       setState(() {
                                         _isLoading = true;
-                                        _currentPage--;
+                                        _page--;
                                       });
                                     },
                               icon: const Icon(
@@ -173,7 +175,7 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
                             ),
                             Expanded(
                               child: Text(
-                                'Page $_currentPage/${(_count / 10).ceil()}',
+                                'Page $_page/${(_count / _perPage).ceil()}',
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -182,15 +184,14 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                backgroundColor:
-                                    _currentPage == _count ? Colors.grey : Colors.blue[300],
+                                backgroundColor: _page == _count ? Colors.grey : Colors.blue[300],
                               ),
-                              onPressed: _currentPage == (_count / 10).ceil()
+                              onPressed: _page == (_count / _perPage).ceil()
                                   ? null
                                   : () {
                                       setState(() {
                                         _isLoading = true;
-                                        _currentPage++;
+                                        _page++;
                                       });
                                     },
                               icon: const Icon(
