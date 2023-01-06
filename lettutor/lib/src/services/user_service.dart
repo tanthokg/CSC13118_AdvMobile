@@ -68,7 +68,7 @@ class UserService {
     }
   }
 
-  static Future<List<BookingInfo>> getUpcomingClasses({
+  static Future<Map<String, dynamic>> getUpcomingClasses({
     required String token,
     required int page,
     required int perPage,
@@ -89,7 +89,10 @@ class UserService {
     }
 
     final List<dynamic> classes = jsonDecode['data']['rows'];
-    return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
+    return {
+      'count': jsonDecode['data']['count'],
+      'classes': classes.map((schedule) => BookingInfo.fromJson(schedule)).toList(),
+    };
   }
 
   static Future<List<BookingInfo>> getHistory({

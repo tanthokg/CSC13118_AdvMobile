@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/src/constants/items_per_page.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
@@ -15,8 +16,7 @@ class TutorSearchResult extends StatefulWidget {
 
 class _TutorSearchResultState extends State<TutorSearchResult> {
   int _page = 1;
-  late int _perPage;
-  final perPages = [5, 10, 15, 20, 25, 50];
+  int _perPage = itemsPerPage.first;
   bool _isLoading = true;
   List<Tutor> _tutors = [];
   int _count = 0;
@@ -36,7 +36,6 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
       specialties: specialties,
     );
 
-    print(result);
     setState(() {
       _count = result['count'];
       _tutors = result['tutors'];
@@ -58,18 +57,17 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _perPage = perPages.first;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
     final data = ModalRoute.of(context)?.settings.arguments as Map;
 
     if (_isLoading) {
-      _searchTutors(data['token'], data['search'], data['nationality'], data['specialties']);
+      _searchTutors(
+        data['token'],
+        data['search'],
+        data['nationality'],
+        data['specialties'],
+      );
     }
 
     return Scaffold(
@@ -81,68 +79,63 @@ class _TutorSearchResultState extends State<TutorSearchResult> {
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                    child: Row(
-                      children: [
-                        Text(
-                          _tutors.isEmpty ? 'No Matches Found' : 'Found $_count result(s)',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        _count > 0
-                            ? const Expanded(
-                                flex: 9,
-                                child: Text(
-                                  'Tutors per page',
-                                  textAlign: TextAlign.right,
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                        const SizedBox(width: 16),
-                        _count > 0
-                            ? Expanded(
-                                flex: 5,
-                                child: DropdownButtonFormField<int>(
-                                  value: _perPage,
-                                  items: perPages
-                                      .map((itemPerPage) => DropdownMenuItem<int>(
-                                          value: itemPerPage, child: Text('$itemPerPage')))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _perPage = value!;
-                                      _page = 1;
-                                      _isLoading = true;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.keyboard_arrow_down_rounded,
-                                    color: Colors.blue,
-                                  ),
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                    enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent),
-                                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                                    ),
-                                    focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.transparent),
-                                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                      ],
-                    ),
+                  Text(
+                    _tutors.isEmpty ? 'No Matches Found' : 'Found $_count result(s)',
+                    style: Theme.of(context).textTheme.headline4,
                   ),
+                  _count > 0
+                      ? Row(
+                          children: [
+                            const Expanded(
+                              flex: 20,
+                              child: Text(
+                                'Tutors per page',
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              flex: 7,
+                              child: DropdownButtonFormField<int>(
+                                value: _perPage,
+                                items: itemsPerPage
+                                    .map((itemPerPage) => DropdownMenuItem<int>(
+                                        value: itemPerPage, child: Text('$itemPerPage')))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _perPage = value!;
+                                    _page = 1;
+                                    _isLoading = true;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: Colors.blue,
+                                ),
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.all(Radius.circular(24)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.all(Radius.circular(24)),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : const SizedBox.shrink(),
                   const SizedBox(height: 8),
                   ...List<Widget>.generate(
                     _tutors.length,

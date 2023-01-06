@@ -52,7 +52,7 @@ class _TutorSearchCardState extends State<TutorSearchCard> {
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 3.0,
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
