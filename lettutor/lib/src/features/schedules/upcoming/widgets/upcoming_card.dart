@@ -4,11 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/booking_service.dart';
+import 'package:provider/provider.dart';
 
 class UpcomingClassCard extends StatelessWidget {
-  const UpcomingClassCard({Key? key, required this.bookingInfo}) : super(key: key);
+  const UpcomingClassCard({Key? key, required this.bookingInfo, required this.onCancel}) : super(key: key);
 
   final BookingInfo bookingInfo;
+  final Function(bool cancelResult) onCancel;
 
   String _convertClassTime() {
     String result = '';
@@ -20,8 +24,19 @@ class UpcomingClassCard extends StatelessWidget {
     return result;
   }
 
+  Future<String> _handleCancelClass(String token) async {
+    final result = await BookingService.cancelBookedClass(
+      scheduleDetailIds: [bookingInfo.id ?? ''],
+      token: token,
+    );
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final String accessToken = authProvider.token?.access?.token as String;
+
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 2,
@@ -95,7 +110,45 @@ class UpcomingClassCard extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final dialogResult = await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Cancel class'),
+                          content: const Text('Are you sure to cancel this class?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('NO'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('YES'),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (dialogResult) {
+                        final result = await _handleCancelClass(accessToken);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(result),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  if (result == "Class Cancelled Successfully") {
+                                    onCancel(true);
+                                  }
+                                  Navigator.pop(context, false);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
                     child: const Text(
                       'Cancel',
                       style: TextStyle(fontSize: 16, color: Colors.red),

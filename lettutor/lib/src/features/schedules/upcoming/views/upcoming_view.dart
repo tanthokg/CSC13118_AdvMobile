@@ -118,6 +118,13 @@ class _UpcomingClassViewState extends State<UpcomingView> {
                       upcoming.length,
                       (index) => UpcomingClassCard(
                         bookingInfo: upcoming[index],
+                        onCancel: (value) {
+                          if (value) {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                          }
+                        },
                       ),
                     ),
                     Row(
@@ -133,11 +140,11 @@ class _UpcomingClassViewState extends State<UpcomingView> {
                           onPressed: _page == 1
                               ? null
                               : () {
-                            setState(() {
-                              _isLoading = true;
-                              _page--;
-                            });
-                          },
+                                  setState(() {
+                                    _isLoading = true;
+                                    _page--;
+                                  });
+                                },
                           icon: const Icon(
                             Icons.navigate_before_rounded,
                             size: 28,
@@ -160,11 +167,11 @@ class _UpcomingClassViewState extends State<UpcomingView> {
                           onPressed: _page == (_count / _perPage).ceil()
                               ? null
                               : () {
-                            setState(() {
-                              _isLoading = true;
-                              _page++;
-                            });
-                          },
+                                  setState(() {
+                                    _isLoading = true;
+                                    _page++;
+                                  });
+                                },
                           icon: const Icon(
                             Icons.navigate_next_rounded,
                             size: 28,
