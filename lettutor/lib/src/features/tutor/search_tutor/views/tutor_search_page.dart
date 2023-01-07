@@ -19,31 +19,39 @@ class TutorSearchPage extends StatefulWidget {
 
 class _TutorSearchPageState extends State<TutorSearchPage> {
   final _nameController = TextEditingController();
+  List<String> _specialties = [];
 
   // final _countryController = TextEditingController();
 
   Nationality? _nationality = Nationality.foreign;
-  int _chosenSpecialty = 0;
+  int _chosenSpecialtiesIndex = 0;
 
   Map<String, dynamic> _encapsulateSearchParams(AuthProvider authProvider) {
     final name = _nameController.text;
     final accessToken = authProvider.token?.access?.token as String;
-    final List<String> filterSpecialties = [];
-    if (_chosenSpecialty != 0) {
-      filterSpecialties.add(specialties[_chosenSpecialty].toLowerCase().replaceAll(' ', '-'));
-    }
+    // final List<String> filterSpecialties = [];
+    // if (_chosenSpecialtiesIndex != 0) {
+    //   filterSpecialties.add(specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-'));
+    // }
 
     return {
       'token': accessToken,
       'search': name,
       'nationality': _nationality?.index == Nationality.vietnamese.index,
-      'specialties': filterSpecialties,
+      'specialties': [_specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-')],
     };
+  }
+
+  void _loadSpecialties(AuthProvider authProvider) {
+    final learnTopics = authProvider.learnTopics.map((e) => e.name ?? 'null');
+    final testPreparations = authProvider.testPreparations.map((e) => e.name ?? 'null');
+    _specialties = [...learnTopics, ...testPreparations];
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+    _loadSpecialties(authProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -129,21 +137,21 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
             spacing: 8,
             runSpacing: -4,
             children: List<Widget>.generate(
-              specialties.length,
+              _specialties.length,
               (index) => ChoiceChip(
-                label: Text(
-                  specialties[index],
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: _chosenSpecialty == index ? Colors.blue[700] : Colors.black54,
-                  ),
-                ),
                 backgroundColor: Colors.grey[100],
                 selectedColor: Colors.lightBlue[100],
-                selected: _chosenSpecialty == index,
+                selected: _chosenSpecialtiesIndex == index,
+                label: Text(
+                  _specialties[index],
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _chosenSpecialtiesIndex == index ? Colors.blue[700] : Colors.black54,
+                  ),
+                ),
                 onSelected: (bool selected) {
                   setState(() {
-                    _chosenSpecialty = index;
+                    _chosenSpecialtiesIndex = index;
                   });
                 },
               ),
@@ -157,7 +165,7 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    _chosenSpecialty = 0;
+                    _chosenSpecialtiesIndex = 0;
                   });
                 },
                 child: const Padding(
