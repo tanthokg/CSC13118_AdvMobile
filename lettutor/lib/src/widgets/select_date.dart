@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SelectDate extends StatefulWidget {
   const SelectDate({Key? key, required this.date}) : super(key: key);
@@ -21,7 +22,7 @@ class _SelectDateState extends State<SelectDate> {
     );
     if (selectedDate != null) {
       setState(() {
-        _selectedDate = selectedDate.toString().substring(0, 11);
+        _selectedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
       });
     }
   }

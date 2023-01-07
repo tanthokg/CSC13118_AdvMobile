@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 import 'package:lettutor/src/models/user/learn_topic.dart';
 import 'package:lettutor/src/models/user/test_preparation.dart';
+import 'package:lettutor/src/models/user/user.dart';
 
 class UserService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
@@ -154,5 +155,22 @@ class UserService {
       throw Exception(json.decode(response.body)['message']);
     }
     return jsonDecode.map((e) => TestPreparation.fromJson(e)).toList();
+  }
+
+  static Future<User?> getUserInfo(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/user/info'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      return null;
+    } else {
+      return User.fromJson(jsonDecode['user']);
+    }
   }
 }
