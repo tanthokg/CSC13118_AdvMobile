@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
 import 'package:lettutor/src/constants/user_level.dart';
-import 'package:lettutor/src/dummy/dummy_data.dart';
+import 'package:lettutor/src/models/user/learn_topic.dart';
+import 'package:lettutor/src/models/user/test_preparation.dart';
+import 'package:lettutor/src/models/user/user.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
 import 'package:lettutor/src/widgets/select_date.dart';
@@ -15,29 +17,32 @@ class UserProfileView extends StatefulWidget {
 }
 
 class _UserProfileViewState extends State<UserProfileView> {
+  User? user;
+
   final _nameController = TextEditingController();
+  final _studyScheduleController = TextEditingController();
   String emailAddress = '';
   String phoneNumber = '';
   String birthday = '';
   String country = '';
   String level = '';
-  List<int> chosenTopicIndexes = [];
-  List<int> chosenTestPreparationIndexes = [];
+  List<LearnTopic> chosenTopics = [];
+  List<TestPreparation> chosenTestPreparations = [];
 
-  // bool _isLoading = true;
   bool _isInitiated = false;
   bool _isLoading = true;
 
   void _initiateUserProfile(AuthProvider authProvider) async {
     final String token = authProvider.token?.access?.token as String;
-    final user = await UserService.getUserInfo(token);
+    final result = await UserService.getUserInfo(token);
 
-    _nameController.text = user?.name ?? 'null name';
-    emailAddress = user?.email ?? 'null email';
-    phoneNumber = user?.phone ?? 'null phone number';
-    birthday = user?.birthday ?? 'yyyy-MM-dd';
-    country = user?.country ?? 'US';
-    level = user?.level ?? 'BEGINNER';
+    _nameController.text = result?.name ?? 'null name';
+    emailAddress = result?.email ?? 'null email';
+    phoneNumber = result?.phone ?? 'null phone number';
+    birthday = result?.birthday ?? 'yyyy-MM-dd';
+    country = result?.country ?? 'US';
+    level = result?.level ?? 'BEGINNER';
+    _studyScheduleController.text = result?.studySchedule ?? 'null';
     // _nameController.text = authProvider.currentUser.name ?? 'null name';
     // emailAddress = authProvider.currentUser.email ?? 'null email';
     // phoneNumber = authProvider.currentUser.phone ?? 'null phone number';
@@ -45,28 +50,51 @@ class _UserProfileViewState extends State<UserProfileView> {
     // country = authProvider.currentUser.country ?? 'US';
     // level = authProvider.currentUser.level ?? 'BEGINNER';
 
-    chosenTopicIndexes.clear();
-    chosenTestPreparationIndexes.clear();
-    for (int i = 0; i < authProvider.currentUser.learnTopics!.length; ++i) {
-      final topicsName = authProvider.learnTopics.map((e) => e.name).toList();
-      final userTopicName = authProvider.currentUser.learnTopics![i].name;
-      if (topicsName.contains(userTopicName)) {
-        chosenTopicIndexes.add(i);
-      }
-    }
-    for (int i = 0; i < authProvider.currentUser.testPreparations!.length; ++i) {
-      final topicsName = authProvider.testPreparations.map((e) => e.name).toList();
-      final userTopicName = authProvider.currentUser.testPreparations![i].name;
-      if (topicsName.contains(userTopicName)) {
-        chosenTestPreparationIndexes.add(i);
-      }
-    }
-    print(chosenTopicIndexes);
-    print(chosenTestPreparationIndexes);
+    chosenTopics = result?.learnTopics ?? [];
+    chosenTestPreparations = result?.testPreparations ?? [];
+    // chosenTopics.clear();
+    // chosenTestPreparations.clear();
+    // for (int i = 0; i < result!.learnTopics!.length; ++i) {
+    //   final topicsName = authProvider.learnTopics.map((e) => e.name).toList();
+    //   final userTopicName = result.learnTopics![i].name;
+    //   if (topicsName.contains(userTopicName)) {
+    //     chosenTopics.add(i);
+    //   }
+    // }
+    // for (int i = 0; i < result.testPreparations!.length; ++i) {
+    //   final testPrepNames = authProvider.testPreparations.map((e) => e.name).toList();
+    //   final userTestPreparationName = result.testPreparations![i].name;
+    //   if (testPrepNames.contains(userTestPreparationName)) {
+    //     chosenTestPreparations.add(i);
+    //   }
+    // }
 
     setState(() {
+      user = result;
       _isInitiated = true;
       _isLoading = false;
+    });
+  }
+
+  Future<void> _updateUserProfile(AuthProvider authProvider) async {
+    final String token = authProvider.token?.access?.token as String;
+    final learnTopics = chosenTopics.map((topic) => topic.id.toString()).toList();
+    final testPreparations = chosenTestPreparations.map((test) => test.id.toString()).toList();
+
+    final result = await UserService.updateInfo(
+      token: token,
+      name: _nameController.text,
+      country: country,
+      birthday: birthday,
+      level: level,
+      learnTopics: learnTopics,
+      testPreparations: testPreparations,
+      studySchedule: _studyScheduleController.text,
+    );
+
+    setState(() {
+      _isLoading = true;
+      _isInitiated = false;
     });
   }
 
@@ -229,7 +257,14 @@ class _UserProfileViewState extends State<UserProfileView> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  SelectDate(date: birthday),
+                  SelectDate(
+                    initialValue: birthday,
+                    onChanged: (newValue) {
+                      setState(() {
+                        birthday = newValue;
+                      });
+                    },
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     'Level',
@@ -306,12 +341,18 @@ class _UserProfileViewState extends State<UserProfileView> {
                       (index) => ChoiceChip(
                         backgroundColor: Colors.grey[100],
                         selectedColor: Colors.lightBlue[100],
-                        selected: chosenTopicIndexes.contains(index),
+                        selected: chosenTopics
+                            .map((e) => e.id)
+                            .toList()
+                            .contains(authProvider.learnTopics[index].id),
                         label: Text(
                           authProvider.learnTopics[index].name ?? 'null',
                           style: TextStyle(
                             fontSize: 14,
-                            color: chosenTopicIndexes.contains(index)
+                            color: chosenTopics
+                                    .map((e) => e.id)
+                                    .toList()
+                                    .contains(authProvider.learnTopics[index].id)
                                 ? Colors.blue[700]
                                 : Colors.black54,
                           ),
@@ -319,9 +360,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                         onSelected: (bool selected) {
                           setState(() {
                             if (selected) {
-                              chosenTopicIndexes.add(index);
+                              chosenTopics.add(authProvider.learnTopics[index]);
                             } else {
-                              chosenTopicIndexes.remove(index);
+                              chosenTopics.removeWhere(
+                                (element) => element.id == authProvider.learnTopics[index].id,
+                              );
                             }
                           });
                         },
@@ -357,12 +400,18 @@ class _UserProfileViewState extends State<UserProfileView> {
                       (index) => ChoiceChip(
                         backgroundColor: Colors.grey[100],
                         selectedColor: Colors.lightBlue[100],
-                        selected: chosenTestPreparationIndexes.contains(index),
+                        selected: chosenTestPreparations
+                            .map((e) => e.id)
+                            .toList()
+                            .contains(authProvider.testPreparations[index].id),
                         label: Text(
                           authProvider.testPreparations[index].name ?? 'null',
                           style: TextStyle(
                             fontSize: 14,
-                            color: chosenTestPreparationIndexes.contains(index)
+                            color: chosenTestPreparations
+                                    .map((e) => e.id)
+                                    .toList()
+                                    .contains(authProvider.testPreparations[index].id)
                                 ? Colors.blue[700]
                                 : Colors.black54,
                           ),
@@ -370,9 +419,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                         onSelected: (bool selected) {
                           setState(() {
                             if (selected) {
-                              chosenTestPreparationIndexes.add(index);
+                              chosenTestPreparations.add(authProvider.testPreparations[index]);
                             } else {
-                              chosenTestPreparationIndexes.remove(index);
+                              chosenTestPreparations.removeWhere(
+                                (element) => element.id == authProvider.testPreparations[index].id,
+                              );
                             }
                           });
                         },
@@ -395,9 +446,34 @@ class _UserProfileViewState extends State<UserProfileView> {
                   //       testPreparations.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                   //   onChanged: (value) {},
                   // ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Study Schedule',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[900],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  TextField(
+                    controller: _studyScheduleController,
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 32),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _updateUserProfile(authProvider);
+                    },
                     style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(48),
                       backgroundColor: Colors.blue,

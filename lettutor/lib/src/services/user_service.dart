@@ -173,4 +173,38 @@ class UserService {
       return User.fromJson(jsonDecode['user']);
     }
   }
+
+  static Future<User?> updateInfo({
+    required String token,
+    required String name,
+    required String country,
+    required String birthday,
+    required String level,
+    required List<String> learnTopics,
+    required List<String> testPreparations,
+    required String studySchedule,
+  }) async {
+    final response = await put(
+      Uri.parse('$baseUrl/user/info'),
+      headers: {
+        'Content-Type': 'application/json;encoding=utf-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode({
+        'name': name,
+        'country': country,
+        'birthday': birthday,
+        'level': level,
+        'learnTopics': learnTopics,
+        'testPreparations': testPreparations,
+        'studySchedule': studySchedule,
+      }),
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return User.fromJson(jsonDecode['user']);
+  }
 }

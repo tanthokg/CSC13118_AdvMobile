@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelectDate extends StatefulWidget {
-  const SelectDate({Key? key, required this.date}) : super(key: key);
-  
-  final String date;
+  const SelectDate({
+    Key? key,
+    required this.initialValue,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String initialValue;
+  final Function(String newValue) onChanged;
 
   @override
   State<SelectDate> createState() => _SelectDateState();
@@ -17,20 +22,19 @@ class _SelectDateState extends State<SelectDate> {
     DateTime? selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(1950, 1, 1),
       lastDate: DateTime(2050),
     );
     if (selectedDate != null) {
-      setState(() {
-        _selectedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
-      });
+      _selectedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+      widget.onChanged(_selectedDate);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.date;
+    _selectedDate = widget.initialValue;
   }
 
   @override
@@ -44,10 +48,7 @@ class _SelectDateState extends State<SelectDate> {
         height: 48,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          border: Border.all(
-            width: 2,
-            color: Colors.grey[400]!
-          ),
+          border: Border.all(width: 2, color: Colors.grey[400]!),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(

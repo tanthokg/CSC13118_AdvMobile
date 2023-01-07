@@ -93,7 +93,10 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       const SizedBox(height: 2),
-                      SelectDate(date: '',),
+                      // SelectDate(
+                      //   initialValue: '',
+                      //   onChanged: (newValue) {},
+                      // ),
                     ],
                   ),
                 )
@@ -283,8 +286,7 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
               padding: const EdgeInsets.only(top: 24, bottom: 12),
               child: TextButton(
                 style: TextButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    backgroundColor: Colors.blue),
+                    minimumSize: const Size.fromHeight(48), backgroundColor: Colors.blue),
                 onPressed: () {},
                 child: const Text(
                   'Done',
