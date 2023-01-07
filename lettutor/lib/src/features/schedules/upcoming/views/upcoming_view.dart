@@ -23,7 +23,7 @@ class _UpcomingClassViewState extends State<UpcomingView> {
   bool _isLoading = true;
 
   Future<void> _fetchUpcomingClasses(String token) async {
-    final result = await UserService.getUpcomingClasses(
+    final result = await UserService.getAllUpcomingClasses(
       token: token,
       page: _page,
       perPage: _perPage,

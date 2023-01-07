@@ -1,3 +1,4 @@
+import 'class_review.dart';
 import 'schedule_detail.dart';
 
 class BookingInfo {
@@ -21,6 +22,7 @@ class BookingInfo {
   // String? calendarId;
   bool? isDeleted;
   ScheduleDetail? scheduleDetailInfo;
+  ClassReview? classReview;
 
   BookingInfo({
     this.createdAtTimeStamp,
@@ -42,6 +44,7 @@ class BookingInfo {
     // this.calendarId,
     this.isDeleted,
     this.scheduleDetailInfo,
+    this.classReview,
   });
 
   BookingInfo.fromJson(Map<String, dynamic> json) {
@@ -65,6 +68,9 @@ class BookingInfo {
     isDeleted = json['isDeleted'];
     scheduleDetailInfo = json['scheduleDetailInfo'] != null
         ? ScheduleDetail.fromJson(json['scheduleDetailInfo'])
+        : null;
+    classReview = json['classReview'] != null
+        ? ClassReview.fromJson(json['classReview'])
         : null;
   }
 
@@ -90,6 +96,9 @@ class BookingInfo {
     data['isDeleted'] = isDeleted;
     if (scheduleDetailInfo != null) {
       data['scheduleDetailInfo'] = scheduleDetailInfo!.toJson();
+    }
+    if (classReview != null) {
+      data['classReview'] = classReview!.toJson();
     }
     return data;
   }

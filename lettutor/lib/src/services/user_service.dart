@@ -71,7 +71,7 @@ class UserService {
     }
   }
 
-  static Future<Map<String, dynamic>> getUpcomingClasses({
+  static Future<Map<String, dynamic>> getAllUpcomingClasses({
     required String token,
     required int page,
     required int perPage,
