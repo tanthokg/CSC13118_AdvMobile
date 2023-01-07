@@ -16,7 +16,8 @@ class _UserProfileViewState extends State<UserProfileView> {
   final _nameController = TextEditingController();
   String emailAddress = '';
   String phoneNumber = '';
-  DateTime birthday = DateTime.now();
+  String birthday = '';
+  String country = '';
 
   // bool _isLoading = true;
   bool _isInitiated = false;
@@ -25,7 +26,10 @@ class _UserProfileViewState extends State<UserProfileView> {
     _nameController.text = authProvider.currentUser.name ?? 'null name';
     emailAddress = authProvider.currentUser.email ?? 'null email';
     phoneNumber = authProvider.currentUser.phone ?? 'null phone number';
+    birthday = authProvider.currentUser.birthday ?? 'dd/MM/yyyy';
+    country = authProvider.currentUser.country ?? 'US';
 
+    _isInitiated = true;
   }
 
   @override
@@ -151,13 +155,12 @@ class _UserProfileViewState extends State<UserProfileView> {
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
+              value: countryList[country],
               items: countryList.values
                   .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(
-                        e,
-                        overflow: TextOverflow.ellipsis,
-                      )))
+                        value: e,
+                        child: Text(e, overflow: TextOverflow.ellipsis),
+                      ))
                   .toList(),
               onChanged: (value) {},
             ),
@@ -170,7 +173,7 @@ class _UserProfileViewState extends State<UserProfileView> {
               ),
             ),
             const SizedBox(height: 4),
-            const SelectDate(),
+            SelectDate(date: birthday),
             const SizedBox(height: 16),
             Text(
               'Level',

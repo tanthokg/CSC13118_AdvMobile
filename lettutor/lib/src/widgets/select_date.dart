@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SelectDate extends StatefulWidget {
-  const SelectDate({Key? key}) : super(key: key);
+  const SelectDate({Key? key, required this.date}) : super(key: key);
+  
+  final String date;
 
   @override
   State<SelectDate> createState() => _SelectDateState();
 }
 
 class _SelectDateState extends State<SelectDate> {
-  String date = 'dd/MM/yyyy';
+  String _selectedDate = '';
 
   void _selectDate(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
@@ -19,10 +21,15 @@ class _SelectDateState extends State<SelectDate> {
     );
     if (selectedDate != null) {
       setState(() {
-        date = selectedDate.toString().substring(0, 11);
+        _selectedDate = selectedDate.toString().substring(0, 11);
       });
     }
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = widget.date;
   }
 
   @override
@@ -43,13 +50,13 @@ class _SelectDateState extends State<SelectDate> {
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Text(
-          date,
+          _selectedDate,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: date == 'dd/MM/yyyy' ? FontWeight.normal : FontWeight.w500,
+            fontWeight: _selectedDate == 'dd/MM/yyyy' ? FontWeight.normal : FontWeight.w500,
             letterSpacing: 1.0,
-            color: date == 'dd/MM/yyyy' ? Colors.grey[400] : Colors.black54,
+            color: _selectedDate == 'dd/MM/yyyy' ? Colors.grey[400] : Colors.black54,
           ),
         ),
       ),

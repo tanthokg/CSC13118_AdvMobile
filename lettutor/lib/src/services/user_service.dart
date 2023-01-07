@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
+import 'package:lettutor/src/models/user/learn_topic.dart';
+import 'package:lettutor/src/models/user/test_preparation.dart';
 
 class UserService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
@@ -120,5 +122,37 @@ class UserService {
       'count': jsonDecode['data']['count'],
       'classes': classes.map((schedule) => BookingInfo.fromJson(schedule)).toList()
     };
+  }
+
+  static Future<List<LearnTopic>> getLearningTopic(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/learn-topic'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body) as List;
+    if (response.statusCode != 200) {
+      throw Exception(json.decode(response.body)['message']);
+    }
+    return jsonDecode.map((e) => LearnTopic.fromJson(e)).toList();
+  }
+
+  static Future<List<TestPreparation>> getTestPreparation(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/test-preparation'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body) as List;
+    if (response.statusCode != 200) {
+      throw Exception(json.decode(response.body)['message']);
+    }
+    return jsonDecode.map((e) => TestPreparation.fromJson(e)).toList();
   }
 }

@@ -93,7 +93,7 @@ class _BecomeTutorViewState extends State<BecomeTutorView> {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       const SizedBox(height: 2),
-                      const SelectDate(),
+                      SelectDate(date: '',),
                     ],
                   ),
                 )

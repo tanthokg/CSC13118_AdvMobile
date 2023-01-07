@@ -22,6 +22,7 @@ class TutorCard extends StatefulWidget {
 
 class _TutorCardState extends State<TutorCard> {
   TutorInfo? _tutorInfo;
+  List<String> _specialties = [];
 
   void _handleTutorDetailView() {
     Navigator.pushNamed(
@@ -34,7 +35,21 @@ class _TutorCardState extends State<TutorCard> {
     );
   }
 
-  Future<void> _fetchTutorInfo(String token) async {
+  Future<void> _fetchTutorInfo(AuthProvider authProvider) async {
+    final String token = authProvider.token?.access?.token as String;
+
+    final learnTopics = authProvider.learnTopics
+        .where((topic) => _tutorInfo?.specialties?.split(',').contains(topic.key) ?? false)
+        .map((e) => e.name ?? 'null');
+    final testPreparations = authProvider.testPreparations
+        .where((test) => _tutorInfo?.specialties?.split(',').contains(test.key) ?? false)
+        .map((e) => e.name ?? 'null');
+    _specialties = [...learnTopics, ...testPreparations];
+
+    // _specialties.addAll(learnTopics.map((topic) => topic.name ?? 'null'));
+    // _specialties.addAll(testPreparations.map((test) => test.name ?? 'null'));
+    // print(_specialties);
+
     final result = await TutorService.getTutorInfoById(
       token: token,
       userId: widget.tutor.userId ?? '',
@@ -48,17 +63,17 @@ class _TutorCardState extends State<TutorCard> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
     if (authProvider.token != null) {
-      final String accessToken = authProvider.token?.access?.token as String;
-      _fetchTutorInfo(accessToken);
+      _fetchTutorInfo(authProvider);
     }
-
-    final specialties =
-        widget.tutor.specialties?.split(',').map((e) => e.replaceAll('-', ' ')).toList() ??
-            ['no specs at all'];
 
     return Card(
       surfaceTintColor: Colors.white,
@@ -134,7 +149,7 @@ class _TutorCardState extends State<TutorCard> {
                         token: accessToken,
                         userId: widget.tutor.userId ?? '',
                       );
-                      _fetchTutorInfo(accessToken);
+                      _fetchTutorInfo(authProvider);
                     }
                     // print('IS FAVORITE (CARD): ${_tutorInfo.isFavorite}');
                   },
@@ -155,11 +170,11 @@ class _TutorCardState extends State<TutorCard> {
               spacing: 8,
               runSpacing: -4,
               children: List<Widget>.generate(
-                specialties.length,
+                _specialties.length,
                 (index) => Chip(
                   backgroundColor: Colors.lightBlue[50],
                   label: Text(
-                    specialties[index],
+                    _specialties[index],
                     style: const TextStyle(fontSize: 14, color: Colors.blue),
                   ),
                 ),

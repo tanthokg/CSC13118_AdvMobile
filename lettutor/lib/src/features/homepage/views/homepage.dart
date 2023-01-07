@@ -5,6 +5,7 @@ import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/models/tutor/tutor_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/tutor_service.dart';
+import 'package:lettutor/src/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/homepage_header.dart';
@@ -22,7 +23,14 @@ class _HomePageState extends State<HomePage> {
   List<TutorInfo> _infos = [];
   bool _isLoading = true;
 
-  Future<void> _fetchRecommendedTutors(String token) async {
+  Future<void> _fetchRecommendedTutors(AuthProvider authProvider) async {
+    final String token = authProvider.token?.access?.token as String;
+
+    final topics = await UserService.getLearningTopic(token);
+    final tests = await UserService.getTestPreparation(token);
+    authProvider.setLearnTopic(topics);
+    authProvider.setTestPreparation(tests);
+
     _tutors = await TutorService.getListTutorWithPagination(
       page: 1,
       perPage: 10,
@@ -35,7 +43,10 @@ class _HomePageState extends State<HomePage> {
     });
 
     for (var tutor in _tutors) {
-      final info = await TutorService.getTutorInfoById(token: token, userId: tutor.userId!);
+      final info = await TutorService.getTutorInfoById(
+        token: token,
+        userId: tutor.userId!,
+      );
       _infos.add(info);
     }
 
@@ -50,9 +61,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
+
     if (_isLoading && authProvider.token != null) {
-      final String accessToken = authProvider.token?.access?.token as String;
-      _fetchRecommendedTutors(accessToken);
+      _fetchRecommendedTutors(authProvider);
     }
 
     return SingleChildScrollView(
