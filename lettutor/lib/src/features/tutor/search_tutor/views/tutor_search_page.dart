@@ -38,14 +38,16 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
       'token': accessToken,
       'search': name,
       'nationality': _nationality?.index == Nationality.vietnamese.index,
-      'specialties': [_specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-')],
+      'specialties': _chosenSpecialtiesIndex == 0
+          ? [].map((e) => e as String).toList()
+          : [_specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-')],
     };
   }
 
   void _loadSpecialties(AuthProvider authProvider) {
     final learnTopics = authProvider.learnTopics.map((e) => e.name ?? 'null');
     final testPreparations = authProvider.testPreparations.map((e) => e.name ?? 'null');
-    _specialties = [...learnTopics, ...testPreparations];
+    _specialties = ['All', ...learnTopics, ...testPreparations];
   }
 
   @override
