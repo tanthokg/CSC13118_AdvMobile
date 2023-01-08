@@ -49,6 +49,8 @@ dependencies:
   firebase_auth: ^4.2.4
   jwt_decoder: ^2.0.1
   jitsi_meet: ^4.0.0
+  flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.15
 
 dev_dependencies:
   flutter_test:
@@ -104,3 +106,18 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#F3F7FF"
+  background_image: assets/logo/lettutor.png
+  android_12:
+    color: "#F3F7FF"
+    background_image: assets/logo/lettutor.png
+  android: true
+  ios: true
+  web: false
+#
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/lettutor.png"
