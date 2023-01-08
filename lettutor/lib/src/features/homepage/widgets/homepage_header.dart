@@ -1,6 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
@@ -54,6 +60,41 @@ class _HomepageHeaderState extends State<HomepageHeader> {
     return result;
   }
 
+
+  bool _isTimeToJoin() {
+    final startTimestamp = upcomingClass.scheduleDetailInfo?.startPeriodTimestamp ?? 0;
+    final startTime = DateTime.fromMillisecondsSinceEpoch(startTimestamp);
+    final now = DateTime.now();
+    return now.isAfter(startTime) || now.isAtSameMomentAs(startTime);
+  }
+
+  void _joinMeeting() async {
+    final String meetingToken = upcomingClass.studentMeetingLink?.split('token=')[1] ?? '';
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(meetingToken);
+    final String room = jwtDecoded['room'];
+
+    Map<FeatureFlagEnum, bool> featureFlags = {
+      FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+    };
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+      } else if (Platform.isIOS) {
+        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+      }
+    }
+
+    final options = JitsiMeetingOptions(room: room)
+    // ..serverURL = 'https://meet.jit.si/'
+      ..serverURL = "https://meet.lettutor.com"
+      ..token = meetingToken
+      ..audioOnly = true
+      ..audioMuted = true
+      ..videoMuted = true
+      ..featureFlags.addAll(featureFlags);
+    await JitsiMeet.joinMeeting(options);
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
@@ -103,7 +144,16 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           backgroundColor: Colors.white),
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.videoCall);
+                        if (_isTimeToJoin()) {
+                          _joinMeeting();
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              final start = upcomingClass.scheduleDetailInfo!.startPeriodTimestamp!;
+                              return VideoCallView(startTimestamp: start);
+                            },
+                          ));
+                        }
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
