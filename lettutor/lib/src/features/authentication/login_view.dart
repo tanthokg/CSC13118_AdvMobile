@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lettutor/src/constants/datatype.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/models/language/lang_en.dart';
+import 'package:lettutor/src/models/language/lang_vi.dart';
+import 'package:lettutor/src/models/language/language.dart';
+import 'package:lettutor/src/providers/app_provider.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +19,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  String chosenLanguage = Language.english;
+  String chosenLanguage = 'English';
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -29,14 +32,14 @@ class _LoginViewState extends State<LoginView> {
 
   final _googleSignIn = GoogleSignIn();
 
-  void _handleValidation() {
+  void _handleValidation(Language language) {
     final emailRegExp =
         RegExp(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
     if (_emailController.text.isEmpty) {
-      _emailErrorText = 'Email cannot be empty';
+      _emailErrorText = language.emptyEmail;
       _isValidToLogin = false;
     } else if (!emailRegExp.hasMatch(_emailController.text)) {
-      _emailErrorText = 'Email format must be abc@example.com';
+      _emailErrorText = language.invalidEmail;
       _isValidToLogin = false;
     } else {
       _emailErrorText = '';
@@ -44,10 +47,10 @@ class _LoginViewState extends State<LoginView> {
     }
 
     if (_passwordController.text.isEmpty) {
-      _passwordErrorText = 'Password cannot be empty';
+      _passwordErrorText = language.emptyPassword;
       _isValidToLogin = false;
     } else if (_passwordController.text.length < 6) {
-      _passwordErrorText = 'Password must be at least 6 characters';
+      _passwordErrorText = language.passwordTooShort;
       _isValidToLogin = false;
     } else {
       _passwordErrorText = '';
@@ -219,10 +222,36 @@ class _LoginViewState extends State<LoginView> {
     } else {}
   }
 
+  void _loadLanguage(AppProvider appProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final lang = prefs.getString('language') ?? 'EN';
+    if (lang == 'EN') {
+      chosenLanguage = 'English';
+      appProvider.setLanguage(English());
+    } else {
+      chosenLanguage = 'Tiếng Việt';
+      appProvider.setLanguage(Vietnamese());
+    }
+  }
+
+  void _updateLanguage(AppProvider appProvider, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value == 'English') {
+      appProvider.language = English();
+      await prefs.setString('language', 'EN');
+    } else {
+      appProvider.language = Vietnamese();
+      await prefs.setString('language', 'VI');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+    final appProvider = context.watch<AppProvider>();
+    final lang = appProvider.language;
 
+    _loadLanguage(appProvider);
     if (_isAuthenticating) {
       _handlePreviousSession(authProvider);
     }
@@ -243,15 +272,18 @@ class _LoginViewState extends State<LoginView> {
                           value: chosenLanguage,
                           items: const [
                             DropdownMenuItem<String>(
-                              value: Language.english,
-                              child: Text(Language.english),
+                              value: 'English',
+                              child: Text('English'),
                             ),
                             DropdownMenuItem<String>(
-                              value: Language.vietnamese,
-                              child: Text(Language.vietnamese),
+                              value: 'Tiếng Việt',
+                              child: Text('Tiếng Việt'),
                             ),
                           ],
                           onChanged: (String? language) {
+                            if (language != null) {
+                              _updateLanguage(appProvider, language);
+                            }
                             setState(() {
                               chosenLanguage = language!;
                               // print(chosenLanguage);
@@ -277,9 +309,9 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'EMAIL',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Text(
+                        lang.email,
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       TextField(
@@ -287,7 +319,7 @@ class _LoginViewState extends State<LoginView> {
                         keyboardType: TextInputType.emailAddress,
                         autocorrect: false,
                         onChanged: (value) {
-                          _handleValidation();
+                          _handleValidation(lang);
                         },
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: Colors.grey[400]),
@@ -303,9 +335,9 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
-                        'PASSWORD',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Text(
+                        lang.password,
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       TextField(
@@ -313,7 +345,7 @@ class _LoginViewState extends State<LoginView> {
                         obscureText: true,
                         autocorrect: false,
                         onChanged: (value) {
-                          _handleValidation();
+                          _handleValidation(lang);
                         },
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: Colors.grey[400]),
@@ -339,9 +371,9 @@ class _LoginViewState extends State<LoginView> {
                           minimumSize: const Size.fromHeight(56),
                           backgroundColor: _isValidToLogin ? Colors.blue : Colors.grey[400],
                         ),
-                        child: const Text(
-                          'LOG IN',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        child: Text(
+                          lang.login,
+                          style: const TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -349,14 +381,14 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () {
                           Navigator.pushNamed(context, Routes.forgotPassword);
                         },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(fontSize: 16),
+                        child: Text(
+                          lang.forgotPassword,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Or continue with',
+                      Text(
+                        lang.loginWith,
                         textAlign: TextAlign.center,
                       ),
                       Padding(
@@ -390,17 +422,17 @@ class _LoginViewState extends State<LoginView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Not a member yet?',
-                            style: TextStyle(fontSize: 16),
+                          Text(
+                            lang.registerQuestion,
+                            style: const TextStyle(fontSize: 16),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.pushNamed(context, Routes.register);
                             },
-                            child: const Text(
-                              'Register',
-                              style: TextStyle(fontSize: 16),
+                            child: Text(
+                              lang.register,
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ),
                         ],

@@ -16,6 +16,7 @@ import 'package:lettutor/src/features/courses/courses/views/course_detail_view.d
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_detail_view.dart';
 import 'package:lettutor/src/features/user_profile/user_profile_view.dart';
 import 'package:lettutor/src/features/video_call/video_call_view.dart';
+import 'package:lettutor/src/providers/app_provider.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -37,8 +38,15 @@ class LetTutor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AppProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+      ],
       child: MaterialApp(
           title: 'LetTutor',
           debugShowCheckedModeBanner: false,
