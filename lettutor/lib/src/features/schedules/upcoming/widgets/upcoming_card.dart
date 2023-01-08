@@ -202,7 +202,7 @@ class UpcomingClassCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -215,12 +215,17 @@ class UpcomingClassCard extends StatelessWidget {
                       if (_isTimeToJoin()) {
                         _joinMeeting(room, meetingToken);
                       } else {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
-                            return VideoCallView(startTimestamp: start);
-                          },
-                        ));
+                        final result = await showWaitingRoomDialog(context);
+                        if (result) {
+                          _joinMeeting(room, meetingToken);
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
+                              return VideoCallView(startTimestamp: start);
+                            },
+                          ));
+                        }
                       }
                     },
                     child: const Text(
@@ -275,5 +280,25 @@ Future<bool> showEditRequestDialog(BuildContext context) {
         ],
       );
     },
+  ).then((value) => value ?? false);
+}
+
+Future<bool> showWaitingRoomDialog(BuildContext context) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('It is not the time yet'),
+      content: const Text('Do you want to enter meeting room right now, or enter waiting room?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Waiting Room'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Meeting Room'),
+        ),
+      ],
+    ),
   ).then((value) => value ?? false);
 }
