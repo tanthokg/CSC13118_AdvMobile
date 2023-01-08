@@ -103,7 +103,7 @@ class UserService {
     required int page,
     required int perPage,
   }) async {
-    final now = DateTime.now().millisecondsSinceEpoch;
+    final now = DateTime.now().subtract(const Duration(minutes: 35)).millisecondsSinceEpoch;
     final response = await get(
       Uri.parse(
           '$baseUrl/booking/list/student?page=$page&perPage=$perPage&dateTimeLte=$now&orderBy=meeting&sortBy=desc'),
