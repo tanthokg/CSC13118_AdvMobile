@@ -26,21 +26,29 @@ class _TutorDetailViewState extends State<TutorDetailView> {
   ChewieController? _chewieController;
 
   late TutorInfo _tutorInfo;
-  late final List<String> specialties;
+  late final List<String> _specialties;
   late final List<String> languages;
   late final List<TutorFeedback> feedbacks;
   late String userId;
 
   bool _isLoading = true;
 
-  Future<void> _fetchTutorInfo(String token) async {
+  Future<void> _fetchTutorInfo(AuthProvider authProvider) async {
+    final String token = authProvider.token?.access?.token as String;
+
     final result = await TutorService.getTutorInfoById(
       token: token,
       userId: userId,
     );
 
     if (_isLoading) {
-      specialties = result.specialties?.split(',') ?? ['null'];
+      final learnTopics = authProvider.learnTopics
+          .where((topic) => result.specialties?.split(',').contains(topic.key) ?? false)
+          .map((e) => e.name ?? 'null');
+      final testPreparations = authProvider.testPreparations
+          .where((test) => result.specialties?.split(',').contains(test.key) ?? false)
+          .map((e) => e.name ?? 'null');
+      _specialties = [...learnTopics, ...testPreparations];
       languages = result.languages?.split(',') ?? ['null'];
     }
 
@@ -74,8 +82,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
       userId = data['userId'];
       feedbacks = data['tutor'].feedbacks;
 
-      final String accessToken = authProvider.token?.access?.token as String;
-      _fetchTutorInfo(accessToken);
+      _fetchTutorInfo(authProvider);
     }
 
     return Scaffold(
@@ -170,7 +177,7 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                                 token: accessToken,
                                 userId: userId,
                               );
-                              _fetchTutorInfo(accessToken);
+                              _fetchTutorInfo(authProvider);
                             }
                             // print('IS FAVORITE (DETAIL): ${_tutorInfo.isFavorite}');
                           },
@@ -296,13 +303,13 @@ class _TutorDetailViewState extends State<TutorDetailView> {
                       spacing: 8,
                       runSpacing: -4,
                       children: List<Widget>.generate(
-                        specialties.length,
-                        (index) => Chip(
+                        _specialties.length,
+                            (index) => Chip(
+                          backgroundColor: Colors.lightBlue[50],
                           label: Text(
-                            specialties[index],
-                            style: const TextStyle(color: Colors.blue),
+                            _specialties[index],
+                            style: const TextStyle(fontSize: 14, color: Colors.blue),
                           ),
-                          backgroundColor: Colors.blue[50],
                         ),
                       ),
                     ),
