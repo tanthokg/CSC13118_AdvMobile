@@ -40,6 +40,13 @@ class UpcomingClassCard extends StatelessWidget {
     return result;
   }
 
+  bool _isTimeToJoin() {
+    final startTimestamp = bookingInfo.scheduleDetailInfo?.startPeriodTimestamp ?? 0;
+    final startTime = DateTime.fromMillisecondsSinceEpoch(startTimestamp);
+    final now = DateTime.now();
+    return now.isAfter(startTime) || now.isAtSameMomentAs(startTime);
+  }
+
   void _joinMeeting(String room, String meetingToken) async {
     Map<FeatureFlagEnum, bool> featureFlags = {
       FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
@@ -205,7 +212,16 @@ class UpcomingClassCard extends StatelessWidget {
                       //     },
                       //   ),
                       // );
-                      _joinMeeting(room, meetingToken);
+                      if (_isTimeToJoin()) {
+                        _joinMeeting(room, meetingToken);
+                      } else {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
+                            return VideoCallView(startTimestamp: start);
+                          },
+                        ));
+                      }
                     },
                     child: const Text(
                       'Go to meeting',
