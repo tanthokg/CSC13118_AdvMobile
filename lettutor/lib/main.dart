@@ -19,8 +19,16 @@ import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const LetTutor());
 }
 
