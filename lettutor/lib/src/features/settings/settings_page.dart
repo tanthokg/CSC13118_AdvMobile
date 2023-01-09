@@ -21,18 +21,31 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Align(
+          Align(
             alignment: Alignment.center,
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
+            child: Container(
+              width: 120,
+              height: 120,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Image.network(
+                authProvider.currentUser.avatar ?? '',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Icon(Icons.person_rounded),
+              ),
             ),
+            // child: CircleAvatar(
+            //   radius: 60,
+            //   backgroundImage: AssetImage('assets/user/user-avatar-01.png'),
+            // ),
           ),
           const SizedBox(height: 12),
           Align(
               alignment: Alignment.center,
               child: Text(
-                'Huỳnh Tấn Thọ',
+                authProvider.currentUser.name ?? 'null',
                 style: Theme.of(context).textTheme.headline3,
               )),
           //const SizedBox(height: 12),

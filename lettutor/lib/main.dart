@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/authentication/forgot_password_view.dart';
 import 'package:lettutor/src/features/authentication/login_view.dart';
 import 'package:lettutor/src/features/authentication/register_view.dart';
 import 'package:lettutor/src/features/navigation/navigation_page.dart';
+import 'package:lettutor/src/features/tutor/search_tutor/views/tutor_search_result.dart';
 import 'package:lettutor/src/features/tutor/tutor_feedback/tutor_feedback_view.dart';
 import 'package:lettutor/src/features/tutor/tutor_feedback/write_review_view.dart';
 
@@ -13,11 +16,20 @@ import 'package:lettutor/src/features/courses/courses/views/course_detail_view.d
 import 'package:lettutor/src/features/tutor/tutor_detail/tutor_detail_view.dart';
 import 'package:lettutor/src/features/user_profile/user_profile_view.dart';
 import 'package:lettutor/src/features/video_call/video_call_view.dart';
+import 'package:lettutor/src/providers/app_provider.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const LetTutor());
 }
 
@@ -26,8 +38,15 @@ class LetTutor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AppProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+      ],
       child: MaterialApp(
           title: 'LetTutor',
           debugShowCheckedModeBanner: false,
@@ -73,6 +92,7 @@ class LetTutor extends StatelessWidget {
             Routes.teacherDetail: (context) => const TutorDetailView(),
             Routes.review: (context) => const TutorFeedbackView(),
             Routes.writeReview: (context) => const WriteReviewView(),
+            Routes.tutorSearchResult: (context) => const TutorSearchResult(),
           }),
     );
   }

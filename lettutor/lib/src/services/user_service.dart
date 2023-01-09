@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
+import 'package:lettutor/src/models/user/learn_topic.dart';
+import 'package:lettutor/src/models/user/test_preparation.dart';
+import 'package:lettutor/src/models/user/user.dart';
 
 class UserService {
   static const baseUrl = 'https://sandbox.api.lettutor.com';
@@ -68,7 +71,7 @@ class UserService {
     }
   }
 
-  static Future<List<BookingInfo>> getUpcomingClasses({
+  static Future<Map<String, dynamic>> getAllUpcomingClasses({
     required String token,
     required int page,
     required int perPage,
@@ -89,15 +92,18 @@ class UserService {
     }
 
     final List<dynamic> classes = jsonDecode['data']['rows'];
-    return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
+    return {
+      'count': jsonDecode['data']['count'],
+      'classes': classes.map((schedule) => BookingInfo.fromJson(schedule)).toList(),
+    };
   }
 
-  static Future<List<BookingInfo>> getHistory({
+  static Future<Map<String, dynamic>> getHistory({
     required String token,
     required int page,
     required int perPage,
   }) async {
-    final now = DateTime.now().millisecondsSinceEpoch;
+    final now = DateTime.now().subtract(const Duration(minutes: 35)).millisecondsSinceEpoch;
     final response = await get(
       Uri.parse(
           '$baseUrl/booking/list/student?page=$page&perPage=$perPage&dateTimeLte=$now&orderBy=meeting&sortBy=desc'),
@@ -113,6 +119,92 @@ class UserService {
     }
 
     final List<dynamic> classes = jsonDecode['data']['rows'];
-    return classes.map((schedule) => BookingInfo.fromJson(schedule)).toList();
+    return {
+      'count': jsonDecode['data']['count'],
+      'classes': classes.map((schedule) => BookingInfo.fromJson(schedule)).toList()
+    };
+  }
+
+  static Future<List<LearnTopic>> getLearningTopic(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/learn-topic'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body) as List;
+    if (response.statusCode != 200) {
+      throw Exception(json.decode(response.body)['message']);
+    }
+    return jsonDecode.map((e) => LearnTopic.fromJson(e)).toList();
+  }
+
+  static Future<List<TestPreparation>> getTestPreparation(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/test-preparation'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body) as List;
+    if (response.statusCode != 200) {
+      throw Exception(json.decode(response.body)['message']);
+    }
+    return jsonDecode.map((e) => TestPreparation.fromJson(e)).toList();
+  }
+
+  static Future<User?> getUserInfo(String token) async {
+    final response = await get(
+      Uri.parse('$baseUrl/user/info'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      return null;
+    } else {
+      return User.fromJson(jsonDecode['user']);
+    }
+  }
+
+  static Future<User?> updateInfo({
+    required String token,
+    required String name,
+    required String country,
+    required String birthday,
+    required String level,
+    required List<String> learnTopics,
+    required List<String> testPreparations,
+    required String studySchedule,
+  }) async {
+    final response = await put(
+      Uri.parse('$baseUrl/user/info'),
+      headers: {
+        'Content-Type': 'application/json;encoding=utf-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode({
+        'name': name,
+        'country': country,
+        'birthday': birthday,
+        'level': level,
+        'learnTopics': learnTopics,
+        'testPreparations': testPreparations,
+        'studySchedule': studySchedule,
+      }),
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return User.fromJson(jsonDecode['user']);
   }
 }

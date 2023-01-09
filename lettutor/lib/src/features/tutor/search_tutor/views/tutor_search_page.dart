@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/src/constants/country_list.dart';
+import 'package:lettutor/src/constants/datatype.dart';
+import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/dummy/dummy_data.dart';
 import 'package:lettutor/src/models/tutor/tutor.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
@@ -7,7 +9,6 @@ import 'package:lettutor/src/services/tutor_service.dart';
 import 'package:provider/provider.dart';
 
 import 'tutor_search_result.dart';
-
 
 class TutorSearchPage extends StatefulWidget {
   const TutorSearchPage({Key? key}) : super(key: key);
@@ -18,44 +19,41 @@ class TutorSearchPage extends StatefulWidget {
 
 class _TutorSearchPageState extends State<TutorSearchPage> {
   final _nameController = TextEditingController();
-  final _countryController = TextEditingController();
+  List<String> _specialties = [];
 
-  int _chosenSpecialty = 0;
-  List<Tutor> _tutors = [];
+  // final _countryController = TextEditingController();
 
-  Future<void> _searchTutors(AuthProvider authProvider) async {
+  Nationality? _nationality = Nationality.foreign;
+  int _chosenSpecialtiesIndex = 0;
+
+  Map<String, dynamic> _encapsulateSearchParams(AuthProvider authProvider) {
     final name = _nameController.text;
     final accessToken = authProvider.token?.access?.token as String;
-    final List<String> filterSpecialties = [];
-    if (_chosenSpecialty != 0) {
-      filterSpecialties.add(specialties[_chosenSpecialty].toLowerCase().replaceAll(' ', '-'));
-    }
+    // final List<String> filterSpecialties = [];
+    // if (_chosenSpecialtiesIndex != 0) {
+    //   filterSpecialties.add(specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-'));
+    // }
 
-    final result = await TutorService.searchTutor(
-      token: accessToken,
-      search: name,
-      page: 1,
-      perPage: 10,
-      specialties: filterSpecialties,
-    );
+    return {
+      'token': accessToken,
+      'search': name,
+      'nationality': _nationality?.index == Nationality.vietnamese.index,
+      'specialties': _chosenSpecialtiesIndex == 0
+          ? [].map((e) => e as String).toList()
+          : [_specialties[_chosenSpecialtiesIndex].toLowerCase().replaceAll(' ', '-')],
+    };
+  }
 
-    if (_countryController.text.isEmpty) {
-      _tutors = result;
-    } else {
-      _tutors.clear();
-      for (var tutor in result) {
-        if (countryList[tutor.country] != null) {
-          if (countryList[tutor.country]!.toLowerCase().contains(_countryController.text)) {
-            _tutors.add(tutor);
-          }
-        }
-      }
-    }
+  void _loadSpecialties(AuthProvider authProvider) {
+    final learnTopics = authProvider.learnTopics.map((e) => e.name ?? 'null');
+    final testPreparations = authProvider.testPreparations.map((e) => e.name ?? 'null');
+    _specialties = ['All', ...learnTopics, ...testPreparations];
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+    _loadSpecialties(authProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -75,18 +73,50 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
           ),
-          const SizedBox(height: 8),
-          TextField(
-            controller: _countryController,
-            decoration: InputDecoration(
-              // contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              hintStyle: TextStyle(color: Colors.grey[500]),
-              hintText: "search by country",
-              border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-            ),
+          // const SizedBox(height: 8),
+          // TextField(
+          //   controller: _countryController,
+          //   decoration: InputDecoration(
+          //     // contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          //     hintStyle: TextStyle(color: Colors.grey[500]),
+          //     hintText: "search by country",
+          //     border: const OutlineInputBorder(
+          //         borderSide: BorderSide(color: Colors.grey, width: 2),
+          //         borderRadius: BorderRadius.all(Radius.circular(10))),
+          //   ),
+          // ),
+          const SizedBox(height: 16),
+          Text('Nationality', style: Theme.of(context).textTheme.headline4),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Radio<Nationality>(
+                value: Nationality.vietnamese,
+                groupValue: _nationality,
+                onChanged: (value) {
+                  setState(() {
+                    _nationality = value;
+                  });
+                },
+              ),
+              const Text('Vietnamese Tutors'),
+            ],
           ),
+          Row(
+            children: [
+              Radio<Nationality>(
+                value: Nationality.foreign,
+                groupValue: _nationality,
+                onChanged: (value) {
+                  setState(() {
+                    _nationality = value;
+                  });
+                },
+              ),
+              const Text('Foreign Tutors'),
+            ],
+          ),
+          const SizedBox(height: 8),
           // DropdownButtonFormField(
           //   decoration: InputDecoration(
           //     contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -109,21 +139,21 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
             spacing: 8,
             runSpacing: -4,
             children: List<Widget>.generate(
-              specialties.length,
+              _specialties.length,
               (index) => ChoiceChip(
-                label: Text(
-                  specialties[index],
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: _chosenSpecialty == index ? Colors.blue[700] : Colors.black54,
-                  ),
-                ),
                 backgroundColor: Colors.grey[100],
                 selectedColor: Colors.lightBlue[100],
-                selected: _chosenSpecialty == index,
+                selected: _chosenSpecialtiesIndex == index,
+                label: Text(
+                  _specialties[index],
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _chosenSpecialtiesIndex == index ? Colors.blue[700] : Colors.black54,
+                  ),
+                ),
                 onSelected: (bool selected) {
                   setState(() {
-                    _chosenSpecialty = index;
+                    _chosenSpecialtiesIndex = index;
                   });
                 },
               ),
@@ -137,7 +167,7 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    _chosenSpecialty = 0;
+                    _chosenSpecialtiesIndex = 0;
                   });
                 },
                 child: const Padding(
@@ -147,18 +177,16 @@ class _TutorSearchPageState extends State<TutorSearchPage> {
               ),
               const SizedBox(width: 10),
               TextButton(
-                onPressed: () async {
-                  await _searchTutors(authProvider);
-                  if (mounted) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TutorSearchResult(tutors: _tutors)),
-                    );
-                  }
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    Routes.tutorSearchResult,
+                    arguments: _encapsulateSearchParams(authProvider),
+                  );
                 },
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(

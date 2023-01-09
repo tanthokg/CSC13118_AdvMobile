@@ -64,12 +64,13 @@ class TutorService {
     return TutorInfo.fromJson(jsonDecode);
   }
 
-  static Future<List<Tutor>> searchTutor({
+  static Future<Map<String, dynamic>> searchTutor({
     required String token,
     String search = '',
     required int page,
     required int perPage,
-    List<String> specialties = const [],
+    required Map<String, bool> nationality,
+    required List<String> specialties,
   }) async {
     final response = await post(
       Uri.parse('$baseUrl/tutor/search'),
@@ -83,6 +84,7 @@ class TutorService {
         'search': search,
         'filters': {
           'specialties': specialties,
+          'nationality': nationality,
         },
       }),
     );
@@ -94,7 +96,11 @@ class TutorService {
     }
 
     final List<dynamic> tutors = jsonDecode['rows'];
-    return tutors.map((tutor) => Tutor.fromJson(tutor)).toList();
+
+    return {
+      'count': jsonDecode['count'],
+      'tutors': tutors.map((tutor) => Tutor.fromJson(tutor)).toList(),
+    };
   }
 
   static Future<void> addTutorToFavorite({

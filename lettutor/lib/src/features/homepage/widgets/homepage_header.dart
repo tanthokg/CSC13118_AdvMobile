@@ -1,6 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lettutor/src/constants/routes.dart';
+import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
 import 'package:lettutor/src/providers/auth_provider.dart';
 import 'package:lettutor/src/services/user_service.dart';
@@ -17,15 +23,24 @@ class _HomepageHeaderState extends State<HomepageHeader> {
   late Duration totalLessonTime;
   late BookingInfo upcomingClass;
 
-  Future<void> _fetchTotalLessonTime(String token) async {
-    final total = await UserService.getTotalLessonTime(token);
-    final upcoming = await UserService.getUpcomingLesson(token);
+  bool _isLoading = true;
+  bool _isError = false;
 
-    if (mounted) {
+  Future<void> _fetchTotalLessonTime(String token) async {
+    try {
+      final total = await UserService.getTotalLessonTime(token);
+      final upcoming = await UserService.getUpcomingLesson(token);
+
+      if (mounted) {
+        setState(() {
+          totalLessonTime = Duration(minutes: total);
+          upcomingClass = upcoming;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
       setState(() {
-        totalLessonTime = Duration(minutes: total);
-        upcomingClass = upcoming;
-        _isLoading = false;
+        _isError = true;
       });
     }
   }
@@ -45,7 +60,40 @@ class _HomepageHeaderState extends State<HomepageHeader> {
     return result;
   }
 
-  bool _isLoading = true;
+
+  bool _isTimeToJoin() {
+    final startTimestamp = upcomingClass.scheduleDetailInfo?.startPeriodTimestamp ?? 0;
+    final startTime = DateTime.fromMillisecondsSinceEpoch(startTimestamp);
+    final now = DateTime.now();
+    return now.isAfter(startTime) || now.isAtSameMomentAs(startTime);
+  }
+
+  void _joinMeeting() async {
+    final String meetingToken = upcomingClass.studentMeetingLink?.split('token=')[1] ?? '';
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(meetingToken);
+    final String room = jwtDecoded['room'];
+
+    Map<FeatureFlagEnum, bool> featureFlags = {
+      FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+    };
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+      } else if (Platform.isIOS) {
+        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+      }
+    }
+
+    final options = JitsiMeetingOptions(room: room)
+    // ..serverURL = 'https://meet.jit.si/'
+      ..serverURL = "https://meet.lettutor.com"
+      ..token = meetingToken
+      ..audioOnly = true
+      ..audioMuted = true
+      ..videoMuted = true
+      ..featureFlags.addAll(featureFlags);
+    await JitsiMeet.joinMeeting(options);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +109,15 @@ class _HomepageHeaderState extends State<HomepageHeader> {
       width: double.maxFinite,
       height: 208,
       child: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
+          ? Center(
+              child: _isError
+                  ? const Text(
+                      'Error: Cannot get upcoming class',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
             )
           : Column(
               children: [
@@ -74,7 +127,7 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                     'Upcoming Lesson',
                     textAlign: TextAlign.center,
                     style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
                 Text(
@@ -82,23 +135,32 @@ class _HomepageHeaderState extends State<HomepageHeader> {
                   '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.startPeriodTimestamp ?? 0))} - '
                   '${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(upcomingClass.scheduleDetailInfo!.endPeriodTimestamp ?? 0))}',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: TextButton(
                       style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           backgroundColor: Colors.white),
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.videoCall);
+                        if (_isTimeToJoin()) {
+                          _joinMeeting();
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              final start = upcomingClass.scheduleDetailInfo!.startPeriodTimestamp!;
+                              return VideoCallView(startTimestamp: start);
+                            },
+                          ));
+                        }
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
                           Icon(Icons.ondemand_video_rounded),
                           SizedBox(width: 12),
-                          Text('Enter Lesson Room', style: TextStyle(fontSize: 16)),
+                          Text('Enter Lesson Room', style: TextStyle(fontSize: 14)),
                         ],
                       )),
                 ),

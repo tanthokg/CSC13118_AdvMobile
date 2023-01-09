@@ -50,4 +50,27 @@ class BookingService {
       throw Exception(jsonDecode['message']);
     }
   }
+
+  static Future<String> cancelBookedClass({
+    required List<String> scheduleDetailIds,
+    required String token,
+  }) async {
+    final response = await delete(
+      Uri.parse('$baseUrl/booking'),
+      headers: {
+        'Content-Type': 'application/json;encoding=utf-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode(
+        {
+          'scheduleDetailIds': scheduleDetailIds,
+        },
+      ),
+    );
+
+    if (response.statusCode != 200) {
+      return json.decode(response.body)['message'];
+    }
+    return "Class Cancelled Successfully";
+  }
 }

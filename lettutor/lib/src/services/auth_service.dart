@@ -33,6 +33,48 @@ class AuthService {
     await onSuccess(user, token);
   }
 
+  static loginByGoogle({
+    required String accessToken,
+    required Function(User, Token) onSuccess,
+  }) async {
+    final response = await post(
+      Uri.parse("$baseUrl/auth/google"),
+      body: {
+        'access_token': accessToken,
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode['message']);
+    }
+
+    final user = User.fromJson(jsonDecode['user']);
+    final tokens = Token.fromJson(jsonDecode['tokens']);
+    await onSuccess(user, tokens);
+  }
+
+  static loginByFacebook({
+    required String accessToken,
+    required Function(User, Token) onSuccess,
+  }) async {
+    final response = await post(
+      Uri.parse("$baseUrl/auth/facebook"),
+      body: {
+        'access_token': accessToken,
+      },
+    );
+
+    final jsonDecode = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(jsonDecode['message']);
+    }
+
+    final user = User.fromJson(jsonDecode['user']);
+    final tokens = Token.fromJson(jsonDecode['tokens']);
+    await onSuccess(user, tokens);
+  }
+
   static Future<void> continueSession({
     required String refreshToken,
     required Function(User, Token) onSuccess,

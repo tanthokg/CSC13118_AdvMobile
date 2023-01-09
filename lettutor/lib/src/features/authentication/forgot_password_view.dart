@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/src/constants/datatype.dart';
+import 'package:lettutor/src/models/language/lang_en.dart';
+import 'package:lettutor/src/models/language/lang_vi.dart';
+import 'package:lettutor/src/models/language/language.dart';
+import 'package:lettutor/src/providers/app_provider.dart';
 import 'package:lettutor/src/services/auth_service.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
@@ -10,17 +15,36 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  String chosenLanguage = Language.english;
+  String chosenLanguage = 'English';
 
   final _emailController = TextEditingController();
 
-  void _handleForgotPassword() async {
+  String _emailErrorText = '';
+  bool _isValidToSend = false;
+
+  void _handleValidation(Language language) {
+    final emailRegExp =
+        RegExp(r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
+    if (_emailController.text.isEmpty) {
+      _emailErrorText = language.emptyEmail;
+      _isValidToSend = false;
+    } else if (!emailRegExp.hasMatch(_emailController.text)) {
+      _emailErrorText = language.invalidEmail;
+      _isValidToSend = false;
+    } else {
+      _emailErrorText = '';
+      _isValidToSend = true;
+    }
+    setState(() {});
+  }
+
+  void _handleForgotPassword(Language language) async {
     try {
       await AuthService.forgotPassword(_emailController.text);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Recovery Email Sent Successfully')),
+          SnackBar(content: Text(language.sendRecoveryEmailSuccess)),
         );
       }
     } catch (e) {
@@ -30,8 +54,35 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     }
   }
 
+  void _loadLanguage(AppProvider appProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final lang = prefs.getString('language') ?? 'EN';
+    if (lang == 'EN') {
+      chosenLanguage = 'English';
+      appProvider.setLanguage(English());
+    } else {
+      chosenLanguage = 'Tiếng Việt';
+      appProvider.setLanguage(Vietnamese());
+    }
+  }
+
+  void _updateLanguage(AppProvider appProvider, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value == 'English') {
+      appProvider.language = English();
+      await prefs.setString('language', 'EN');
+    } else {
+      appProvider.language = Vietnamese();
+      await prefs.setString('language', 'VI');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final appProvider = context.watch<AppProvider>();
+    final lang = appProvider.language;
+    _loadLanguage(appProvider);
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 16),
@@ -44,15 +95,18 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 value: chosenLanguage,
                 items: const [
                   DropdownMenuItem<String>(
-                    value: Language.english,
-                    child: Text(Language.english),
+                    value: 'English',
+                    child: Text('English'),
                   ),
                   DropdownMenuItem<String>(
-                    value: Language.vietnamese,
-                    child: Text(Language.vietnamese),
+                    value: 'Tiếng Việt',
+                    child: Text('Tiếng Việt'),
                   ),
                 ],
                 onChanged: (String? language) {
+                  if (language != null) {
+                    _updateLanguage(appProvider, language);
+                  }
                   setState(() {
                     chosenLanguage = language!;
                   });
@@ -78,39 +132,50 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Please enter your email address to search for your account.',
+              lang.enterEmailToResetPassword,
               style: Theme.of(context).textTheme.bodyText1,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'EMAIL',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            Text(
+              lang.email,
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 8),
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
+              onChanged: (value) {
+                _handleValidation(lang);
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: "abc@example.com",
-                prefixIcon: const Icon(Icons.mail, size: 26),
+                prefixIcon: Icon(
+                  Icons.mail,
+                  color: _emailErrorText.isEmpty ? Colors.blue : Colors.red[700],
+                ),
+                errorText: _emailErrorText.isEmpty ? null : _emailErrorText,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             TextButton(
-              onPressed: () {
-                _handleForgotPassword();
-              },
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue)),
-              child: const Text(
-                'SEND RECOVERY EMAIL',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+              onPressed: _isValidToSend
+                  ? () {
+                      _handleForgotPassword(lang);
+                    }
+                  : null,
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(56),
+                backgroundColor: _isValidToSend ? Colors.blue : Colors.grey[400],
+              ),
+              child: Text(
+                lang.sendRecoveryEmail,
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
             const SizedBox(height: 8),
@@ -118,7 +183,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Go Back To Log In'),
+              child: Text(
+                lang.backToLogin,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),

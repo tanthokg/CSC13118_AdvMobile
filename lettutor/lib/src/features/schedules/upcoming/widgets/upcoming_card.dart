@@ -1,14 +1,25 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet/feature_flag/feature_flag.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lettutor/src/constants/routes.dart';
 import 'package:lettutor/src/features/video_call/video_call_view.dart';
 import 'package:lettutor/src/models/schedule/booking_info.dart';
+import 'package:lettutor/src/providers/auth_provider.dart';
+import 'package:lettutor/src/services/booking_service.dart';
+import 'package:provider/provider.dart';
 
 class UpcomingClassCard extends StatelessWidget {
-  const UpcomingClassCard({Key? key, required this.bookingInfo}) : super(key: key);
+  const UpcomingClassCard({Key? key, required this.bookingInfo, required this.onCancel})
+      : super(key: key);
 
   final BookingInfo bookingInfo;
+  final Function(bool cancelResult) onCancel;
 
   String _convertClassTime() {
     String result = '';
@@ -20,10 +31,57 @@ class UpcomingClassCard extends StatelessWidget {
     return result;
   }
 
+  Future<String> _handleCancelClass(AuthProvider authProvider) async {
+    final String token = authProvider.token?.access?.token as String;
+    final result = await BookingService.cancelBookedClass(
+      scheduleDetailIds: [bookingInfo.id ?? ''],
+      token: token,
+    );
+    return result;
+  }
+
+  bool _isTimeToJoin() {
+    final startTimestamp = bookingInfo.scheduleDetailInfo?.startPeriodTimestamp ?? 0;
+    final startTime = DateTime.fromMillisecondsSinceEpoch(startTimestamp);
+    final now = DateTime.now();
+    return now.isAfter(startTime) || now.isAtSameMomentAs(startTime);
+  }
+
+  void _joinMeeting(String room, String meetingToken) async {
+    Map<FeatureFlagEnum, bool> featureFlags = {
+      FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+    };
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+      } else if (Platform.isIOS) {
+        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+      }
+    }
+
+    final options = JitsiMeetingOptions(room: room)
+      // ..serverURL = 'https://meet.jit.si/'
+      ..serverURL = "https://meet.lettutor.com"
+      ..token = meetingToken
+      ..audioOnly = true
+      ..audioMuted = true
+      ..videoMuted = true
+      ..featureFlags.addAll(featureFlags);
+    await JitsiMeet.joinMeeting(options);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    final String meetingToken = bookingInfo.studentMeetingLink?.split('token=')[1] ?? '';
+    Map<String, dynamic> jwtDecoded = JwtDecoder.decode(meetingToken);
+    final String room = jwtDecoded['room'];
+    // print(jwtDecoded['room']);
+    // const room = 'abcd';
+
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
@@ -96,7 +154,45 @@ class UpcomingClassCard extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                     style: TextButton.styleFrom(foregroundColor: Colors.red),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final dialogResult = await showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Cancel class'),
+                          content: const Text('Are you sure to cancel this class?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, false),
+                              child: const Text('NO'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, true),
+                              child: const Text('YES'),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (dialogResult) {
+                        final result = await _handleCancelClass(authProvider);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(result),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  if (result == "Class Cancelled Successfully") {
+                                    onCancel(true);
+                                  }
+                                  Navigator.pop(context, false);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
                     child: const Text(
                       'Cancel',
                       style: TextStyle(fontSize: 16, color: Colors.red),
@@ -106,16 +202,31 @@ class UpcomingClassCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
-                            return VideoCallView(startTimestamp: start);
-                          },
-                        ),
-                      );
+                    onPressed: () async {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
+                      //       return VideoCallView(startTimestamp: start);
+                      //     },
+                      //   ),
+                      // );
+                      if (_isTimeToJoin()) {
+                        _joinMeeting(room, meetingToken);
+                      } else {
+                        final result = await showWaitingRoomDialog(context);
+                        if (result) {
+                          _joinMeeting(room, meetingToken);
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              final start = bookingInfo.scheduleDetailInfo!.startPeriodTimestamp!;
+                              return VideoCallView(startTimestamp: start);
+                            },
+                          ));
+                        }
+                      }
                     },
                     child: const Text(
                       'Go to meeting',
@@ -169,5 +280,25 @@ Future<bool> showEditRequestDialog(BuildContext context) {
         ],
       );
     },
+  ).then((value) => value ?? false);
+}
+
+Future<bool> showWaitingRoomDialog(BuildContext context) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('It is not the time yet'),
+      content: const Text('Do you want to enter meeting room right now, or enter waiting room?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Waiting Room'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, true),
+          child: const Text('Meeting Room'),
+        ),
+      ],
+    ),
   ).then((value) => value ?? false);
 }
